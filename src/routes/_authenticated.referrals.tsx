@@ -3,8 +3,8 @@ import { AppShell } from "@/components/site/AppShell";
 import { Gift, Copy, Share2, Users, Coins, Check, Sparkles } from "lucide-react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
-import { getMyReferralInfo, applyReferralCode } from "@/lib/referrals.functions";
-// Note: cashback now triggers on product purchase, not on wallet add-money.
+import { getMyReferralInfo } from "@/lib/referrals.functions";
+// Note: referral linkage happens automatically via signup link (?ref=CODE).
 import { useState } from "react";
 import { toast } from "sonner";
 
