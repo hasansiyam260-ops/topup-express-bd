@@ -98,7 +98,7 @@ export function LiveChat() {
                   <Sparkles size={16} strokeWidth={2.5} />
                 </span>
                 <div className="flex-1 min-w-0">
-                  <div className="font-bold text-[14px] leading-tight tracking-wide">TOP-UP EXPRESS Support</div>
+                  <div className="font-bold text-[14px] leading-tight tracking-wide">TOP-UP EXPRESS AI</div>
                   <div className="flex items-center gap-1.5 text-[10.5px] text-white/90">
                     <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse" />
                     Online · Instant AI Reply
