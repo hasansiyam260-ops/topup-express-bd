@@ -14,6 +14,7 @@ import logoImg from "@/assets/logo-uid.webp";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { Toaster } from "sonner";
 import { WelcomeNotice } from "@/components/site/WelcomeNotice";
+import { LiveChat } from "@/components/site/LiveChat";
 
 function NotFoundComponent() {
   return (
@@ -116,6 +117,7 @@ function RootComponent() {
     <QueryClientProvider client={queryClient}>
       <Outlet />
       <WelcomeNotice />
+      <LiveChat />
       <Toaster theme="light" position="top-center" richColors />
     </QueryClientProvider>
   );
