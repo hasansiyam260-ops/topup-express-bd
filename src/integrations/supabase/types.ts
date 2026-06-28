@@ -56,10 +56,50 @@ export type Database = {
         }
         Relationships: []
       }
+      delivery_providers: {
+        Row: {
+          api_url: string | null
+          created_at: string
+          credentials: Json
+          id: string
+          is_enabled: boolean
+          name: string
+          notes: string | null
+          type: string
+          updated_at: string
+        }
+        Insert: {
+          api_url?: string | null
+          created_at?: string
+          credentials?: Json
+          id?: string
+          is_enabled?: boolean
+          name: string
+          notes?: string | null
+          type: string
+          updated_at?: string
+        }
+        Update: {
+          api_url?: string | null
+          created_at?: string
+          credentials?: Json
+          id?: string
+          is_enabled?: boolean
+          name?: string
+          notes?: string | null
+          type?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       orders: {
         Row: {
           amount: number
           created_at: string
+          delivered_at: string | null
+          delivery_provider: string | null
+          delivery_response: Json | null
+          delivery_status: string
           id: string
           notes: string | null
           order_number: string
@@ -69,6 +109,7 @@ export type Database = {
           player_uid: string
           product_id: string | null
           product_name: string
+          provider_order_id: string | null
           status: Database["public"]["Enums"]["order_status"]
           updated_at: string
           user_id: string
@@ -76,6 +117,10 @@ export type Database = {
         Insert: {
           amount: number
           created_at?: string
+          delivered_at?: string | null
+          delivery_provider?: string | null
+          delivery_response?: Json | null
+          delivery_status?: string
           id?: string
           notes?: string | null
           order_number?: string
@@ -85,6 +130,7 @@ export type Database = {
           player_uid: string
           product_id?: string | null
           product_name: string
+          provider_order_id?: string | null
           status?: Database["public"]["Enums"]["order_status"]
           updated_at?: string
           user_id: string
@@ -92,6 +138,10 @@ export type Database = {
         Update: {
           amount?: number
           created_at?: string
+          delivered_at?: string | null
+          delivery_provider?: string | null
+          delivery_response?: Json | null
+          delivery_status?: string
           id?: string
           notes?: string | null
           order_number?: string
@@ -101,6 +151,7 @@ export type Database = {
           player_uid?: string
           product_id?: string | null
           product_name?: string
+          provider_order_id?: string | null
           status?: Database["public"]["Enums"]["order_status"]
           updated_at?: string
           user_id?: string
@@ -162,6 +213,7 @@ export type Database = {
           badge: string | null
           category: string
           created_at: string
+          delivery_provider: string | null
           id: string
           image_url: string | null
           is_active: boolean
@@ -170,6 +222,7 @@ export type Database = {
           original_price: number | null
           pack_type: string
           price: number
+          provider_sku: string | null
           server: string
           sort_order: number
           updated_at: string
@@ -178,6 +231,7 @@ export type Database = {
           badge?: string | null
           category?: string
           created_at?: string
+          delivery_provider?: string | null
           id?: string
           image_url?: string | null
           is_active?: boolean
@@ -186,6 +240,7 @@ export type Database = {
           original_price?: number | null
           pack_type?: string
           price: number
+          provider_sku?: string | null
           server?: string
           sort_order?: number
           updated_at?: string
@@ -194,6 +249,7 @@ export type Database = {
           badge?: string | null
           category?: string
           created_at?: string
+          delivery_provider?: string | null
           id?: string
           image_url?: string | null
           is_active?: boolean
@@ -202,6 +258,7 @@ export type Database = {
           original_price?: number | null
           pack_type?: string
           price?: number
+          provider_sku?: string | null
           server?: string
           sort_order?: number
           updated_at?: string
