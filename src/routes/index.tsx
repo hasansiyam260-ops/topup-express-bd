@@ -137,40 +137,47 @@ function HomePage() {
       </section>
 
 
-      {/* LIKE - FOLLOW - SUBSCRIBE */}
-      <section className="mx-auto max-w-3xl px-3 mt-12">
-        <h2 className="text-center font-display text-2xl tracking-[0.15em] text-foreground">
-          LIKE — FOLLOW — SUBSCRIBE
+      {/* JOIN OUR COMMUNITY */}
+      <section className="mx-auto max-w-3xl px-3 mt-10">
+        <h2 className="text-center font-display text-lg tracking-[0.18em] text-foreground">
+          JOIN — FOLLOW — SUBSCRIBE
         </h2>
-        <div className="mx-auto mt-2 h-[3px] w-16 rounded-full bg-gradient-to-r from-neon-cyan to-neon-violet" />
+        <div className="mx-auto mt-1.5 h-[2px] w-14 rounded-full bg-gradient-to-r from-neon-cyan to-neon-violet" />
 
-        <div className="mt-5 grid grid-cols-3 gap-3">
-          <SubBrand
-            tint="from-rose-50 to-rose-100"
-            border="border-rose-200"
+        <div className="mt-4 grid grid-cols-3 gap-2.5">
+          <SocialBrand
+            href="https://t.me/topupexpress"
+            title="Telegram"
+            sub="CHANNEL"
+            ringFrom="from-sky-400/60"
+            ringTo="to-sky-600/60"
+            iconBg="bg-gradient-to-br from-[#29b6f6] to-[#0288d1]"
+            glow="shadow-[0_8px_24px_-8px_rgba(2,136,209,0.55)]"
+            icon={<Send className="h-4 w-4 text-white -translate-x-[1px]" />}
+          />
+          <SocialBrand
+            href="https://facebook.com/topupexpress"
+            title="Facebook"
+            sub="PAGE"
+            ringFrom="from-blue-400/60"
+            ringTo="to-blue-700/60"
+            iconBg="bg-gradient-to-br from-[#1877f2] to-[#0a47a6]"
+            glow="shadow-[0_8px_24px_-8px_rgba(24,119,242,0.55)]"
+            icon={<Facebook className="h-4 w-4 text-white fill-white" />}
+          />
+          <SocialBrand
+            href="https://youtube.com/@topupexpress"
             title="YouTube"
-            sub="প্রিমিয়াম"
-            iconBg="bg-red-600"
-            icon={<Youtube className="h-5 w-5 text-white fill-white" />}
-          />
-          <SubBrand
-            tint="from-slate-100 to-slate-200"
-            border="border-slate-300"
-            title="Prime Video"
-            sub="STREAM"
-            iconBg="bg-sky-600"
-            icon={<Play className="h-5 w-5 text-white fill-white" />}
-          />
-          <SubBrand
-            tint="from-rose-50 to-rose-100"
-            border="border-rose-200"
-            title="NETFLIX"
-            sub="UHD"
-            iconBg="bg-red-700"
-            icon={<span className="font-display text-white text-lg leading-none">N</span>}
+            sub="CHANNEL"
+            ringFrom="from-rose-400/60"
+            ringTo="to-red-600/60"
+            iconBg="bg-gradient-to-br from-[#ff1f1f] to-[#c10000]"
+            glow="shadow-[0_8px_24px_-8px_rgba(220,38,38,0.55)]"
+            icon={<Youtube className="h-4 w-4 text-white fill-white" />}
           />
         </div>
       </section>
+
 
       {/* FOOTER */}
       <footer className="mx-auto max-w-3xl px-3 mt-14">
