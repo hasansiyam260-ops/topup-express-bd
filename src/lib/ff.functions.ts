@@ -11,8 +11,7 @@ export const getFFPlayerName = createServerFn({ method: "GET" })
   .handler(async ({ data }) => {
     const endpoints = [
       process.env.FF_INFO_URL,
-      `https://aditya-info-v9op.onrender.com/player-info?uid=${data.uid}&region=${data.region}`,
-      `https://ff-community-api.vercel.app/api/info?uid=${data.uid}&region=${data.region}`,
+      `https://ff-info-mu.vercel.app/info?uid=${data.uid}&region=${data.region}`,
     ].filter(Boolean) as string[];
 
     for (const url of endpoints) {
