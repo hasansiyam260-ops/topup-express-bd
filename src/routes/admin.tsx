@@ -1,5 +1,6 @@
 import { createFileRoute, Outlet, Link, redirect, useRouterState } from "@tanstack/react-router";
 import { supabase } from "@/integrations/supabase/client";
+import { amIAdmin } from "@/lib/admin.functions";
 import { LayoutDashboard, Package, Tags, ShoppingBag, Users, FileText, CreditCard, Home } from "lucide-react";
 
 export const Route = createFileRoute("/admin")({
@@ -7,13 +8,8 @@ export const Route = createFileRoute("/admin")({
   beforeLoad: async () => {
     const { data, error } = await supabase.auth.getUser();
     if (error || !data.user) throw redirect({ to: "/auth", search: { mode: "login" } });
-    const { data: isAdmin } = await supabase
-      .from("user_roles")
-      .select("role")
-      .eq("user_id", data.user.id)
-      .eq("role", "admin")
-      .maybeSingle();
-    if (!isAdmin) throw redirect({ to: "/" });
+    const admin = await amIAdmin();
+    if (!admin.isAdmin) throw redirect({ to: "/" });
   },
   component: AdminLayout,
 });
