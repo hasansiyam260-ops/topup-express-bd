@@ -11,17 +11,20 @@ import { supabase } from "@/integrations/supabase/client";
 import { Wallet, Smartphone, Info, HelpCircle, AlertTriangle, X, Plus } from "lucide-react";
 import { toast } from "sonner";
 
-const CATEGORY_META: Record<string, { title: string; sub: string }> = {
+const CATEGORY_META: Record<string, { title: string; sub: string; img?: string }> = {
   diamond: { title: "Free Fire Diamond", sub: "BD Server" },
   membership: { title: "Free Fire Membership", sub: "Weekly · Monthly" },
   level_pass: { title: "Level Up Pass", sub: "Free Fire BD" },
   like: { title: "Free Fire Likes", sub: "Profile Boost" },
-  airdrop: { title: "UniPin Voucher", sub: "Global Topup" },
+  airdrop: { title: "Special Airdrop", sub: "Free Fire BD" },
+  unipin: { title: "UniPin Voucher", sub: "Global Topup" },
+  weeklylite: { title: "Weekly Lite Membership", sub: "Weekly · 7 Days" },
 };
-function categoryTitle(t: string | null | undefined) { return CATEGORY_META[t ?? ""]?.title ?? "Topup Pack"; }
-function categorySubtitle(t: string | null | undefined) { return CATEGORY_META[t ?? ""]?.sub ?? "Premium"; }
+function categoryTitle(c: string) { return CATEGORY_META[c]?.title ?? "Topup Pack"; }
+function categorySubtitle(c: string) { return CATEGORY_META[c]?.sub ?? "Premium"; }
 
 export const Route = createFileRoute("/products/$id")({
+  validateSearch: (s: Record<string, unknown>) => ({ cat: typeof s.cat === "string" ? s.cat : undefined }),
   loader: ({ params, context }) => {
     void context.queryClient.prefetchQuery(productQueryOptions(params.id));
     void context.queryClient.prefetchQuery(productsQueryOptions);
@@ -41,6 +44,7 @@ export const Route = createFileRoute("/products/$id")({
 
 function ProductPage() {
   const { id } = Route.useParams();
+  const { cat } = Route.useSearch();
   const router = useRouter();
   const navigate = useNavigate();
   const { data: all = [] } = useQuery(productsQueryOptions);
@@ -48,7 +52,16 @@ function ProductPage() {
   const { data: productData } = useQuery(productQueryOptions(id));
   const product = productData ?? cachedProduct;
 
-  const relatedFromAll = product ? all.filter((p) => p.pack_type === product.pack_type) : [];
+  // Determine effective category: explicit ?cat= wins over pack_type
+  const effectiveCat = cat ?? product?.pack_type ?? "";
+  // For weeklylite: only show the weekly lite variant. Otherwise group by pack_type but exclude weekly lite from generic membership.
+  const relatedFromAll = product
+    ? cat === "weeklylite"
+      ? all.filter((p) => p.pack_type === "membership" && /lite/i.test(p.name_en))
+      : cat === "membership"
+      ? all.filter((p) => p.pack_type === "membership" && !/lite/i.test(p.name_en))
+      : all.filter((p) => p.pack_type === product.pack_type)
+    : [];
   const related = relatedFromAll.length ? relatedFromAll : product ? [product] : [];
   const [selectedId, setSelectedId] = useState(id);
   useEffect(() => setSelectedId(id), [id]);
@@ -160,8 +173,8 @@ function ProductPage() {
           <div className="absolute inset-0 bg-gradient-to-r from-black/85 via-black/55 to-transparent" />
           <div className="relative flex items-center gap-3 p-3 sm:p-4">
             <img
-              src={packImage(product.pack_type)}
-              alt={product.name_en}
+              src={packImage(effectiveCat)}
+              alt={categoryTitle(effectiveCat)}
               width={300}
               height={300}
               decoding="async"
@@ -169,9 +182,9 @@ function ProductPage() {
             />
             <div className="min-w-0 text-white drop-shadow-[0_2px_8px_rgba(0,0,0,0.6)]">
               <h1 className="font-display text-xl sm:text-2xl leading-tight">
-                {categoryTitle(product.pack_type)}
+                {categoryTitle(effectiveCat)}
               </h1>
-              <div className="text-[11px] tracking-[0.4em] text-white/70 uppercase mt-1">{categorySubtitle(product.pack_type)}</div>
+              <div className="text-[11px] tracking-[0.4em] text-white/70 uppercase mt-1">{categorySubtitle(effectiveCat)}</div>
             </div>
           </div>
         </div>
