@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { AppShell } from "@/components/site/AppShell";
-import { Gift, Copy, Share2, Users, Coins, Check, Sparkles } from "lucide-react";
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { Gift, Copy, Share2, Users, Coins, Check } from "lucide-react";
+import { useQuery } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
 import { getMyReferralInfo } from "@/lib/referrals.functions";
 // Note: referral linkage happens automatically via signup link (?ref=CODE).
