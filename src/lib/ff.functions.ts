@@ -11,28 +11,37 @@ const REGIONS = ["bd", "ind", "sg", "br", "na", "eu", "me", "ru", "id", "vn", "t
 
 function parsePayload(json: any, fallbackRegion: string): FFInfo | null {
   if (!json || typeof json !== "object") return null;
-  const ai =
-    json.AccountInfo ??
-    json.basicInfo ??
-    json.account_info ??
-    json.basic_info ??
-    json.data?.basicInfo ??
-    json.data?.AccountInfo ??
-    json.data ??
-    json.player ??
-    json;
+  const sources = [
+    json.basicInfo,
+    json.AccountInfo,
+    json.account_info,
+    json.basic_info,
+    json.data?.basicInfo,
+    json.data?.AccountInfo,
+    json.data?.account_info,
+    json.data?.basic_info,
+    json.data,
+    json.player,
+    json.profile,
+    json,
+  ].filter(Boolean);
+
+  const pick = (...keys: string[]) => {
+    for (const source of sources) {
+      for (const key of keys) {
+        const value = source?.[key];
+        if (value !== undefined && value !== null && value !== "") return value;
+      }
+    }
+    return null;
+  };
+
   const name =
-    ai?.AccountName ??
-    ai?.nickname ??
-    ai?.Nickname ??
-    ai?.name ??
-    json?.nickname ??
-    json?.name ??
-    null;
+    pick("AccountName", "nickname", "Nickname", "name", "playerName", "username") ?? null;
   if (!name || typeof name !== "string") return null;
-  const level = ai?.AccountLevel ?? ai?.level ?? ai?.Level ?? json?.level ?? null;
-  const likes = ai?.AccountLikes ?? ai?.liked ?? ai?.likes ?? json?.likes ?? null;
-  const region = ai?.AccountRegion ?? ai?.region ?? json?.region ?? fallbackRegion;
+  const level = pick("AccountLevel", "level", "Level", "accountLevel") ?? null;
+  const likes = pick("AccountLikes", "liked", "likes", "Likes", "like", "likedCount", "likesCount", "AccountLike") ?? null;
+  const region = pick("AccountRegion", "region", "Region", "server") ?? fallbackRegion;
   return {
     name,
     region: String(region || fallbackRegion).toUpperCase(),

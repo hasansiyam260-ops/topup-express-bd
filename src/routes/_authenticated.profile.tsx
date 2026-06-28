@@ -172,7 +172,7 @@ function GameAccountCard({ savedUid, lastUid, fallbackName }: { savedUid: string
   const [saving, setSaving] = useState(false);
 
   const { data, isLoading, isError } = useQuery({
-    queryKey: ["ff-player-info", activeUid],
+    queryKey: ["ff-player-info-v2", activeUid],
     queryFn: () => fetchInfo({ data: { uid: activeUid } }),
     enabled: !!activeUid && /^\d{6,12}$/.test(activeUid),
     staleTime: 5 * 60 * 1000,
