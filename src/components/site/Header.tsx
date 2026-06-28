@@ -1,7 +1,7 @@
 import { Link, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
-import logo from "@/assets/logo-uid.webp";
+import logo from "@/assets/logo-uid.png";
 
 export function Header() {
   const navigate = useNavigate();
