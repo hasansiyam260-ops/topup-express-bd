@@ -242,19 +242,109 @@
   }
 }
 
-@media (max-width: 640px), (prefers-reduced-motion: reduce) {
+@media (prefers-reduced-motion: reduce) {
   .sweep-shine::after,
   .float-soft,
   .ring-pulse,
   .shimmer-orange {
     animation: none !important;
   }
+}
 
-  .hover-lift,
-  .btn-red,
-  .btn-neon {
-    transition-duration: 0.01ms !important;
+/* ============ EXTRA PREMIUM ANIMATIONS ============ */
+
+@keyframes neon-breathe {
+  0%, 100% {
+    box-shadow:
+      0 0 0 1px color-mix(in oklab, var(--neon-violet) 35%, transparent),
+      0 0 18px -2px color-mix(in oklab, var(--neon-violet) 45%, transparent),
+      0 0 40px -8px color-mix(in oklab, var(--neon-magenta) 35%, transparent);
   }
+  50% {
+    box-shadow:
+      0 0 0 1px color-mix(in oklab, var(--neon-magenta) 45%, transparent),
+      0 0 26px -2px color-mix(in oklab, var(--neon-magenta) 60%, transparent),
+      0 0 60px -6px color-mix(in oklab, var(--neon-cyan) 45%, transparent);
+  }
+}
+@utility neon-breathe {
+  animation: neon-breathe 3.6s ease-in-out infinite;
+}
+
+@keyframes red-breathe {
+  0%, 100% {
+    box-shadow:
+      0 0 0 1px color-mix(in oklab, var(--brand-red) 35%, transparent),
+      0 0 18px -4px color-mix(in oklab, var(--brand-red) 50%, transparent),
+      0 0 40px -10px color-mix(in oklab, var(--brand-red) 35%, transparent);
+  }
+  50% {
+    box-shadow:
+      0 0 0 1px color-mix(in oklab, var(--brand-red) 55%, transparent),
+      0 0 28px -2px color-mix(in oklab, var(--brand-red) 70%, transparent),
+      0 0 60px -6px color-mix(in oklab, var(--neon-magenta) 45%, transparent);
+  }
+}
+@utility red-breathe {
+  animation: red-breathe 3.2s ease-in-out infinite;
+}
+
+@keyframes border-spin {
+  to { transform: rotate(1turn); }
+}
+@utility conic-ring {
+  position: relative;
+  isolation: isolate;
+}
+@utility conic-ring {
+  &::before {
+    content: "";
+    position: absolute;
+    inset: -2px;
+    border-radius: inherit;
+    padding: 2px;
+    background: conic-gradient(from 0deg,
+      var(--neon-violet),
+      var(--neon-cyan),
+      var(--neon-magenta),
+      var(--brand-red),
+      var(--neon-violet));
+    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+            mask-composite: exclude;
+    animation: border-spin 6s linear infinite;
+    pointer-events: none;
+    z-index: -1;
+  }
+}
+
+@keyframes text-glow {
+  0%, 100% {
+    text-shadow:
+      0 0 8px color-mix(in oklab, var(--neon-violet) 55%, transparent),
+      0 0 18px color-mix(in oklab, var(--neon-magenta) 35%, transparent);
+  }
+  50% {
+    text-shadow:
+      0 0 14px color-mix(in oklab, var(--neon-cyan) 60%, transparent),
+      0 0 28px color-mix(in oklab, var(--neon-violet) 45%, transparent);
+  }
+}
+@utility text-glow {
+  animation: text-glow 3s ease-in-out infinite;
+}
+
+@keyframes float-soft-kf {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-4px); }
+}
+
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@utility fade-up {
+  animation: fade-up 0.5s ease-out both;
 }
 
 @utility hover-lift {
