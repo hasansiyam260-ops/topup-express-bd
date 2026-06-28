@@ -902,3 +902,17 @@ function getInfoContent(cat: string): InfoContent {
   }
 }
 
+function OrderHelpLink() {
+  const { data: url } = useQuery({
+    queryKey: ["site_content", "order_tutorial_video_url"],
+    queryFn: () => getSiteValue({ data: { key: "order_tutorial_video_url" } }) as Promise<string | null>,
+    staleTime: 1000 * 60 * 5,
+  });
+  const href = typeof url === "string" && url.trim() ? url.trim() : null;
+  const cls = "flex items-center gap-1 text-[11px] font-semibold underline underline-offset-4 decoration-primary";
+  const inner = (<><HelpCircle className="h-3.5 w-3.5 text-primary" />কিভাবে অর্ডার করবেন ?</>);
+  if (href) return <a href={href} target="_blank" rel="noreferrer" className={cls}>{inner}</a>;
+  return <a href="#help" className={cls}>{inner}</a>;
+}
+
+
