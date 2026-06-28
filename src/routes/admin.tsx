@@ -2,7 +2,7 @@ import { createFileRoute, Outlet, Link, redirect, useRouterState } from "@tansta
 import { supabase } from "@/integrations/supabase/client";
 import { LayoutDashboard, Package, Tags, ShoppingBag, Users, FileText, CreditCard, Home } from "lucide-react";
 
-export const Route = createFileRoute("/_admin")({
+export const Route = createFileRoute("/admin")({
   ssr: false,
   beforeLoad: async () => {
     const { data, error } = await supabase.auth.getUser();

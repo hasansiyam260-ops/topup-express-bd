@@ -4,7 +4,7 @@ import { useServerFn } from "@tanstack/react-start";
 import { adminStats } from "@/lib/admin.functions";
 import { ShoppingBag, Users, Package, Clock, CheckCircle2, XCircle, DollarSign } from "lucide-react";
 
-export const Route = createFileRoute("/_admin/")({
+export const Route = createFileRoute("/admin/")({
   component: AdminDashboard,
 });
 

@@ -5,7 +5,7 @@ import { useState } from "react";
 import { adminListOrders, adminUpdateOrder } from "@/lib/admin.functions";
 import { toast } from "sonner";
 
-export const Route = createFileRoute("/_admin/orders")({
+export const Route = createFileRoute("/admin/orders")({
   component: AdminOrders,
 });
 

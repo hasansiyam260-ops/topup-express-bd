@@ -6,7 +6,7 @@ import { adminListUsers, adminUpdateUserBalance, adminToggleRole } from "@/lib/a
 import { Shield, ShieldOff } from "lucide-react";
 import { toast } from "sonner";
 
-export const Route = createFileRoute("/_admin/users")({
+export const Route = createFileRoute("/admin/users")({
   component: AdminUsers,
 });
 
