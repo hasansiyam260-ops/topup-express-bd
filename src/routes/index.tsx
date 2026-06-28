@@ -239,7 +239,7 @@ function ChipCard({
   );
 }
 
-function CategoryCard({ to, img, label, loading = false }: { to?: string; img: string; label: string; loading?: boolean }) {
+function CategoryCard({ to, cat, img, label, loading = false }: { to?: string; cat?: string; img: string; label: string; loading?: boolean }) {
   const content = (
     <>
       <div className="relative rounded-2xl overflow-hidden card-soft hover-lift sweep-shine">
@@ -261,7 +261,7 @@ function CategoryCard({ to, img, label, loading = false }: { to?: string; img: s
   );
   if (!to) return <div>{content}</div>;
   return (
-    <Link to="/products/$id" params={{ id: to }} className="block group">
+    <Link to="/products/$id" params={{ id: to }} search={cat ? { cat } : undefined} className="block group">
       {content}
     </Link>
   );
