@@ -44,7 +44,8 @@ export const adminListProducts = createServerFn({ method: "GET" })
   .middleware([requireSupabaseAuth])
   .handler(async ({ context }) => {
     await assertAdmin(context);
-    const { data, error } = await context.supabase.from("products").select("*").order("sort_order");
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    const { data, error } = await supabaseAdmin.from("products").select("*").order("sort_order");
     if (error) throw new Error(error.message);
     return data ?? [];
   });
@@ -82,7 +83,8 @@ export const adminListCategories = createServerFn({ method: "GET" })
   .middleware([requireSupabaseAuth])
   .handler(async ({ context }) => {
     await assertAdmin(context);
-    const { data, error } = await context.supabase.from("categories").select("*").order("sort_order");
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    const { data, error } = await supabaseAdmin.from("categories").select("*").order("sort_order");
     if (error) throw new Error(error.message);
     return data ?? [];
   });
@@ -120,7 +122,8 @@ export const adminListOrders = createServerFn({ method: "GET" })
   .middleware([requireSupabaseAuth])
   .handler(async ({ context }) => {
     await assertAdmin(context);
-    const { data, error } = await context.supabase
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    const { data, error } = await supabaseAdmin
       .from("orders")
       .select("*")
       .order("created_at", { ascending: false })
@@ -200,7 +203,8 @@ export const adminListContent = createServerFn({ method: "GET" })
   .middleware([requireSupabaseAuth])
   .handler(async ({ context }) => {
     await assertAdmin(context);
-    const { data, error } = await context.supabase.from("site_content").select("*").order("key");
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    const { data, error } = await supabaseAdmin.from("site_content").select("*").order("key");
     if (error) throw new Error(error.message);
     return data ?? [];
   });
@@ -223,7 +227,8 @@ export const adminListPayments = createServerFn({ method: "GET" })
   .middleware([requireSupabaseAuth])
   .handler(async ({ context }) => {
     await assertAdmin(context);
-    const { data, error } = await context.supabase.from("payment_methods").select("*").order("sort_order");
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    const { data, error } = await supabaseAdmin.from("payment_methods").select("*").order("sort_order");
     if (error) throw new Error(error.message);
     return data ?? [];
   });
