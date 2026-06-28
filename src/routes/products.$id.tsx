@@ -13,11 +13,10 @@ import { toast } from "sonner";
 
 const CATEGORY_META: Record<string, { title: string; sub: string }> = {
   diamond: { title: "Free Fire Diamond", sub: "BD Server" },
-  membership: { title: "Membership Pass", sub: "Weekly · Monthly" },
-  levelup_pass: { title: "Level Up Pass", sub: "Free Fire" },
-  weekly_lite: { title: "Weekly Lite", sub: "Free Fire" },
-  likes: { title: "Free Fire Likes", sub: "Profile Boost" },
-  unipin: { title: "UniPin Voucher", sub: "Global Topup" },
+  membership: { title: "Free Fire Membership", sub: "Weekly · Monthly" },
+  level_pass: { title: "Level Up Pass", sub: "Free Fire BD" },
+  like: { title: "Free Fire Likes", sub: "Profile Boost" },
+  airdrop: { title: "UniPin Voucher", sub: "Global Topup" },
 };
 function categoryTitle(t: string | null | undefined) { return CATEGORY_META[t ?? ""]?.title ?? "Topup Pack"; }
 function categorySubtitle(t: string | null | undefined) { return CATEGORY_META[t ?? ""]?.sub ?? "Premium"; }
