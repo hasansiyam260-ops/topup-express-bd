@@ -306,60 +306,91 @@ function Step({
 function PayCard({
   active, onClick, title, variant, recommended,
 }: { active: boolean; onClick: () => void; title: string; subtitle?: string; icon?: React.ReactNode; brand?: string; variant: "wallet" | "instant"; recommended?: boolean }) {
+  const glow =
+    variant === "wallet"
+      ? "shadow-[0_8px_28px_-10px_rgba(245,158,11,0.55),inset_0_1px_0_rgba(255,255,255,0.08)]"
+      : "shadow-[0_8px_28px_-10px_rgba(226,19,110,0.55),inset_0_1px_0_rgba(255,255,255,0.08)]";
   return (
     <button
       onClick={onClick}
-      className={`relative text-left rounded-2xl border-2 overflow-hidden transition-all duration-300 bg-white ${
-        active
-          ? "border-primary shadow-[0_10px_24px_-10px_color-mix(in_oklab,var(--brand-red)_55%,transparent)]"
-          : "border-border hover:border-primary/40 hover:-translate-y-0.5 hover:shadow-md"
+      className={`group relative text-left rounded-2xl overflow-hidden transition-all duration-300 ${glow} ${
+        active ? "ring-2 ring-primary -translate-y-0.5" : "ring-1 ring-white/10 hover:-translate-y-0.5"
       }`}
+      style={{
+        background:
+          variant === "wallet"
+            ? "linear-gradient(135deg,#1a0f06 0%,#2a1608 45%,#3a1d0a 100%)"
+            : "linear-gradient(135deg,#0b0716 0%,#180a2a 45%,#240b2e 100%)",
+      }}
     >
+      {/* glassy highlight */}
+      <span className="pointer-events-none absolute inset-x-0 top-0 h-1/2 bg-gradient-to-b from-white/10 to-transparent" />
+      <span className="pointer-events-none absolute -inset-x-6 -top-10 h-16 rotate-[8deg] bg-white/10 blur-2xl" />
+      {/* brand-tinted ambient glow */}
+      <span
+        className="pointer-events-none absolute -bottom-10 -right-8 h-24 w-24 rounded-full blur-2xl opacity-60"
+        style={{ background: variant === "wallet" ? "#f59e0b" : "#e2136e" }}
+      />
+      <span
+        className="pointer-events-none absolute -bottom-12 -left-10 h-24 w-24 rounded-full blur-2xl opacity-40"
+        style={{ background: variant === "wallet" ? "#a855f7" : "#8a3ab9" }}
+      />
+
       {recommended && (
-        <span className="absolute top-1.5 right-1.5 z-10 text-[8px] font-bold tracking-wider uppercase bg-primary text-primary-foreground px-1.5 py-0.5 rounded-full shadow-md">Popular</span>
+        <span className="absolute top-1.5 right-1.5 z-10 text-[8px] font-bold tracking-wider uppercase bg-gradient-to-r from-amber-400 to-orange-500 text-black px-1.5 py-0.5 rounded-full shadow-[0_0_12px_rgba(245,158,11,0.6)]">★ Popular</span>
       )}
       {active && (
-        <span className="absolute top-1.5 left-1.5 z-10 grid place-items-center h-4 w-4 rounded-full bg-primary text-primary-foreground text-[9px] shadow-md">✓</span>
+        <span className="absolute top-1.5 left-1.5 z-10 grid place-items-center h-4 w-4 rounded-full bg-primary text-primary-foreground text-[9px] shadow-[0_0_10px_color-mix(in_oklab,var(--brand-red)_70%,transparent)]">✓</span>
       )}
 
-      <div className="relative h-[88px] grid place-items-center px-2 overflow-hidden">
-        <div className="absolute inset-0 sweep-shine opacity-30 pointer-events-none" />
+      <div className="relative h-[96px] grid place-items-center px-2 overflow-hidden">
+        <div className="absolute inset-0 sweep-shine opacity-20 pointer-events-none" />
         {variant === "wallet" ? (
           <div className="relative flex flex-col items-center gap-1.5">
-            <span className="grid place-items-center h-9 w-9 rounded-xl bg-gradient-to-br from-amber-100 to-orange-200 ring-1 ring-amber-300/60 shadow-sm">
-              <Wallet className="h-5 w-5 text-orange-600" />
+            <span className="relative grid place-items-center h-10 w-10 rounded-xl bg-gradient-to-br from-amber-300 via-orange-400 to-rose-500 ring-1 ring-white/30 shadow-[0_6px_18px_-4px_rgba(245,158,11,0.7)]">
+              <Wallet className="h-5 w-5 text-white drop-shadow" />
+              <span className="absolute inset-0 rounded-xl bg-gradient-to-b from-white/40 to-transparent opacity-60" />
             </span>
-            <span className="font-display text-[13px] leading-none text-orange-700">TOPUP <span className="text-purple-600">ওয়ালেট</span></span>
+            <span className="font-display text-[12px] leading-none tracking-wide">
+              <span className="bg-gradient-to-r from-amber-300 to-orange-400 bg-clip-text text-transparent">TOPUP</span>{" "}
+              <span className="bg-gradient-to-r from-fuchsia-300 to-purple-400 bg-clip-text text-transparent">ওয়ালেট</span>
+            </span>
           </div>
         ) : (
           <div className="relative flex flex-col items-center gap-1.5">
             <div className="flex items-center gap-1">
-              <BrandPill label="bKash" color="#e2136e" />
-              <BrandPill label="Nagad" color="#f15a29" />
-              <BrandPill label="Rocket" color="#8a3ab9" />
+              <BrandLogo brand="bkash" />
+              <BrandLogo brand="nagad" />
+              <BrandLogo brand="rocket" />
             </div>
-            <span className="font-display text-[12px] leading-none text-foreground">Auto Add Money</span>
+            <span className="font-display text-[11px] leading-none text-white/90 tracking-wide">AUTO ADD MONEY</span>
           </div>
         )}
       </div>
 
-      <div className={`px-2 py-1.5 border-t border-border ${active ? "bg-primary/5" : "bg-muted/30"}`}>
+      <div className={`relative px-2 py-1.5 border-t border-white/10 backdrop-blur-sm ${active ? "bg-white/10" : "bg-black/30"}`}>
         <div className="flex items-center justify-between gap-2">
-          <span className={`text-[11px] font-bold truncate ${active ? "text-primary" : "text-foreground"}`}>{title}</span>
-          <span className="shrink-0 text-[8px] font-bold uppercase tracking-wider px-1 py-0.5 rounded bg-emerald-500/10 text-emerald-700">Fast</span>
+          <span className={`text-[11px] font-bold truncate ${active ? "text-white" : "text-white/90"}`}>{title}</span>
+          <span className="shrink-0 text-[8px] font-bold uppercase tracking-wider px-1.5 py-0.5 rounded bg-emerald-400/20 text-emerald-300 ring-1 ring-emerald-400/30">Fast</span>
         </div>
       </div>
     </button>
   );
 }
 
-function BrandPill({ label, color }: { label: string; color: string }) {
+function BrandLogo({ brand }: { brand: "bkash" | "nagad" | "rocket" }) {
+  const map = {
+    bkash: { bg: "linear-gradient(135deg,#e2136e,#a30e52)", text: "bKash", ring: "rgba(226,19,110,0.7)" },
+    nagad: { bg: "linear-gradient(135deg,#f15a29,#c43d12)", text: "Nagad", ring: "rgba(241,90,41,0.7)" },
+    rocket: { bg: "linear-gradient(135deg,#8a3ab9,#5b2487)", text: "Rocket", ring: "rgba(138,58,185,0.7)" },
+  }[brand];
   return (
     <span
-      className="text-[8px] font-bold px-1.5 py-0.5 rounded-md text-white shadow-sm"
-      style={{ background: `linear-gradient(135deg, ${color}, color-mix(in oklab, ${color} 70%, black))` }}
+      className="relative inline-flex items-center justify-center text-[8px] font-extrabold text-white px-1.5 py-1 rounded-md ring-1 ring-white/30"
+      style={{ background: map.bg, boxShadow: `0 4px 12px -2px ${map.ring}, inset 0 1px 0 rgba(255,255,255,0.35)` }}
     >
-      {label}
+      <span className="absolute inset-x-0 top-0 h-1/2 rounded-t-md bg-gradient-to-b from-white/35 to-transparent" />
+      <span className="relative drop-shadow-sm">{map.text}</span>
     </span>
   );
 }
