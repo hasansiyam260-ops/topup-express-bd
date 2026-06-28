@@ -29,7 +29,7 @@ export function Header() {
               loading="eager"
               fetchPriority="high"
               decoding="async"
-              className="h-12 sm:h-14 w-auto drop-shadow-[0_0_10px_rgba(236,72,153,0.28)]"
+              className="h-16 sm:h-20 w-auto drop-shadow-[0_0_14px_rgba(236,72,153,0.35)]"
           />
         </Link>
 
