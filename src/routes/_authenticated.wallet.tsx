@@ -26,6 +26,9 @@ export const Route = createFileRoute("/_authenticated/wallet")({
 function WalletPage() {
   const [amount, setAmount] = useState<string>("");
   const [checkoutOpen, setCheckoutOpen] = useState(false);
+  const [history, setHistory] = useState<AddMoneyEntry[]>([]);
+
+  useEffect(() => { setHistory(loadHistory()); }, []);
 
   const numeric = Number(amount || 0);
   const valid = numeric >= 10;
