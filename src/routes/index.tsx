@@ -91,14 +91,6 @@ function HomePage() {
           <span aria-hidden className="absolute inset-0 pointer-events-none overflow-hidden">
             <span className="absolute -inset-y-4 -left-1/3 w-1/3 rotate-12 bg-gradient-to-r from-transparent via-white/25 to-transparent translate-x-[-120%] group-hover:translate-x-[420%] transition-transform duration-[1400ms] ease-out" />
           </span>
-          {/* Play button */}
-          <a
-            href="#packs"
-            aria-label="Topup now"
-            className="absolute left-3 bottom-3 grid place-items-center h-12 w-12 rounded-full bg-primary text-primary-foreground ring-pulse shadow-[0_0_24px_rgba(244,63,94,0.7)]"
-          >
-            <Play className="h-5 w-5 fill-current ml-0.5" />
-          </a>
         </div>
       </section>
 
