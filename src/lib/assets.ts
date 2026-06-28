@@ -1,10 +1,10 @@
-import diamond from "@/assets/pack-diamond.jpg";
-import membership from "@/assets/pack-membership.jpg";
-import airdrop from "@/assets/pack-airdrop.jpg";
-import levelpass from "@/assets/pack-levelpass.jpg";
-import like from "@/assets/pack-like.jpg";
-import weeklylite from "@/assets/pack-weeklylite.jpg";
-import unipin from "@/assets/pack-unipin.jpg";
+import diamond from "@/assets/pack-diamond.webp";
+import membership from "@/assets/pack-membership.webp";
+import airdrop from "@/assets/pack-airdrop.webp";
+import levelpass from "@/assets/pack-levelpass.webp";
+import like from "@/assets/pack-like.webp";
+import weeklylite from "@/assets/pack-weeklylite.webp";
+import unipin from "@/assets/pack-unipin.webp";
 
 export const PACK_IMAGES = {
   diamond,

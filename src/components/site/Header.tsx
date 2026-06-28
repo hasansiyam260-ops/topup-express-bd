@@ -1,7 +1,7 @@
 import { Link, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
-import logo from "@/assets/logo-uid.png";
+import logo from "@/assets/logo-uid.webp";
 
 export function Header() {
   const navigate = useNavigate();
@@ -24,9 +24,10 @@ export function Header() {
           <img
             src={logo}
             alt="TOP-UP EXPRESS"
-            width={1280}
-            height={512}
-            className="h-12 sm:h-14 w-auto glow-pulse"
+              width={360}
+              height={144}
+              decoding="async"
+              className="h-12 sm:h-14 w-auto drop-shadow-[0_0_10px_rgba(236,72,153,0.28)]"
           />
         </Link>
 
