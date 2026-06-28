@@ -28,9 +28,9 @@ import { Route as AdminDeliveryRouteImport } from './routes/admin.delivery'
 import { Route as AdminContentRouteImport } from './routes/admin.content'
 import { Route as AdminCategoriesRouteImport } from './routes/admin.categories'
 import { Route as AuthenticatedWalletRouteImport } from './routes/_authenticated.wallet'
+import { Route as AuthenticatedReferralsRouteImport } from './routes/_authenticated.referrals'
 import { Route as AuthenticatedProfileRouteImport } from './routes/_authenticated.profile'
 import { Route as AuthenticatedOrdersRouteImport } from './routes/_authenticated.orders'
-import { Route as AuthenticatedCodesRouteImport } from './routes/_authenticated.codes'
 import { Route as ApiPublicHooksAutoDeliverRouteImport } from './routes/api/public/hooks/auto-deliver'
 
 const TermsRoute = TermsRouteImport.update({
@@ -127,6 +127,11 @@ const AuthenticatedWalletRoute = AuthenticatedWalletRouteImport.update({
   path: '/wallet',
   getParentRoute: () => AuthenticatedRoute,
 } as any)
+const AuthenticatedReferralsRoute = AuthenticatedReferralsRouteImport.update({
+  id: '/referrals',
+  path: '/referrals',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
 const AuthenticatedProfileRoute = AuthenticatedProfileRouteImport.update({
   id: '/profile',
   path: '/profile',
@@ -135,11 +140,6 @@ const AuthenticatedProfileRoute = AuthenticatedProfileRouteImport.update({
 const AuthenticatedOrdersRoute = AuthenticatedOrdersRouteImport.update({
   id: '/orders',
   path: '/orders',
-  getParentRoute: () => AuthenticatedRoute,
-} as any)
-const AuthenticatedCodesRoute = AuthenticatedCodesRouteImport.update({
-  id: '/codes',
-  path: '/codes',
   getParentRoute: () => AuthenticatedRoute,
 } as any)
 const ApiPublicHooksAutoDeliverRoute =
@@ -157,9 +157,9 @@ export interface FileRoutesByFullPath {
   '/faq': typeof FaqRoute
   '/privacy': typeof PrivacyRoute
   '/terms': typeof TermsRoute
-  '/codes': typeof AuthenticatedCodesRoute
   '/orders': typeof AuthenticatedOrdersRoute
   '/profile': typeof AuthenticatedProfileRoute
+  '/referrals': typeof AuthenticatedReferralsRoute
   '/wallet': typeof AuthenticatedWalletRoute
   '/admin/categories': typeof AdminCategoriesRoute
   '/admin/content': typeof AdminContentRoute
@@ -180,9 +180,9 @@ export interface FileRoutesByTo {
   '/faq': typeof FaqRoute
   '/privacy': typeof PrivacyRoute
   '/terms': typeof TermsRoute
-  '/codes': typeof AuthenticatedCodesRoute
   '/orders': typeof AuthenticatedOrdersRoute
   '/profile': typeof AuthenticatedProfileRoute
+  '/referrals': typeof AuthenticatedReferralsRoute
   '/wallet': typeof AuthenticatedWalletRoute
   '/admin/categories': typeof AdminCategoriesRoute
   '/admin/content': typeof AdminContentRoute
@@ -206,9 +206,9 @@ export interface FileRoutesById {
   '/faq': typeof FaqRoute
   '/privacy': typeof PrivacyRoute
   '/terms': typeof TermsRoute
-  '/_authenticated/codes': typeof AuthenticatedCodesRoute
   '/_authenticated/orders': typeof AuthenticatedOrdersRoute
   '/_authenticated/profile': typeof AuthenticatedProfileRoute
+  '/_authenticated/referrals': typeof AuthenticatedReferralsRoute
   '/_authenticated/wallet': typeof AuthenticatedWalletRoute
   '/admin/categories': typeof AdminCategoriesRoute
   '/admin/content': typeof AdminContentRoute
@@ -232,9 +232,9 @@ export interface FileRouteTypes {
     | '/faq'
     | '/privacy'
     | '/terms'
-    | '/codes'
     | '/orders'
     | '/profile'
+    | '/referrals'
     | '/wallet'
     | '/admin/categories'
     | '/admin/content'
@@ -255,9 +255,9 @@ export interface FileRouteTypes {
     | '/faq'
     | '/privacy'
     | '/terms'
-    | '/codes'
     | '/orders'
     | '/profile'
+    | '/referrals'
     | '/wallet'
     | '/admin/categories'
     | '/admin/content'
@@ -280,9 +280,9 @@ export interface FileRouteTypes {
     | '/faq'
     | '/privacy'
     | '/terms'
-    | '/_authenticated/codes'
     | '/_authenticated/orders'
     | '/_authenticated/profile'
+    | '/_authenticated/referrals'
     | '/_authenticated/wallet'
     | '/admin/categories'
     | '/admin/content'
@@ -446,6 +446,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedWalletRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
+    '/_authenticated/referrals': {
+      id: '/_authenticated/referrals'
+      path: '/referrals'
+      fullPath: '/referrals'
+      preLoaderRoute: typeof AuthenticatedReferralsRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
     '/_authenticated/profile': {
       id: '/_authenticated/profile'
       path: '/profile'
@@ -460,13 +467,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedOrdersRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
-    '/_authenticated/codes': {
-      id: '/_authenticated/codes'
-      path: '/codes'
-      fullPath: '/codes'
-      preLoaderRoute: typeof AuthenticatedCodesRouteImport
-      parentRoute: typeof AuthenticatedRoute
-    }
     '/api/public/hooks/auto-deliver': {
       id: '/api/public/hooks/auto-deliver'
       path: '/api/public/hooks/auto-deliver'
@@ -478,16 +478,16 @@ declare module '@tanstack/react-router' {
 }
 
 interface AuthenticatedRouteChildren {
-  AuthenticatedCodesRoute: typeof AuthenticatedCodesRoute
   AuthenticatedOrdersRoute: typeof AuthenticatedOrdersRoute
   AuthenticatedProfileRoute: typeof AuthenticatedProfileRoute
+  AuthenticatedReferralsRoute: typeof AuthenticatedReferralsRoute
   AuthenticatedWalletRoute: typeof AuthenticatedWalletRoute
 }
 
 const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
-  AuthenticatedCodesRoute: AuthenticatedCodesRoute,
   AuthenticatedOrdersRoute: AuthenticatedOrdersRoute,
   AuthenticatedProfileRoute: AuthenticatedProfileRoute,
+  AuthenticatedReferralsRoute: AuthenticatedReferralsRoute,
   AuthenticatedWalletRoute: AuthenticatedWalletRoute,
 }
 
@@ -535,13 +535,3 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}

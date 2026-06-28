@@ -5,6 +5,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { AppShell } from "@/components/site/AppShell";
 import { Wallet, Info, ShieldCheck, Zap, History, CheckCircle2, Hash, CreditCard, Clock } from "lucide-react";
 import { SecureCheckout } from "@/components/site/SecureCheckout";
+import { creditReferralForTopup } from "@/lib/referrals.functions";
 
 type AddMoneyEntry = { invoiceId: string; brand: string; amount: number; ts: number };
 const HISTORY_KEY = "uidtopup:addmoney:history";
@@ -221,6 +222,7 @@ function WalletPage() {
               if (u.user) {
                 const next = Number(balance || 0) + a;
                 await supabase.from("profiles").update({ balance: next }).eq("id", u.user.id);
+                try { await creditReferralForTopup({ data: { amount: a } }); } catch {}
               }
             } catch {}
             const entry: AddMoneyEntry = { invoiceId, brand, amount: a, ts: Date.now() };
