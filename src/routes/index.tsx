@@ -5,7 +5,7 @@ import { AppShell } from "@/components/site/AppShell";
 import { packImage } from "@/lib/assets";
 import heroImg from "@/assets/hero-promo.webp";
 import logoUid from "@/assets/logo-uid.png";
-import { MessageCircle, MessagesSquare, Gift, Facebook, Youtube, Mail, Play, Send } from "lucide-react";
+import { MessageCircle, MessagesSquare, Facebook, Youtube, Mail, Play, Send } from "lucide-react";
 import { AnnouncementBar } from "@/components/site/AnnouncementBar";
 
 export const Route = createFileRoute("/")({
@@ -100,27 +100,30 @@ function HomePage() {
 
 
       {/* QUICK ACTION CHIPS */}
-      <section className="mx-auto max-w-3xl px-3 mt-4 grid grid-cols-3 gap-2.5">
+      <section className="mx-auto max-w-3xl px-3 mt-3 grid grid-cols-3 gap-2">
         <ChipCard
-          icon={<MessageCircle className="h-5 w-5 text-white" />}
-          tint="from-emerald-500 to-emerald-600"
-          title="Whatsapp"
-          sub="CLICK TO CHAT"
+          icon={<MessageCircle className="h-[18px] w-[18px] text-white" />}
+          tint="linear-gradient(135deg,#14c77a,#06945e)"
+          glow="rgba(16,185,129,.48)"
+          title="WHATSAPP"
+          sub="LIVE CHAT"
           href="https://wa.me/8801000000000"
         />
         <ChipCard
-          icon={<MessagesSquare className="h-5 w-5 text-white" />}
-          tint="from-fuchsia-500 to-violet-600"
-          title="Messenger"
+          icon={<MessagesSquare className="h-[18px] w-[18px] text-white" />}
+          tint="linear-gradient(135deg,#a855f7,#2563eb)"
+          glow="rgba(124,58,237,.48)"
+          title="MESSENGER"
           sub="SUPPORT"
           href="https://m.me/uidtopup"
         />
         <ChipCard
-          icon={<Gift className="h-5 w-5 text-white" />}
-          tint="from-blue-600 to-indigo-700"
-          title="Free Diamond"
-          sub="২৫ ডায়মন্ড"
-          href="#packs"
+          icon={<Send className="h-[17px] w-[17px] -translate-x-[1px] text-white" />}
+          tint="linear-gradient(135deg,#38bdf8,#0f80d7)"
+          glow="rgba(14,165,233,.50)"
+          title="TELEGRAM"
+          sub="CHANNEL"
+          href="https://t.me/topupexpress"
         />
       </section>
 
@@ -226,21 +229,32 @@ function HomePage() {
 }
 
 function ChipCard({
-  icon, tint, title, sub, href,
-}: { icon: React.ReactNode; tint: string; title: string; sub: string; href: string }) {
+  icon, tint, glow, title, sub, href,
+}: { icon: React.ReactNode; tint: string; glow: string; title: string; sub: string; href: string }) {
   return (
     <a
       href={href}
       target={href.startsWith("http") ? "_blank" : undefined}
       rel="noreferrer"
-      className="card-soft rounded-xl p-2.5 flex items-center gap-2 hover-lift"
+      className="group relative min-h-[56px] overflow-hidden rounded-[18px] bg-white/88 px-2 py-2 flex items-center gap-1.5 hover-lift"
+      style={{
+        boxShadow: `0 8px 22px -14px ${glow}, 0 0 18px -10px ${glow}, inset 0 0 0 1px rgba(15,23,42,.08), inset 0 1px 0 rgba(255,255,255,.9)`,
+      }}
     >
-      <span className={`grid place-items-center h-9 w-9 rounded-lg bg-gradient-to-br ${tint} shadow-md`}>
+      <span
+        aria-hidden
+        className="pointer-events-none absolute inset-0 opacity-70"
+        style={{ background: `radial-gradient(circle at 15% 0%, ${glow}, transparent 42%)` }}
+      />
+      <span
+        className="relative grid h-9 w-9 shrink-0 place-items-center rounded-[14px] shadow-md transition-transform duration-300 group-hover:scale-105"
+        style={{ background: tint, boxShadow: `0 8px 16px -8px ${glow}` }}
+      >
         {icon}
       </span>
-      <div className="min-w-0">
-        <div className="text-[10px] tracking-[0.15em] text-muted-foreground uppercase truncate">{sub}</div>
-        <div className="font-display text-base leading-none truncate">{title}</div>
+      <div className="relative min-w-0 flex-1 leading-none">
+        <div className="text-[8px] sm:text-[9px] font-extrabold tracking-[0.15em] text-muted-foreground uppercase whitespace-nowrap">{sub}</div>
+        <div className="mt-1 font-display text-[10px] sm:text-[12px] font-black tracking-[0.03em] text-foreground whitespace-nowrap">{title}</div>
       </div>
     </a>
   );
