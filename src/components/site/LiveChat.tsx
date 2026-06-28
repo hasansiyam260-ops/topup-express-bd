@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { MessageCircle, X, Send, Sparkles } from "lucide-react";
+import { X, Send, Sparkles } from "lucide-react";
 
 type Msg = { role: "user" | "assistant"; content: string };
 
@@ -57,19 +57,24 @@ export function LiveChat() {
 
   return (
     <>
-      {/* Floating launcher */}
+      {/* Floating launcher - always visible above bottom nav */}
       {!open && (
         <button
           onClick={() => setOpen(true)}
-          aria-label="Live Chat"
-          className="fixed bottom-20 right-3 z-[60] group"
+          aria-label="TOP-UP EXPRESS AI"
+          className="fixed right-3 z-[9999] group"
+          style={{ bottom: "calc(env(safe-area-inset-bottom, 0px) + 84px)" }}
         >
-          <span className="absolute inset-0 rounded-full bg-rose-500/40 blur-xl animate-pulse" />
-          <span className="relative flex items-center gap-2 rounded-full bg-gradient-to-br from-rose-500 to-red-600 pl-2.5 pr-3.5 py-2 shadow-[0_10px_28px_-8px_rgba(244,63,94,.7)] ring-1 ring-white/30">
-            <span className="grid h-7 w-7 place-items-center rounded-full bg-white text-rose-600 shadow">
-              <MessageCircle size={15} strokeWidth={2.5} />
+          <span className="absolute inset-0 rounded-full bg-rose-500/50 blur-2xl animate-pulse" />
+          <span className="absolute -inset-1 rounded-full bg-gradient-to-r from-rose-400 via-red-500 to-rose-600 opacity-70 blur-md animate-pulse" />
+          <span className="relative flex items-center gap-2 rounded-full bg-gradient-to-br from-rose-500 to-red-600 pl-2 pr-3.5 py-2 shadow-[0_12px_32px_-6px_rgba(244,63,94,.85)] ring-2 ring-white/40">
+            <span className="grid h-8 w-8 place-items-center rounded-full bg-white text-rose-600 shadow-inner">
+              <Sparkles size={15} strokeWidth={2.7} />
             </span>
-            <span className="text-[13px] font-bold text-white tracking-wide">Live Chat</span>
+            <span className="flex flex-col leading-none text-left">
+              <span className="text-[8px] font-bold text-white/85 tracking-[0.15em]">TOP-UP EXPRESS</span>
+              <span className="text-[12px] font-extrabold text-white tracking-wide mt-0.5">AI · 24/7</span>
+            </span>
             <span className="absolute -top-0.5 -right-0.5 h-2.5 w-2.5 rounded-full bg-emerald-400 ring-2 ring-white animate-pulse" />
           </span>
         </button>
@@ -93,7 +98,7 @@ export function LiveChat() {
                   <Sparkles size={16} strokeWidth={2.5} />
                 </span>
                 <div className="flex-1 min-w-0">
-                  <div className="font-bold text-[14px] leading-tight tracking-wide">TOP-UP EXPRESS Support</div>
+                  <div className="font-bold text-[14px] leading-tight tracking-wide">TOP-UP EXPRESS AI</div>
                   <div className="flex items-center gap-1.5 text-[10.5px] text-white/90">
                     <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse" />
                     Online · Instant AI Reply
