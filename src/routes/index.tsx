@@ -4,6 +4,7 @@ import { productsQueryOptions } from "@/lib/products.queries";
 import { AppShell } from "@/components/site/AppShell";
 import { packImage } from "@/lib/assets";
 import heroImg from "@/assets/hero-promo.webp";
+import logoUid from "@/assets/logo-uid.png";
 import { MessageCircle, MessagesSquare, Gift, Facebook, Youtube, Mail, Play, Send } from "lucide-react";
 import { AnnouncementBar } from "@/components/site/AnnouncementBar";
 
