@@ -27,6 +27,11 @@ function WalletPage() {
   const [amount, setAmount] = useState<string>("");
   const [checkoutOpen, setCheckoutOpen] = useState(false);
   const [history, setHistory] = useState<AddMoneyEntry[]>([]);
+  const [balance, setBalance] = useState<number>(0);
+
+  useEffect(() => {
+    try { setBalance(Number(localStorage.getItem("uidtopup:wallet") || "0")); } catch {}
+  }, []);
 
   useEffect(() => { setHistory(loadHistory()); }, []);
 
@@ -48,9 +53,14 @@ function WalletPage() {
               <div className="text-[9px] tracking-[0.3em] uppercase text-white/60 leading-none">My Wallet</div>
               <h1 className="font-display text-lg leading-tight mt-0.5">ADD MONEY</h1>
             </div>
-            <span className="flex items-center gap-1 text-[9px] tracking-wider uppercase bg-emerald-500/15 text-emerald-300 px-2 py-0.5 rounded-full border border-emerald-400/30 shrink-0">
-              <ShieldCheck className="h-2.5 w-2.5" /> Secure
-            </span>
+            <div className="shrink-0 rounded-xl bg-gradient-to-br from-emerald-400/25 to-emerald-600/15 border border-emerald-300/40 px-2.5 py-1.5 backdrop-blur-md shadow-[0_0_18px_-4px_rgba(16,185,129,0.55)]">
+              <div className="text-[8px] tracking-[0.25em] uppercase text-emerald-200/90 leading-none flex items-center gap-1">
+                <ShieldCheck className="h-2.5 w-2.5" /> Balance
+              </div>
+              <div className="font-display text-base leading-none mt-1 text-white drop-shadow-[0_0_6px_rgba(110,231,183,0.6)]">
+                ৳{balance.toLocaleString()}
+              </div>
+            </div>
           </div>
         </div>
 
@@ -189,7 +199,9 @@ function WalletPage() {
           onVerified={({ amount: a, invoiceId, brand }) => {
             try {
               const prev = Number(localStorage.getItem("uidtopup:wallet") || "0");
-              localStorage.setItem("uidtopup:wallet", String(prev + a));
+              const next = prev + a;
+              localStorage.setItem("uidtopup:wallet", String(next));
+              setBalance(next);
             } catch {}
             const entry: AddMoneyEntry = { invoiceId, brand, amount: a, ts: Date.now() };
             pushHistory(entry);
