@@ -457,3 +457,54 @@ function BrandLogo({ brand }: { brand: "bkash" | "nagad" | "rocket" }) {
   );
 }
 
+
+function InsufficientBalanceModal({ required, onClose, onAddMoney }: { required: number; onClose: () => void; onAddMoney: () => void }) {
+  return (
+    <div className="fixed inset-0 z-[80] bg-black/70 backdrop-blur-md flex items-center justify-center p-4 animate-in fade-in duration-200">
+      <div className="relative w-full max-w-sm rounded-3xl overflow-hidden shadow-2xl bg-gradient-to-br from-[#1a0a0a] via-[#2a0f10] to-[#0a0506] text-white">
+        <div className="absolute -top-20 -right-20 h-52 w-52 rounded-full bg-rose-500/30 blur-3xl pointer-events-none" />
+        <div className="absolute -bottom-24 -left-20 h-52 w-52 rounded-full bg-orange-500/20 blur-3xl pointer-events-none" />
+        <button onClick={onClose} className="absolute top-3 right-3 z-10 grid place-items-center h-8 w-8 rounded-full bg-white/10 hover:bg-white/20 text-white/80">
+          <X className="h-4 w-4" />
+        </button>
+        <div className="relative px-6 pt-8 pb-6 flex flex-col items-center text-center">
+          <div className="relative grid place-items-center">
+            <span className="absolute h-24 w-24 rounded-full bg-rose-500/30 blur-2xl animate-pulse" />
+            <div className="relative h-20 w-20 rounded-full bg-gradient-to-br from-rose-400 to-rose-600 grid place-items-center shadow-[0_10px_40px_-10px_rgba(244,63,94,0.8)] ring-4 ring-rose-300/30">
+              <AlertTriangle className="h-10 w-10 text-white" strokeWidth={2.5} />
+            </div>
+          </div>
+          <div className="mt-5 text-[10px] tracking-[0.4em] uppercase text-rose-300/90">Insufficient Balance</div>
+          <h2 className="font-display text-xl tracking-wide mt-1">ওয়ালেটে পর্যাপ্ত টাকা নেই</h2>
+          <p className="text-white/60 text-[12px] mt-1.5 leading-relaxed">
+            এই অর্ডার সম্পন্ন করতে আপনার <span className="font-bold text-rose-300">৳{required.toLocaleString()}</span> দরকার। অনুগ্রহ করে প্রথমে wallet এ টাকা যোগ করুন।
+          </p>
+          <div className="mt-5 w-full grid grid-cols-2 gap-2.5">
+            <button onClick={onClose} className="rounded-xl py-2.5 text-[12px] font-semibold tracking-wide bg-white/10 hover:bg-white/15 text-white/80 border border-white/15">CANCEL</button>
+            <button onClick={onAddMoney} className="rounded-xl py-2.5 text-[12px] font-bold tracking-wide bg-gradient-to-b from-rose-400 to-rose-600 hover:from-rose-300 hover:to-rose-500 shadow-[0_8px_22px_-8px_rgba(244,63,94,0.7)] flex items-center justify-center gap-1.5">
+              <Plus className="h-3.5 w-3.5" /> ADD MONEY
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function WalletPaidSuccess({ amount, invoice, productName, uid, onClose }: { amount: number; invoice: string; productName: string; uid: string; onClose: () => void }) {
+  return (
+    <SecureCheckout
+      amount={amount}
+      onClose={onClose}
+      onVerified={() => true}
+      successCopy={{
+        badge: "Order Placed",
+        title: "অর্ডার সফলভাবে সম্পন্ন হয়েছে",
+        subtitle: `${productName} • UID ${uid}`,
+        amountLabel: "Paid From Wallet",
+        channel: "TOPUP Wallet",
+      }}
+      key={invoice}
+    />
+  );
+}
