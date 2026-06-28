@@ -69,6 +69,8 @@ function ProductPage() {
 
   const [uid, setUid] = useState("");
   const [playerName, setPlayerName] = useState("");
+  const [playerLevel, setPlayerLevel] = useState<number | null>(null);
+  const [playerRegion, setPlayerRegion] = useState<string>("");
   const [checking, setChecking] = useState(false);
   const [payment, setPayment] = useState<"wallet" | "instant" | null>(null);
   const [submitting, setSubmitting] = useState(false);
