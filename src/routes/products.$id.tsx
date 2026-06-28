@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { getProduct, listProducts } from "@/lib/products.functions";
 import { getFFPlayerName } from "@/lib/ff.functions";
 import { AppShell } from "@/components/site/AppShell";
-import { SecureCheckout } from "@/components/site/SecureCheckout";
+import { SecureCheckout, SuccessScreen } from "@/components/site/SecureCheckout";
 import { packImage } from "@/lib/assets";
 import heroImg from "@/assets/hero-promo.jpg";
 import { supabase } from "@/integrations/supabase/client";
