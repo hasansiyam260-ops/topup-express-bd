@@ -6,7 +6,7 @@ import { adminListProducts, adminUpsertProduct, adminDeleteProduct, adminListCat
 import { Plus, Pencil, Trash2 } from "lucide-react";
 import { toast } from "sonner";
 
-export const Route = createFileRoute("/_admin/products")({
+export const Route = createFileRoute("/admin/products")({
   component: AdminProducts,
 });
 

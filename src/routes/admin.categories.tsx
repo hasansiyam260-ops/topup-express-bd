@@ -6,7 +6,7 @@ import { adminListCategories, adminUpsertCategory, adminDeleteCategory } from "@
 import { Plus, Pencil, Trash2 } from "lucide-react";
 import { toast } from "sonner";
 
-export const Route = createFileRoute("/_admin/categories")({
+export const Route = createFileRoute("/admin/categories")({
   component: AdminCategories,
 });
 

@@ -6,7 +6,7 @@ import { adminListContent, adminUpsertContent } from "@/lib/admin.functions";
 import { Save } from "lucide-react";
 import { toast } from "sonner";
 
-export const Route = createFileRoute("/_admin/content")({
+export const Route = createFileRoute("/admin/content")({
   component: AdminContent,
 });
 
