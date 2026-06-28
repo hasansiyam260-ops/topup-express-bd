@@ -53,25 +53,69 @@ function HomePage() {
 
   return (
     <AppShell>
-      {/* HERO PROMO BANNER */}
+      {/* HERO PROMO BANNER — premium glowing frame */}
       <section className="mx-auto max-w-3xl px-3 pt-4">
-        <div className="relative rounded-2xl overflow-hidden glow-violet sweep-shine group">
-          <img
-            src={heroImg}
-            alt="Free Fire Diamond Topup"
-            width={1536}
-            height={896}
-            className="w-full h-auto block transition-transform duration-700 group-hover:scale-[1.02]"
+        <div className="relative group">
+          {/* Outer animated neon halo */}
+          <div
+            aria-hidden
+            className="absolute -inset-2 rounded-[28px] opacity-80 blur-2xl pointer-events-none animate-pulse"
+            style={{
+              background:
+                "conic-gradient(from 0deg, #ff2d55, #a855f7, #22d3ee, #f43f5e, #ff2d55)",
+            }}
           />
-          <a
-            href="#packs"
-            aria-label="Topup now"
-            className="absolute left-3 bottom-3 grid place-items-center h-12 w-12 rounded-full bg-primary text-primary-foreground ring-pulse"
+          {/* Gradient border ring */}
+          <div
+            className="relative rounded-[22px] p-[2px]"
+            style={{
+              background:
+                "linear-gradient(135deg, #ff3b6b 0%, #a855f7 45%, #22d3ee 100%)",
+              boxShadow:
+                "0 0 0 1px rgba(255,255,255,0.6) inset, 0 20px 60px -20px rgba(168,85,247,0.55), 0 10px 30px -10px rgba(244,63,94,0.45)",
+            }}
           >
-            <Play className="h-5 w-5 fill-current ml-0.5" />
-          </a>
+            <div className="relative rounded-[20px] overflow-hidden bg-black">
+              <img
+                src={heroImg}
+                alt="Free Fire Diamond Topup"
+                width={1536}
+                height={896}
+                className="w-full h-auto block transition-transform duration-700 group-hover:scale-[1.03]"
+              />
+              {/* Glossy top sheen */}
+              <span
+                aria-hidden
+                className="absolute inset-x-0 top-0 h-1/3 pointer-events-none"
+                style={{
+                  background:
+                    "linear-gradient(180deg, rgba(255,255,255,0.18), rgba(255,255,255,0) 80%)",
+                }}
+              />
+              {/* Sweep shine */}
+              <span
+                aria-hidden
+                className="absolute inset-0 pointer-events-none overflow-hidden"
+              >
+                <span className="absolute -inset-y-4 -left-1/3 w-1/3 rotate-12 bg-gradient-to-r from-transparent via-white/25 to-transparent translate-x-[-120%] group-hover:translate-x-[420%] transition-transform duration-[1400ms] ease-out" />
+              </span>
+              {/* #1 corner badge */}
+              <span className="absolute top-2 right-2 text-[9px] font-bold tracking-[0.2em] uppercase bg-black/60 backdrop-blur text-white px-2 py-1 rounded-md border border-white/20 shadow-lg">
+                ⚡ #1 in BD
+              </span>
+              {/* Play button */}
+              <a
+                href="#packs"
+                aria-label="Topup now"
+                className="absolute left-3 bottom-3 grid place-items-center h-12 w-12 rounded-full bg-primary text-primary-foreground ring-pulse shadow-[0_0_24px_rgba(244,63,94,0.7)]"
+              >
+                <Play className="h-5 w-5 fill-current ml-0.5" />
+              </a>
+            </div>
+          </div>
         </div>
       </section>
+
 
       {/* QUICK ACTION CHIPS */}
       <section className="mx-auto max-w-3xl px-3 mt-4 grid grid-cols-3 gap-2.5">
