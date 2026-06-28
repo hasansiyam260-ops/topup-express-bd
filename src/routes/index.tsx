@@ -36,92 +36,24 @@ export const Route = createFileRoute("/")({
   notFoundComponent: () => <AppShell><div className="p-10 text-center">Not found</div></AppShell>,
 });
 
-const PACK_ORDER = ["diamond", "membership", "level_pass", "airdrop", "like"];
-
 function HomePage() {
   const { data: products } = useSuspenseQuery(productsQO);
 
-  // One featured card per pack_type — like the reference catalog grid
-  const featured = PACK_ORDER
-    .map((type) => products.find((p) => p.pack_type === type))
-    .filter(Boolean) as typeof products;
+  const firstOf = (type: string) => products.find((p) => p.pack_type === type)?.id;
 
-  const likeFirst = products.find((p) => p.pack_type === "like");
-
-  // Extra category cards (duplicated visual style, like reference's Indonesia/Like/Voucher)
-  const extraCategories = [
-    { label: "Free Fire Like", img: packImage("like"), to: likeFirst?.id },
-    { label: "Free Fire Voucher for UniPin", img: packImage("level_pass"), to: featured[2]?.id },
-    { label: "Free Fire Indonesia", img: packImage("airdrop"), to: featured[3]?.id },
+  // Exactly 6 fixed sections matching the reference grid
+  const sections = [
+    { label: "Free Fire [BD SERVER]", img: packImage("diamond"), to: firstOf("diamond") },
+    { label: "Free Fire Membership", img: packImage("membership"), to: firstOf("membership") },
+    { label: "Free Fire Level Up Pass BD", img: packImage("level_pass"), to: firstOf("level_pass") },
+    { label: "Weekly Lite Membership", img: packImage("weeklylite"), to: firstOf("membership") },
+    { label: "Free Fire Like", img: packImage("like"), to: firstOf("like") },
+    { label: "Top Up for UniPin", img: packImage("unipin"), to: firstOf("airdrop") ?? firstOf("diamond") },
   ];
 
-
   return (
-    <AppShell>
-      {/* HERO PROMO BANNER */}
-      <section className="mx-auto max-w-3xl px-3 pt-4">
-        <div className="relative rounded-2xl overflow-hidden glow-violet sweep-shine group">
-          <img
-            src={heroImg}
-            alt="Free Fire Diamond Topup"
-            width={1536}
-            height={896}
-            className="w-full h-auto block transition-transform duration-700 group-hover:scale-[1.02]"
-          />
-          <a
-            href="#packs"
-            aria-label="Topup now"
-            className="absolute left-3 bottom-3 grid place-items-center h-12 w-12 rounded-full bg-primary text-primary-foreground ring-pulse"
-          >
-            <Play className="h-5 w-5 fill-current ml-0.5" />
-          </a>
-        </div>
-      </section>
-
-      {/* QUICK ACTION CHIPS */}
-      <section className="mx-auto max-w-3xl px-3 mt-4 grid grid-cols-3 gap-2.5">
-        <ChipCard
-          icon={<MessageCircle className="h-5 w-5 text-white" />}
-          tint="from-emerald-500 to-emerald-600"
-          title="Whatsapp"
-          sub="CLICK TO CHAT"
-          href="https://wa.me/8801000000000"
-        />
-        <ChipCard
-          icon={<MessagesSquare className="h-5 w-5 text-white" />}
-          tint="from-fuchsia-500 to-violet-600"
-          title="Messenger"
-          sub="SUPPORT"
-          href="https://m.me/uidtopup"
-        />
-        <ChipCard
-          icon={<Gift className="h-5 w-5 text-white" />}
-          tint="from-blue-600 to-indigo-700"
-          title="Free Diamond"
-          sub="২৫ ডায়মন্ড"
-          href="#packs"
-        />
-      </section>
-
-      {/* SECTION TITLE */}
-      <section id="packs" className="mx-auto max-w-3xl px-3 mt-8">
-        <h2 className="text-center font-display text-3xl tracking-[0.15em] text-foreground">
-          FREE FIRE
-        </h2>
-        <div className="mx-auto mt-2 h-[3px] w-16 rounded-full bg-gradient-to-r from-neon-violet to-neon-magenta" />
-      </section>
-
-      {/* PRIMARY CATEGORY GRID — 3 cols, image on top, caption below */}
-      <section className="mx-auto max-w-3xl px-3 mt-5 grid grid-cols-3 gap-3">
-        {featured.map((p) => (
-          <CategoryCard
-            key={p.id}
-            to={p.id}
-            img={packImage(p.pack_type)}
-            label={`Free Fire ${PACK_LABELS[p.pack_type]?.en ?? p.name_en}`}
-          />
-        ))}
-        {extraCategories.map((c, i) => (
+...
+        {sections.map((c, i) => (
           <CategoryCard key={i} to={c.to} img={c.img} label={c.label} />
         ))}
       </section>
