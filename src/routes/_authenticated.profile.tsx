@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useServerFn } from "@tanstack/react-start";
 import { supabase } from "@/integrations/supabase/client";
 import { AppShell } from "@/components/site/AppShell";
+import { toast } from "sonner";
 import { getFFPlayerName } from "@/lib/ff.functions";
 import { LogOut, Wallet, User, ShoppingBag, CheckCircle2, XCircle, Timer, TrendingUp, Gamepad2, Hash, Trophy, Heart, Globe2 } from "lucide-react";
 
@@ -123,9 +124,12 @@ function ProfilePage() {
 
 
         {/* Game Account — fetched live from FF API */}
-        {orderStats?.last?.player_uid && (
-          <GameAccountCard uid={orderStats.last.player_uid} fallbackName={orderStats.last.player_name} />
-        )}
+        <GameAccountCard
+          savedUid={profile?.game_uid ?? null}
+          lastUid={orderStats?.last?.player_uid ?? null}
+          fallbackName={orderStats?.last?.player_name}
+        />
+
 
 
         <button onClick={logout} className="w-full py-3 rounded-xl border-2 border-destructive/40 text-destructive font-bold uppercase tracking-wider text-sm flex items-center justify-center gap-2 hover:bg-destructive/10">
@@ -160,15 +164,35 @@ function StatTile({ icon, label, value }: { icon: React.ReactNode; label: string
   );
 }
 
-function GameAccountCard({ uid, fallbackName }: { uid: string; fallbackName?: string | null }) {
+function GameAccountCard({ savedUid, lastUid, fallbackName }: { savedUid: string | null; lastUid: string | null; fallbackName?: string | null }) {
+  const queryClient = useQueryClient();
   const fetchInfo = useServerFn(getFFPlayerName);
+  const activeUid = savedUid || lastUid || "";
+  const [draft, setDraft] = useState("");
+  const [saving, setSaving] = useState(false);
+
   const { data, isLoading, isError } = useQuery({
-    queryKey: ["ff-player-info", uid],
-    queryFn: () => fetchInfo({ data: { uid } }),
+    queryKey: ["ff-player-info", activeUid],
+    queryFn: () => fetchInfo({ data: { uid: activeUid } }),
+    enabled: !!activeUid && /^\d{6,12}$/.test(activeUid),
     staleTime: 5 * 60 * 1000,
     retry: 1,
   });
+
+  const saveUid = async (uid: string) => {
+    if (!/^\d{6,12}$/.test(uid)) return toast.error("Enter a valid Free Fire UID (6–12 digits)");
+    setSaving(true);
+    const { data: u } = await supabase.auth.getUser();
+    if (!u.user) return setSaving(false);
+    const { error } = await supabase.from("profiles").update({ game_uid: uid }).eq("id", u.user.id);
+    setSaving(false);
+    if (error) return toast.error(error.message);
+    toast.success("Game UID saved");
+    queryClient.invalidateQueries({ queryKey: ["my-profile"] });
+  };
+
   const name = data?.name || fallbackName || "Free Fire Player";
+
   return (
     <div className="relative rounded-xl overflow-hidden p-3 bg-gradient-to-br from-indigo-600 via-blue-600 to-cyan-500 text-white shadow-[0_8px_24px_-12px_rgba(37,99,235,0.55)]">
       <div className="absolute -top-8 -right-8 h-20 w-20 rounded-full bg-white/15 blur-2xl" />
@@ -178,28 +202,74 @@ function GameAccountCard({ uid, fallbackName }: { uid: string; fallbackName?: st
         </span>
         <div className="min-w-0 flex-1">
           <div className="text-[8px] tracking-[0.3em] uppercase text-white/70 leading-none">Game Account</div>
-          <div className="font-display text-sm leading-tight mt-1 truncate">{name}</div>
+          <div className="font-display text-sm leading-tight mt-1 truncate">
+            {activeUid ? name : "Add your Free Fire UID"}
+          </div>
         </div>
-        {data?.region && (
+        {activeUid && data?.region && (
           <span className="text-[9px] font-semibold px-2 py-0.5 rounded-full bg-white/15 ring-1 ring-white/30 uppercase tracking-wider">
             {data.region}
           </span>
         )}
       </div>
-      <div className="relative grid grid-cols-2 gap-1.5">
-        <GameStat icon={<Hash className="h-3 w-3" />} label="UID" value={uid} mono />
-        <GameStat icon={<User className="h-3 w-3" />} label="Name" value={isLoading ? "…" : (isError ? "—" : name)} />
-        <GameStat icon={<Trophy className="h-3 w-3" />} label="Level" value={isLoading ? "…" : (data?.level != null ? String(data.level) : "—")} />
-        <GameStat icon={<Heart className="h-3 w-3" />} label="Likes" value={isLoading ? "…" : (data?.likes != null ? Number(data.likes).toLocaleString() : "—")} />
-      </div>
-      {isError && (
-        <div className="relative mt-2 text-[10px] text-white/80 flex items-center gap-1">
-          <Globe2 className="h-3 w-3" /> Live info unavailable
+
+      {activeUid ? (
+        <>
+          <div className="relative grid grid-cols-2 gap-1.5">
+            <GameStat icon={<Hash className="h-3 w-3" />} label="UID" value={activeUid} mono />
+            <GameStat icon={<User className="h-3 w-3" />} label="Name" value={isLoading ? "…" : (isError ? "—" : name)} />
+            <GameStat icon={<Trophy className="h-3 w-3" />} label="Level" value={isLoading ? "…" : (data?.level != null ? String(data.level) : "—")} />
+            <GameStat icon={<Heart className="h-3 w-3" />} label="Likes" value={isLoading ? "…" : (data?.likes != null ? Number(data.likes).toLocaleString() : "—")} />
+          </div>
+          <div className="relative mt-2 flex items-center gap-2">
+            {isError && (
+              <div className="text-[10px] text-white/80 flex items-center gap-1 flex-1">
+                <Globe2 className="h-3 w-3" /> Live info unavailable
+              </div>
+            )}
+            <button
+              onClick={() => { setDraft(activeUid); }}
+              className="ml-auto text-[10px] font-semibold px-2 py-1 rounded-md bg-white/15 ring-1 ring-white/25 hover:bg-white/25"
+            >
+              Change UID
+            </button>
+          </div>
+          {draft !== "" && (
+            <div className="relative mt-2 flex items-center gap-1.5">
+              <input
+                value={draft} onChange={(e) => setDraft(e.target.value.replace(/\D/g, "").slice(0, 12))}
+                placeholder="Enter UID" inputMode="numeric"
+                className="flex-1 px-2 py-1.5 rounded-md bg-white/15 ring-1 ring-white/25 text-white placeholder-white/60 text-xs font-mono focus:outline-none focus:ring-white/50"
+              />
+              <button
+                disabled={saving} onClick={() => saveUid(draft)}
+                className="text-[10px] font-bold px-2.5 py-1.5 rounded-md bg-white text-blue-700 disabled:opacity-50"
+              >
+                {saving ? "…" : "SAVE"}
+              </button>
+              <button onClick={() => setDraft("")} className="text-[10px] px-2 py-1.5 rounded-md bg-white/10 ring-1 ring-white/20">✕</button>
+            </div>
+          )}
+        </>
+      ) : (
+        <div className="relative flex items-center gap-1.5">
+          <input
+            value={draft} onChange={(e) => setDraft(e.target.value.replace(/\D/g, "").slice(0, 12))}
+            placeholder="Enter your Free Fire UID" inputMode="numeric"
+            className="flex-1 px-2.5 py-2 rounded-md bg-white/15 ring-1 ring-white/30 text-white placeholder-white/60 text-xs font-mono focus:outline-none focus:ring-white/60"
+          />
+          <button
+            disabled={saving} onClick={() => saveUid(draft)}
+            className="text-[10px] font-bold px-3 py-2 rounded-md bg-white text-blue-700 disabled:opacity-50"
+          >
+            {saving ? "…" : "SAVE"}
+          </button>
         </div>
       )}
     </div>
   );
 }
+
 
 function GameStat({ icon, label, value, mono }: { icon: React.ReactNode; label: string; value: string; mono?: boolean }) {
   return (

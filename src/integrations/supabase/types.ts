@@ -131,6 +131,7 @@ export type Database = {
           balance: number
           created_at: string
           full_name: string | null
+          game_uid: string | null
           id: string
           phone: string | null
           updated_at: string
@@ -141,6 +142,7 @@ export type Database = {
           balance?: number
           created_at?: string
           full_name?: string | null
+          game_uid?: string | null
           id: string
           phone?: string | null
           updated_at?: string
@@ -151,6 +153,7 @@ export type Database = {
           balance?: number
           created_at?: string
           full_name?: string | null
+          game_uid?: string | null
           id?: string
           phone?: string | null
           updated_at?: string
