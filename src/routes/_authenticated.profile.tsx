@@ -196,3 +196,15 @@ function Input({ label, value, onChange, max }: { label: string; value: string; 
     </div>
   );
 }
+
+function StatTile({ icon, label, value, tint }: { icon: React.ReactNode; label: string; value: string; tint: string }) {
+  return (
+    <div className={`relative overflow-hidden rounded-xl p-2.5 bg-white/[0.04] ring-1 ring-white/10 backdrop-blur`}>
+      <div className={`absolute inset-0 bg-gradient-to-br ${tint} opacity-60 pointer-events-none`} />
+      <div className="relative flex items-center gap-1.5 text-white/70 text-[9px] tracking-[0.2em] uppercase">
+        {icon} {label}
+      </div>
+      <div className="relative font-display text-lg leading-tight mt-0.5 text-white">{value}</div>
+    </div>
+  );
+}
