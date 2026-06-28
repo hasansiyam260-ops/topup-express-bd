@@ -1,7 +1,7 @@
 import { Link, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
-import { Crown } from "lucide-react";
+import logo from "@/assets/logo-uid.png";
 
 export function Header() {
   const navigate = useNavigate();
@@ -18,22 +18,22 @@ export function Header() {
   }, []);
 
   return (
-    <header className="sticky top-0 z-40 backdrop-blur-xl bg-onyx/70 border-b border-border">
-      <div className="mx-auto max-w-7xl px-4 py-3 flex items-center justify-between gap-3">
-        <Link to="/" className="flex items-center gap-2 group">
-          <span className="relative grid place-items-center h-10 w-10 rounded-lg card-luxe">
-            <Crown className="h-5 w-5 text-gold" />
-          </span>
-          <div className="leading-none">
-            <div className="font-display text-2xl gold-text">UID TOPUP</div>
-            <div className="text-[10px] tracking-[0.25em] text-muted-foreground -mt-0.5">PREMIUM • FREE FIRE</div>
-          </div>
+    <header className="sticky top-0 z-40 backdrop-blur-xl bg-background/85 border-b border-border">
+      <div className="mx-auto max-w-7xl px-3 py-3 flex items-center justify-between gap-3">
+        <Link to="/" className="flex items-center min-w-0">
+          <img
+            src={logo}
+            alt="UIDTOPUP.COM"
+            width={1280}
+            height={512}
+            className="h-12 sm:h-14 w-auto glow-pulse"
+          />
         </Link>
-        <nav className="flex items-center gap-2">
+        <nav className="flex items-center gap-2 shrink-0">
           {authed ? (
             <Link
               to="/profile"
-              className="px-4 py-2 rounded-md text-sm font-semibold gold-border text-gold-soft hover:bg-gold/10"
+              className="px-4 py-2 rounded-lg text-sm font-semibold border border-border bg-card text-foreground hover:border-neon-violet/50"
             >
               Profile
             </Link>
@@ -41,13 +41,13 @@ export function Header() {
             <>
               <button
                 onClick={() => navigate({ to: "/auth", search: { mode: "register" } })}
-                className="px-3 py-2 rounded-md text-sm font-semibold text-foreground/80 hover:text-gold-soft"
+                className="px-4 py-2 rounded-lg text-sm font-semibold bg-secondary text-foreground hover:bg-muted transition"
               >
                 Register
               </button>
               <button
                 onClick={() => navigate({ to: "/auth", search: { mode: "login" } })}
-                className="btn-gold px-5 py-2 rounded-md text-sm"
+                className="px-4 py-2 rounded-lg text-sm font-semibold bg-foreground text-background hover:opacity-90 transition"
               >
                 Login
               </button>
