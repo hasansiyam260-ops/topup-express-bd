@@ -1,7 +1,11 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import { AppShell } from "@/components/site/AppShell";
-import { Wallet, Info, ShieldCheck, Zap, X, Home, HelpCircle, Headphones, Languages } from "lucide-react";
+import { Wallet, Info, ShieldCheck, Zap, X, Home, HelpCircle, Headphones, Languages, Lock } from "lucide-react";
+import bkashLogo from "@/assets/pay-bkash.png";
+import nagadLogo from "@/assets/pay-nagad.png";
+import rocketLogo from "@/assets/pay-rocket.png";
+import upayLogo from "@/assets/pay-upay.png";
 
 export const Route = createFileRoute("/_authenticated/wallet")({
   head: () => ({ meta: [{ title: "Add Money — UIDTOPUP.COM" }] }),
