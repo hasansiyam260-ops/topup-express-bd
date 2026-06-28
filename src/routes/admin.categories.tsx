@@ -3,7 +3,7 @@ import { useSuspenseQuery, useQueryClient, useMutation } from "@tanstack/react-q
 import { useServerFn } from "@tanstack/react-start";
 import { useState } from "react";
 import { adminListCategories, adminUpsertCategory, adminDeleteCategory } from "@/lib/admin.functions";
-import { Plus, Pencil, Trash2 } from "lucide-react";
+import { Plus, Pencil, Trash2, X, Save, ImageIcon } from "lucide-react";
 import { toast } from "sonner";
 
 export const Route = createFileRoute("/admin/categories")({
@@ -39,29 +39,36 @@ function AdminCategories() {
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between gap-3">
-        <h1 className="text-2xl font-black text-slate-900">Categories</h1>
-        <button onClick={() => setEditing(empty)} className="flex items-center gap-1 rounded-lg bg-rose-600 px-3 py-2 text-xs font-bold text-white shadow hover:bg-rose-700">
-          <Plus className="h-3.5 w-3.5" /> Add Category
+        <h1 className="text-xl font-black text-slate-900">Categories</h1>
+        <button onClick={() => setEditing({ ...empty })} className="flex items-center gap-1.5 rounded-lg bg-rose-600 px-4 py-2.5 text-sm font-bold text-white shadow active:scale-95">
+          <Plus className="h-4 w-4" /> Add New
         </button>
       </div>
 
       <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
         {data.map((c: any) => (
-          <div key={c.id} className="rounded-xl border bg-white p-4 shadow-sm">
-            <div className="flex items-start justify-between">
-              <div>
-                <div className="text-xs font-mono text-slate-500">{c.key}</div>
-                <div className="text-lg font-black text-slate-900">{c.name_en}</div>
-                {c.name_bn && <div className="text-sm text-rose-600">{c.name_bn}</div>}
+          <div key={c.id} className="overflow-hidden rounded-xl border bg-white shadow-sm">
+            {c.image_url ? (
+              <img src={c.image_url} alt="" className="h-28 w-full object-cover" />
+            ) : (
+              <div className="grid h-28 w-full place-items-center bg-slate-100 text-slate-400"><ImageIcon className="h-8 w-8" /></div>
+            )}
+            <div className="p-3">
+              <div className="flex items-start justify-between gap-2">
+                <div className="min-w-0 flex-1">
+                  <div className="font-mono text-[10px] text-slate-500">{c.key}</div>
+                  <div className="truncate text-base font-black text-slate-900">{c.name_en}</div>
+                  {c.name_bn && <div className="truncate text-sm text-rose-600">{c.name_bn}</div>}
+                </div>
+                <span className={`shrink-0 rounded-full px-2 py-0.5 text-[10px] font-bold ${c.is_active ? "bg-green-100 text-green-700" : "bg-slate-100 text-slate-500"}`}>{c.is_active ? "ON" : "OFF"}</span>
               </div>
-              <span className={`rounded-full px-2 py-0.5 text-[10px] font-bold ${c.is_active ? "bg-green-100 text-green-700" : "bg-slate-100 text-slate-500"}`}>{c.is_active ? "ACTIVE" : "OFF"}</span>
-            </div>
-            {c.image_url && <img src={c.image_url} alt="" className="mt-3 h-24 w-full rounded-lg object-cover" />}
-            <div className="mt-3 flex items-center justify-between text-xs text-slate-500">
-              <span>Order: {c.sort_order}</span>
-              <div className="flex gap-1">
-                <button onClick={() => setEditing(c)} className="rounded p-1.5 text-sky-600 hover:bg-sky-50"><Pencil className="h-3.5 w-3.5" /></button>
-                <button onClick={() => { if (confirm("Delete category?")) deleteM.mutate(c.id); }} className="rounded p-1.5 text-rose-600 hover:bg-rose-50"><Trash2 className="h-3.5 w-3.5" /></button>
+              <div className="mt-3 flex gap-2">
+                <button onClick={() => setEditing(c)} className="flex flex-1 items-center justify-center gap-1.5 rounded-lg bg-sky-600 px-3 py-2.5 text-sm font-bold text-white active:scale-95">
+                  <Pencil className="h-4 w-4" /> Edit
+                </button>
+                <button onClick={() => { if (confirm(`Delete "${c.name_en}"?`)) deleteM.mutate(c.id); }} className="flex items-center justify-center gap-1.5 rounded-lg bg-rose-50 px-3 py-2.5 text-sm font-bold text-rose-600 active:scale-95">
+                  <Trash2 className="h-4 w-4" />
+                </button>
               </div>
             </div>
           </div>
@@ -69,35 +76,60 @@ function AdminCategories() {
       </div>
 
       {editing && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
-          <div className="w-full max-w-md rounded-2xl bg-white p-5 shadow-2xl">
-            <h2 className="mb-4 text-lg font-black">{editing.id ? "Edit" : "Add"} Category</h2>
-            <div className="space-y-3">
-              <Input label="Key (e.g. diamond)" value={editing.key} onChange={(v) => setEditing({ ...editing, key: v })} />
-              <Input label="Name (EN)" value={editing.name_en} onChange={(v) => setEditing({ ...editing, name_en: v })} />
-              <Input label="Name (BN)" value={editing.name_bn ?? ""} onChange={(v) => setEditing({ ...editing, name_bn: v })} />
-              <Input label="Image URL" value={editing.image_url ?? ""} onChange={(v) => setEditing({ ...editing, image_url: v })} />
-              <Input label="Banner URL" value={editing.banner_url ?? ""} onChange={(v) => setEditing({ ...editing, banner_url: v })} />
-              <Input label="Description" value={editing.description ?? ""} onChange={(v) => setEditing({ ...editing, description: v })} />
-              <Input label="Sort Order" type="number" value={String(editing.sort_order)} onChange={(v) => setEditing({ ...editing, sort_order: Number(v) })} />
-              <label className="flex items-center gap-2 text-sm"><input type="checkbox" checked={editing.is_active} onChange={(e) => setEditing({ ...editing, is_active: e.target.checked })} /> Active</label>
-            </div>
-            <div className="mt-5 flex justify-end gap-2">
-              <button onClick={() => setEditing(null)} className="rounded-lg px-4 py-2 text-sm font-bold text-slate-600 hover:bg-slate-100">Cancel</button>
-              <button disabled={upsertM.isPending} onClick={() => upsertM.mutate(editing)} className="rounded-lg bg-rose-600 px-4 py-2 text-sm font-bold text-white hover:bg-rose-700 disabled:opacity-50">{upsertM.isPending ? "Saving…" : "Save"}</button>
-            </div>
-          </div>
-        </div>
+        <EditorModal title={editing.id ? "Edit Category" : "Add Category"} onClose={() => setEditing(null)} onSave={() => upsertM.mutate(editing)} saving={upsertM.isPending}>
+          <Field label="Key (slug)" hint="e.g. diamond, likes — used internally"><input className="adm-input" value={editing.key} onChange={(e) => setEditing({ ...editing, key: e.target.value })} /></Field>
+          <Field label="Name (English)"><input className="adm-input" value={editing.name_en} onChange={(e) => setEditing({ ...editing, name_en: e.target.value })} /></Field>
+          <Field label="Name (Bangla)"><input className="adm-input" value={editing.name_bn ?? ""} onChange={(e) => setEditing({ ...editing, name_bn: e.target.value })} /></Field>
+          <Field label="Image URL" hint="Square thumbnail shown on home"><input className="adm-input" value={editing.image_url ?? ""} onChange={(e) => setEditing({ ...editing, image_url: e.target.value })} /></Field>
+          <Field label="Banner URL" hint="Wide banner shown on category page"><input className="adm-input" value={editing.banner_url ?? ""} onChange={(e) => setEditing({ ...editing, banner_url: e.target.value })} /></Field>
+          <Field label="Description"><textarea rows={3} className="adm-input" value={editing.description ?? ""} onChange={(e) => setEditing({ ...editing, description: e.target.value })} /></Field>
+          <Field label="Sort Order"><input type="number" className="adm-input" value={editing.sort_order} onChange={(e) => setEditing({ ...editing, sort_order: Number(e.target.value) })} /></Field>
+          <ToggleRow label="Active (visible to users)" checked={editing.is_active} onChange={(v) => setEditing({ ...editing, is_active: v })} />
+        </EditorModal>
       )}
     </div>
   );
 }
 
-function Input({ label, value, onChange, type = "text" }: { label: string; value: string; onChange: (v: string) => void; type?: string }) {
+export function EditorModal({ title, onClose, onSave, saving, children }: { title: string; onClose: () => void; onSave: () => void; saving: boolean; children: React.ReactNode }) {
+  return (
+    <div className="fixed inset-0 z-50 flex flex-col bg-black/60 sm:items-center sm:justify-center sm:p-4">
+      <div className="flex h-full w-full flex-col bg-white shadow-2xl sm:h-auto sm:max-h-[90vh] sm:max-w-lg sm:rounded-2xl">
+        <header className="flex items-center justify-between border-b px-4 py-3">
+          <h2 className="text-base font-black text-slate-900">{title}</h2>
+          <button onClick={onClose} className="rounded-full p-2 text-slate-500 hover:bg-slate-100"><X className="h-5 w-5" /></button>
+        </header>
+        <div className="flex-1 space-y-4 overflow-y-auto px-4 py-4">{children}</div>
+        <footer className="sticky bottom-0 flex gap-2 border-t bg-white px-4 py-3">
+          <button onClick={onClose} className="flex-1 rounded-lg border border-slate-200 px-4 py-3 text-sm font-bold text-slate-700 active:scale-95">Cancel</button>
+          <button disabled={saving} onClick={onSave} className="flex flex-[2] items-center justify-center gap-1.5 rounded-lg bg-rose-600 px-4 py-3 text-sm font-bold text-white active:scale-95 disabled:opacity-50">
+            <Save className="h-4 w-4" /> {saving ? "Saving…" : "Save Changes"}
+          </button>
+        </footer>
+      </div>
+      <style>{`.adm-input{width:100%;border:1px solid #e2e8f0;border-radius:10px;padding:12px 14px;font-size:15px;background:white;color:#0f172a;}.adm-input:focus{outline:none;border-color:#f43f5e;box-shadow:0 0 0 3px rgba(244,63,94,0.12);}`}</style>
+    </div>
+  );
+}
+
+export function Field({ label, hint, children }: { label: string; hint?: string; children: React.ReactNode }) {
   return (
     <div>
-      <label className="mb-1 block text-[11px] font-bold uppercase text-slate-600">{label}</label>
-      <input type={type} value={value} onChange={(e) => onChange(e.target.value)} className="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm focus:border-rose-500 focus:outline-none" />
+      <label className="mb-1.5 block text-xs font-bold uppercase tracking-wide text-slate-700">{label}</label>
+      {children}
+      {hint && <p className="mt-1 text-[11px] text-slate-500">{hint}</p>}
     </div>
+  );
+}
+
+export function ToggleRow({ label, checked, onChange }: { label: string; checked: boolean; onChange: (v: boolean) => void }) {
+  return (
+    <label className="flex cursor-pointer items-center justify-between rounded-lg border border-slate-200 px-4 py-3">
+      <span className="text-sm font-bold text-slate-800">{label}</span>
+      <span className={`relative h-6 w-11 rounded-full transition-colors ${checked ? "bg-rose-600" : "bg-slate-300"}`}>
+        <span className={`absolute top-0.5 h-5 w-5 rounded-full bg-white shadow transition-all ${checked ? "left-[22px]" : "left-0.5"}`} />
+        <input type="checkbox" checked={checked} onChange={(e) => onChange(e.target.checked)} className="sr-only" />
+      </span>
+    </label>
   );
 }
