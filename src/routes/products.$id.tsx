@@ -160,14 +160,14 @@ function ProductPage() {
                   }`}>
                     {active && <span className="h-1.5 w-1.5 rounded-full bg-white" />}
                   </span>
-                  <span className="flex-1 min-w-0 font-semibold text-[13px] leading-tight text-foreground flex items-center gap-1 truncate">
+                  <span className="flex-1 min-w-0 font-semibold text-[12px] leading-snug text-foreground flex items-center gap-1 flex-wrap">
                     {qty ? <>
                       <span>{qty}</span>
-                      <span>{rest || "Diamond"}</span>
+                      <span>Diamond</span>
                       <span className="text-sm leading-none">💎</span>
-                    </> : <span className="truncate">{p.name_en}</span>}
+                    </> : <span>{p.name_en}</span>}
                   </span>
-                  <span className="font-display text-sm text-primary tracking-wide whitespace-nowrap">
+                  <span className="font-display text-[13px] text-primary tracking-wide whitespace-nowrap shrink-0">
                     {Number(p.price).toFixed(0)} TK
                   </span>
                 </button>
