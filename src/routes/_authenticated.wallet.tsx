@@ -392,25 +392,30 @@ function BrandPayPage({
               <span>{error}</span>
             </div>
           )}
-        </div>
 
-        {/* Verify button */}
-        <button
-          onClick={handleVerify}
-          disabled={verifying}
-          className="group relative w-full overflow-hidden disabled:opacity-70"
-          style={{ background: `linear-gradient(180deg, ${cfg.bg}, ${cfg.accent})` }}
-        >
-          <div className="relative py-4 flex items-center justify-center gap-2.5 text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.25)]">
-            <span className="absolute inset-x-0 top-0 h-1/2 bg-gradient-to-b from-white/20 to-transparent pointer-events-none" />
+          {/* Verify button — inline rounded box */}
+          <button
+            onClick={handleVerify}
+            disabled={verifying}
+            className="group relative w-full overflow-hidden rounded-2xl disabled:opacity-70 transition-transform active:scale-[0.99]"
+            style={{
+              background: `linear-gradient(180deg, ${cfg.bg}, ${cfg.accent})`,
+              boxShadow: `0 12px 28px -10px ${cfg.bg}, inset 0 1px 0 rgba(255,255,255,0.3)`,
+            }}
+          >
+            <span className="absolute inset-x-0 top-0 h-1/2 bg-gradient-to-b from-white/25 to-transparent pointer-events-none rounded-t-2xl" />
             <span className="absolute inset-y-0 -left-1/3 w-1/3 bg-gradient-to-r from-transparent via-white/30 to-transparent skew-x-12 group-hover:translate-x-[500%] transition-transform duration-1000 pointer-events-none" />
-            {verifying ? (
-              <span className="font-display text-lg tracking-[0.2em]">VERIFYING…</span>
-            ) : (
-              <span className="font-display text-lg tracking-[0.25em]">VERIFY</span>
-            )}
-          </div>
-        </button>
+            <div className="relative py-3.5 flex items-center justify-center gap-2.5 text-white">
+              {verifying ? (
+                <span className="font-display text-base tracking-[0.25em]">VERIFYING…</span>
+              ) : (
+                <span className="font-display text-lg tracking-[0.3em]">VERIFY</span>
+              )}
+            </div>
+          </button>
+
+          <div className="h-1" />
+        </div>
       </div>
     </div>
   );
