@@ -37,15 +37,17 @@ function HomePage() {
   const { data: products = [], isFetching } = useQuery(productsQueryOptions);
 
   const firstOf = (type: string) => products.find((p) => p.pack_type === type)?.id;
+  const membershipNonLite = products.find((p) => p.pack_type === "membership" && !/lite/i.test(p.name_en))?.id ?? firstOf("membership");
+  const weeklyLiteId = products.find((p) => p.pack_type === "membership" && /lite/i.test(p.name_en))?.id ?? firstOf("membership");
 
   // Exactly 6 fixed sections matching the reference grid
   const sections = [
-    { label: "Free Fire [BD SERVER]", img: packImage("diamond"), to: firstOf("diamond") },
-    { label: "Free Fire Membership", img: packImage("membership"), to: firstOf("membership") },
-    { label: "Free Fire Level Up Pass BD", img: packImage("level_pass"), to: firstOf("level_pass") },
-    { label: "Weekly Lite Membership", img: packImage("weeklylite"), to: firstOf("membership") },
-    { label: "Free Fire Like", img: packImage("like"), to: firstOf("like") },
-    { label: "Top Up for UniPin", img: packImage("unipin"), to: firstOf("airdrop") ?? firstOf("diamond") },
+    { label: "Free Fire [BD SERVER]", img: packImage("diamond"), to: firstOf("diamond"), cat: "diamond" },
+    { label: "Free Fire Membership", img: packImage("membership"), to: membershipNonLite, cat: "membership" },
+    { label: "Free Fire Level Up Pass BD", img: packImage("level_pass"), to: firstOf("level_pass"), cat: "level_pass" },
+    { label: "Weekly Lite Membership", img: packImage("weeklylite"), to: weeklyLiteId, cat: "weeklylite" },
+    { label: "Free Fire Like", img: packImage("like"), to: firstOf("like"), cat: "like" },
+    { label: "Top Up for UniPin", img: packImage("unipin"), to: firstOf("airdrop") ?? firstOf("diamond"), cat: "unipin" },
   ];
 
   return (
