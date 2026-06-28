@@ -205,10 +205,13 @@ function HomePage() {
           <a href="mailto:admin@uidtopup.com" className="inline-block mt-4 btn-red px-6 py-3 rounded-full text-sm">
             অভিযোগ এবং সমস্যা
           </a>
-          <div className="mt-6 grid grid-cols-2 gap-y-2 text-sm text-foreground/80 text-left max-w-xs mx-auto">
-            <a href="#">Contact Us</a><a href="#">Privacy Policy</a>
-            <a href="#">FAQ</a><a href="#">Terms of Service</a>
+          <div className="mt-6 grid grid-cols-2 gap-y-2 text-sm font-semibold text-foreground/80 text-left max-w-xs mx-auto">
+            <Link to="/contact" className="hover:text-rose-600">Contact Us</Link>
+            <Link to="/privacy" className="hover:text-rose-600">Privacy Policy</Link>
+            <Link to="/faq" className="hover:text-rose-600">FAQ</Link>
+            <Link to="/terms" className="hover:text-rose-600">Terms of Service</Link>
           </div>
+
           <p className="mt-5 text-xs text-muted-foreground leading-relaxed">
             ফ্রী ফায়ার ডায়মন্ড টপ আপ কম দামে ভালো সার্ভিস। যেকোনো অর্ডার জনিত সমস্যায় ফেসবুক মেসেঞ্জারে অর্ডারের স্ক্রিনশট এবং পেমেন্টের ট্রানজেকশন আইডি লিখে মেসেজ দিন। ১৮ বছরের নিচে অভিভাবকের অনুমতি ছাড়া অর্ডার করা সম্পূর্ণভাবে নিষিদ্ধ।
           </p>
