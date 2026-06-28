@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { getProduct, listProducts } from "@/lib/products.functions";
 import { AppShell } from "@/components/site/AppShell";
 import { packImage } from "@/lib/assets";
+import heroImg from "@/assets/hero-promo.jpg";
 import { supabase } from "@/integrations/supabase/client";
 import { Wallet, Smartphone, Info, HelpCircle } from "lucide-react";
 import { toast } from "sonner";
@@ -107,21 +108,28 @@ function ProductPage() {
 
   return (
     <AppShell>
-      {/* Product Banner */}
+      {/* Product Banner — wide cinematic header like reference */}
       <section className="mx-auto max-w-3xl px-3 pt-4">
-        <div className="relative rounded-2xl overflow-hidden card-soft sweep-shine">
-          <div className="flex items-center gap-3 p-3 bg-gradient-to-r from-violet-50 via-fuchsia-50 to-rose-50">
+        <div className="relative rounded-2xl overflow-hidden glow-violet sweep-shine">
+          <img
+            src={heroImg}
+            alt=""
+            className="absolute inset-0 w-full h-full object-cover"
+          />
+          <div className="absolute inset-0 bg-gradient-to-r from-black/85 via-black/55 to-transparent" />
+          <div className="relative flex items-center gap-3 p-3 sm:p-4">
             <img
               src={packImage(product.pack_type)}
               alt={product.name_en}
               width={300}
               height={300}
-              className="h-24 w-24 sm:h-28 sm:w-28 rounded-xl object-cover glow-violet shrink-0"
+              className="h-24 w-24 sm:h-28 sm:w-28 rounded-xl object-cover ring-2 ring-white/20 shadow-2xl shrink-0"
             />
-            <div className="min-w-0">
-              <h1 className="font-display text-2xl sm:text-3xl leading-tight">{product.name_en}</h1>
-              <div className="text-[11px] tracking-[0.3em] text-muted-foreground uppercase mt-1">Free Fire</div>
-              {product.name_bn && <p className="text-sm text-foreground/70 mt-1 truncate">{product.name_bn}</p>}
+            <div className="min-w-0 text-white drop-shadow-[0_2px_8px_rgba(0,0,0,0.6)]">
+              <h1 className="font-display text-xl sm:text-2xl leading-tight">
+                Free Fire <span className="text-white/90">[BD SERVER]</span>
+              </h1>
+              <div className="text-[11px] tracking-[0.4em] text-white/70 uppercase mt-1">Free Fire</div>
             </div>
           </div>
         </div>
@@ -134,25 +142,38 @@ function ProductPage() {
           <div className="grid grid-cols-2 gap-2.5">
             {related.map((p) => {
               const active = p.id === selected.id;
+              const m = /^(\d+)/.exec(p.name_en);
+              const qty = m ? m[1] : null;
+              const rest = m ? p.name_en.slice(m[0].length).trim() : p.name_en;
               return (
                 <button
                   key={p.id}
                   onClick={() => setSelectedId(p.id)}
-                  className={`relative flex items-center justify-between gap-2 p-3 rounded-xl border-2 bg-card text-left transition-all ${
+                  className={`relative flex items-start gap-2 p-3 rounded-xl border-2 bg-card text-left transition-all min-h-[78px] ${
                     active
                       ? "border-primary glow-red"
                       : "border-border hover:border-neon-violet/40"
                   }`}
                 >
-                  <span className={`grid place-items-center h-5 w-5 rounded-full border-2 shrink-0 ${
+                  <span className={`mt-0.5 grid place-items-center h-5 w-5 rounded-full border-2 shrink-0 ${
                     active ? "border-primary bg-primary" : "border-muted-foreground/40"
                   }`}>
                     {active && <span className="h-2 w-2 rounded-full bg-white" />}
                   </span>
-                  <span className="flex-1 font-semibold text-sm leading-tight">{p.name_en}</span>
-                  <span className="font-display text-base text-primary tracking-wide whitespace-nowrap">
-                    {Number(p.price).toFixed(0)} TK
-                  </span>
+                  <div className="flex-1 min-w-0">
+                    <div className="font-semibold text-sm leading-tight text-foreground flex items-center gap-1 flex-wrap">
+                      {qty ? <>
+                        <span>{qty}</span>
+                        <span>{rest || "Diamond"}</span>
+                        <span className="text-base leading-none">💎</span>
+                      </> : <span>{p.name_en}</span>}
+                    </div>
+                    <div className="mt-2 flex justify-end">
+                      <span className="font-display text-base text-primary tracking-wide whitespace-nowrap">
+                        {Number(p.price).toFixed(0)} TK
+                      </span>
+                    </div>
+                  </div>
                 </button>
               );
             })}
