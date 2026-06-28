@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useServerFn } from "@tanstack/react-start";
 import { supabase } from "@/integrations/supabase/client";
 import { AppShell } from "@/components/site/AppShell";
+import { toast } from "sonner";
 import { getFFPlayerName } from "@/lib/ff.functions";
 import { LogOut, Wallet, User, ShoppingBag, CheckCircle2, XCircle, Timer, TrendingUp, Gamepad2, Hash, Trophy, Heart, Globe2 } from "lucide-react";
 
