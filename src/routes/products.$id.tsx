@@ -44,6 +44,7 @@ export const Route = createFileRoute("/products/$id")({
 
 function ProductPage() {
   const { id } = Route.useParams();
+  const { cat } = Route.useSearch();
   const router = useRouter();
   const navigate = useNavigate();
   const { data: all = [] } = useQuery(productsQueryOptions);
@@ -51,7 +52,16 @@ function ProductPage() {
   const { data: productData } = useQuery(productQueryOptions(id));
   const product = productData ?? cachedProduct;
 
-  const relatedFromAll = product ? all.filter((p) => p.pack_type === product.pack_type) : [];
+  // Determine effective category: explicit ?cat= wins over pack_type
+  const effectiveCat = cat ?? product?.pack_type ?? "";
+  // For weeklylite: only show the weekly lite variant. Otherwise group by pack_type but exclude weekly lite from generic membership.
+  const relatedFromAll = product
+    ? cat === "weeklylite"
+      ? all.filter((p) => p.pack_type === "membership" && /lite/i.test(p.name_en))
+      : cat === "membership"
+      ? all.filter((p) => p.pack_type === "membership" && !/lite/i.test(p.name_en))
+      : all.filter((p) => p.pack_type === product.pack_type)
+    : [];
   const related = relatedFromAll.length ? relatedFromAll : product ? [product] : [];
   const [selectedId, setSelectedId] = useState(id);
   useEffect(() => setSelectedId(id), [id]);
