@@ -43,12 +43,9 @@ function ProfilePage() {
       const cancelled = rows.filter((o) => o.status === "cancelled" || o.status === "failed");
       const pending = rows.filter((o) => o.status === "pending" || o.status === "processing");
       const spent = completed.reduce((s, o) => s + Number(o.amount || 0), 0);
-      const times = completed
-        .map((o) => (new Date(o.updated_at).getTime() - new Date(o.created_at).getTime()) / 60000)
-        .filter((m) => m > 0 && m < 60 * 24);
-      const avgMin = times.length ? Math.round(times.reduce((a, b) => a + b, 0) / times.length) : null;
       const last = rows.find((o) => o.player_uid);
-      return { total, completed: completed.length, cancelled: cancelled.length, pending: pending.length, spent, avgMin, last };
+      const lastStatus = rows[0]?.status === "completed" ? "Done" : rows[0]?.status === "cancelled" || rows[0]?.status === "failed" ? "Cancel" : rows[0]?.status ? "Pending" : "—";
+      return { total, completed: completed.length, cancelled: cancelled.length, pending: pending.length, spent, lastStatus, last };
     },
     refetchOnWindowFocus: true,
     refetchInterval: 15000,
@@ -120,7 +117,7 @@ function ProfilePage() {
             <StatTile icon={<Wallet className="h-3 w-3" />} label="Spent" value={`৳${Number(orderStats?.spent ?? 0).toLocaleString()}`} accent="rose" />
             <StatTile icon={<CheckCircle2 className="h-3 w-3" />} label="Done" value={String(orderStats?.completed ?? 0)} accent="sky" />
             <StatTile icon={<XCircle className="h-3 w-3" />} label="Cancel" value={String(orderStats?.cancelled ?? 0)} accent="rose" />
-            <StatTile icon={<Timer className="h-3 w-3" />} label="Avg" value={orderStats?.avgMin ? `${orderStats.avgMin}m` : "—"} accent="sky" />
+            <StatTile icon={<Timer className="h-3 w-3" />} label="Latest" value={orderStats?.lastStatus ?? "—"} accent="sky" />
             <StatTile icon={<ShoppingBag className="h-3 w-3" />} label="Pending" value={String(orderStats?.pending ?? 0)} accent="rose" />
           </div>
         </div>
@@ -130,7 +127,6 @@ function ProfilePage() {
         <GameAccountCard
           savedUid={profile?.game_uid ?? null}
           lastUid={orderStats?.last?.player_uid ?? null}
-          fallbackName={orderStats?.last?.player_name}
         />
 
 
@@ -167,7 +163,7 @@ function StatTile({ icon, label, value }: { icon: React.ReactNode; label: string
   );
 }
 
-function GameAccountCard({ savedUid, lastUid, fallbackName }: { savedUid: string | null; lastUid: string | null; fallbackName?: string | null }) {
+function GameAccountCard({ savedUid, lastUid }: { savedUid: string | null; lastUid: string | null }) {
   const queryClient = useQueryClient();
   const fetchInfo = useServerFn(getFFPlayerName);
   const activeUid = savedUid || lastUid || "";
@@ -178,8 +174,8 @@ function GameAccountCard({ savedUid, lastUid, fallbackName }: { savedUid: string
     queryKey: ["ff-player-info-v2", activeUid],
     queryFn: () => fetchInfo({ data: { uid: activeUid } }),
     enabled: !!activeUid && /^\d{6,12}$/.test(activeUid),
-    staleTime: 30 * 1000,
-    refetchInterval: 60 * 1000,
+    staleTime: 0,
+    refetchInterval: 15000,
     refetchOnWindowFocus: true,
     retry: 1,
   });
@@ -197,7 +193,7 @@ function GameAccountCard({ savedUid, lastUid, fallbackName }: { savedUid: string
     queryClient.invalidateQueries({ queryKey: ["my-profile"] });
   };
 
-  const name = data?.name || fallbackName || "Free Fire Player";
+  const name = data?.name ?? "—";
 
   return (
     <div className="relative rounded-xl overflow-hidden p-3 bg-gradient-to-br from-indigo-600 via-blue-600 to-cyan-500 text-white shadow-[0_8px_24px_-12px_rgba(37,99,235,0.55)]">
@@ -209,7 +205,7 @@ function GameAccountCard({ savedUid, lastUid, fallbackName }: { savedUid: string
         <div className="min-w-0 flex-1">
           <div className="text-[8px] tracking-[0.3em] uppercase text-white/70 leading-none">Game Account</div>
           <div className="font-display text-sm leading-tight mt-1 truncate">
-            {activeUid ? name : "Add your Free Fire UID"}
+            {activeUid ? (isLoading ? "Checking live account…" : name) : "Add your Free Fire UID"}
           </div>
         </div>
         {activeUid && data?.region && (
@@ -230,7 +226,7 @@ function GameAccountCard({ savedUid, lastUid, fallbackName }: { savedUid: string
           <div className="relative mt-2 flex items-center gap-2">
             {isError && (
               <div className="text-[10px] text-white/80 flex items-center gap-1 flex-1">
-                <Globe2 className="h-3 w-3" /> Live info unavailable
+                <Globe2 className="h-3 w-3" /> Real-time data not available now
               </div>
             )}
             <button
