@@ -11,7 +11,7 @@ const searchSchema = z.object({ mode: z.enum(["login", "register"]).optional() }
 
 export const Route = createFileRoute("/auth")({
   validateSearch: searchSchema,
-  head: () => ({ meta: [{ title: "Login or Register — UID Topup" }, { name: "description", content: "Sign in to your UID Topup account to purchase Free Fire diamonds and memberships." }] }),
+  head: () => ({ meta: [{ title: "Login or Register — TOP-UP EXPRESS" }, { name: "description", content: "Sign in to your TOP-UP EXPRESS account to purchase Free Fire diamonds and memberships." }] }),
   component: AuthPage,
 });
 
@@ -71,7 +71,7 @@ function AuthPage() {
       <div className="mx-auto max-w-md px-4 pt-10">
         <div className="card-luxe rounded-2xl p-6 sm:p-8">
           <div className="text-center mb-6">
-            <h1 className="font-display text-4xl gold-text">{tab === "login" ? "WELCOME BACK" : "JOIN UID TOPUP"}</h1>
+            <h1 className="font-display text-4xl gold-text">{tab === "login" ? "WELCOME BACK" : "JOIN TOP-UP EXPRESS"}</h1>
             <p className="text-sm text-muted-foreground mt-1">
               {tab === "login" ? "Sign in to continue topping up" : "Create your premium account"}
             </p>

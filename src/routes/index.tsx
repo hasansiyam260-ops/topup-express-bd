@@ -12,9 +12,9 @@ import { AnnouncementBar } from "@/components/site/AnnouncementBar";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "UIDTOPUP.COM — Premium Free Fire Diamond Topup Bangladesh" },
+      { title: "TOP-UP EXPRESS — Premium Free Fire Diamond Topup Bangladesh" },
       { name: "description", content: "Bangladesh er #1 Free Fire diamond topup service. Instant 10 second delivery, Weekly & Monthly membership, Level Up Pass — best price. Pay with bKash, Nagad, Rocket." },
-      { property: "og:title", content: "UIDTOPUP.COM — Premium Free Fire Topup" },
+      { property: "og:title", content: "TOP-UP EXPRESS — Premium Free Fire Topup" },
       { property: "og:description", content: "Instant Free Fire diamond topup, membership & level up pass. Trusted by thousands in Bangladesh." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
@@ -315,7 +315,7 @@ function SubBrand({
       </span>
       <div className="mt-2 font-display text-base leading-tight">{title}</div>
       <div className="text-[10px] tracking-[0.2em] text-muted-foreground mt-0.5">{sub}</div>
-      <span className="absolute bottom-2 left-1/2 -translate-x-1/2 text-[9px] tracking-[0.15em] text-foreground/40">UIDTOPUP.COM</span>
+      <span className="absolute bottom-2 left-1/2 -translate-x-1/2 text-[9px] tracking-[0.15em] text-foreground/40">TOP-UP EXPRESS</span>
     </div>
   );
 }

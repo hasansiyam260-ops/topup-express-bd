@@ -3,7 +3,7 @@ import { AppShell } from "@/components/site/AppShell";
 import { Sparkles, Gift } from "lucide-react";
 
 export const Route = createFileRoute("/_authenticated/codes")({
-  head: () => ({ meta: [{ title: "My Codes — UIDTOPUP.COM" }] }),
+  head: () => ({ meta: [{ title: "My Codes — TOP-UP EXPRESS" }] }),
   component: CodesPage,
 });
 

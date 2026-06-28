@@ -19,7 +19,7 @@ import {
 } from "lucide-react";
 
 export const Route = createFileRoute("/_authenticated/orders")({
-  head: () => ({ meta: [{ title: "My Orders — UIDTOPUP.COM" }] }),
+  head: () => ({ meta: [{ title: "My Orders — TOP-UP EXPRESS" }] }),
   component: OrdersPage,
 });
 
