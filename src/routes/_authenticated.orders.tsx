@@ -379,6 +379,7 @@ function statusTheme(status: string) {
         noteFg: "#92400e",
         note: "Payment verification এর জন্য অপেক্ষা করুন।",
         icon: <Clock className="h-3 w-3" />,
+        metaTone: "amber" as const,
       };
     case "failed":
     case "cancelled":
