@@ -56,8 +56,9 @@ export function AnnouncementBar() {
             <Info size={11} strokeWidth={3} />
           </span>
           <p
-            className="text-[10.5px] sm:text-[11.5px] font-bold leading-[1.35] text-white line-clamp-2"
+            className="flex-1 text-center text-[12.5px] sm:text-[13.5px] font-bold leading-[1.4] text-white line-clamp-2"
             style={{ textShadow: "0 1px 2px rgba(0,0,0,.3)" }}
+
           >
             ২৪ ঘন্টাই টপআপ চালু • ১০ সেকেন্ডে অটো ডেলিভারি।
             <br />
