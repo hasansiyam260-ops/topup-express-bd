@@ -149,31 +149,27 @@ function ProductPage() {
                 <button
                   key={p.id}
                   onClick={() => setSelectedId(p.id)}
-                  className={`relative flex items-start gap-2 p-3 rounded-xl border-2 bg-card text-left transition-all min-h-[78px] ${
+                  className={`relative flex items-center gap-2 px-3 py-2.5 rounded-xl border-2 bg-card text-left transition-all ${
                     active
                       ? "border-primary glow-red"
                       : "border-border hover:border-neon-violet/40"
                   }`}
                 >
-                  <span className={`mt-0.5 grid place-items-center h-5 w-5 rounded-full border-2 shrink-0 ${
+                  <span className={`grid place-items-center h-4 w-4 rounded-full border-2 shrink-0 ${
                     active ? "border-primary bg-primary" : "border-muted-foreground/40"
                   }`}>
-                    {active && <span className="h-2 w-2 rounded-full bg-white" />}
+                    {active && <span className="h-1.5 w-1.5 rounded-full bg-white" />}
                   </span>
-                  <div className="flex-1 min-w-0">
-                    <div className="font-semibold text-sm leading-tight text-foreground flex items-center gap-1 flex-wrap">
-                      {qty ? <>
-                        <span>{qty}</span>
-                        <span>{rest || "Diamond"}</span>
-                        <span className="text-base leading-none">💎</span>
-                      </> : <span>{p.name_en}</span>}
-                    </div>
-                    <div className="mt-2 flex justify-end">
-                      <span className="font-display text-base text-primary tracking-wide whitespace-nowrap">
-                        {Number(p.price).toFixed(0)} TK
-                      </span>
-                    </div>
-                  </div>
+                  <span className="flex-1 min-w-0 font-semibold text-[13px] leading-tight text-foreground flex items-center gap-1 truncate">
+                    {qty ? <>
+                      <span>{qty}</span>
+                      <span>{rest || "Diamond"}</span>
+                      <span className="text-sm leading-none">💎</span>
+                    </> : <span className="truncate">{p.name_en}</span>}
+                  </span>
+                  <span className="font-display text-sm text-primary tracking-wide whitespace-nowrap">
+                    {Number(p.price).toFixed(0)} TK
+                  </span>
                 </button>
               );
             })}
