@@ -134,7 +134,7 @@ function HomePage() {
       {/* PRIMARY CATEGORY GRID — 3 cols × 2 rows, fixed 6 sections */}
       <section className="mx-auto max-w-3xl px-3 mt-3 grid grid-cols-3 gap-3" aria-busy={isFetching && products.length === 0}>
         {sections.map((c, i) => (
-          <CategoryCard key={i} to={c.to} img={c.img} label={c.label} loading={!c.to && isFetching} />
+          <CategoryCard key={i} to={c.to} cat={c.cat} img={c.img} label={c.label} loading={!c.to && isFetching} />
         ))}
       </section>
 
