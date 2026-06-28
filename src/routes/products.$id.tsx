@@ -304,40 +304,63 @@ function Step({
 }
 
 function PayCard({
-  active, onClick, title, subtitle, icon, brand, variant, recommended,
-}: { active: boolean; onClick: () => void; title: string; subtitle: string; icon: React.ReactNode; brand: string; variant: "wallet" | "instant"; recommended?: boolean }) {
-  const styles = variant === "wallet"
-    ? { tint: "from-amber-50 via-orange-50 to-amber-100", accent: "text-orange-700", ring: "ring-orange-200", chipBg: "bg-orange-500/10", chipText: "text-orange-700" }
-    : { tint: "from-rose-50 via-pink-50 to-rose-100", accent: "text-pink-700", ring: "ring-pink-200", chipBg: "bg-pink-500/10", chipText: "text-pink-700" };
+  active, onClick, title, variant, recommended,
+}: { active: boolean; onClick: () => void; title: string; subtitle?: string; icon?: React.ReactNode; brand?: string; variant: "wallet" | "instant"; recommended?: boolean }) {
   return (
     <button
       onClick={onClick}
-      className={`relative text-left rounded-2xl border-2 overflow-hidden transition-all duration-300 group ${
+      className={`relative text-left rounded-2xl border-2 overflow-hidden transition-all duration-300 bg-white ${
         active
-          ? "border-primary glow-red scale-[1.02] shadow-[0_12px_28px_-12px_color-mix(in_oklab,var(--brand-red)_55%,transparent)]"
-          : "border-border hover:border-primary/40 hover:-translate-y-0.5 hover:shadow-lg"
+          ? "border-primary shadow-[0_10px_24px_-10px_color-mix(in_oklab,var(--brand-red)_55%,transparent)]"
+          : "border-border hover:border-primary/40 hover:-translate-y-0.5 hover:shadow-md"
       }`}
     >
       {recommended && (
-        <span className="absolute top-2 right-2 z-10 text-[9px] font-bold tracking-wider uppercase bg-primary text-primary-foreground px-2 py-0.5 rounded-full shadow-md">Popular</span>
+        <span className="absolute top-1.5 right-1.5 z-10 text-[8px] font-bold tracking-wider uppercase bg-primary text-primary-foreground px-1.5 py-0.5 rounded-full shadow-md">Popular</span>
       )}
       {active && (
-        <span className="absolute top-2 left-2 z-10 grid place-items-center h-5 w-5 rounded-full bg-primary text-primary-foreground text-[10px] shadow-md">✓</span>
+        <span className="absolute top-1.5 left-1.5 z-10 grid place-items-center h-4 w-4 rounded-full bg-primary text-primary-foreground text-[9px] shadow-md">✓</span>
       )}
-      <div className={`relative h-16 grid place-items-center bg-gradient-to-br ${styles.tint} overflow-hidden`}>
-        <div className="absolute inset-0 opacity-40 sweep-shine pointer-events-none" />
-        <div className="relative flex flex-col items-center gap-1 px-2">
-          <span className={`grid place-items-center h-7 w-7 rounded-full bg-white/80 backdrop-blur ring-2 ${styles.ring} ${styles.accent} shadow-sm`}>{icon}</span>
-          <span className={`font-display text-[11px] leading-none ${styles.accent} text-center`}>{brand}</span>
-        </div>
+
+      <div className="relative h-[88px] grid place-items-center px-2 overflow-hidden">
+        <div className="absolute inset-0 sweep-shine opacity-30 pointer-events-none" />
+        {variant === "wallet" ? (
+          <div className="relative flex flex-col items-center gap-1.5">
+            <span className="grid place-items-center h-9 w-9 rounded-xl bg-gradient-to-br from-amber-100 to-orange-200 ring-1 ring-amber-300/60 shadow-sm">
+              <Wallet className="h-5 w-5 text-orange-600" />
+            </span>
+            <span className="font-display text-[13px] leading-none text-orange-700">TOPUP <span className="text-purple-600">ওয়ালেট</span></span>
+          </div>
+        ) : (
+          <div className="relative flex flex-col items-center gap-1.5">
+            <div className="flex items-center gap-1">
+              <BrandPill label="bKash" color="#e2136e" />
+              <BrandPill label="Nagad" color="#f15a29" />
+              <BrandPill label="Rocket" color="#8a3ab9" />
+            </div>
+            <span className="font-display text-[12px] leading-none text-foreground">Auto Add Money</span>
+          </div>
+        )}
       </div>
-      <div className={`px-2 py-1.5 flex items-center justify-between gap-2 ${active ? "bg-primary/8" : "bg-card"}`}>
-        <div className="min-w-0">
-          <div className={`text-[11px] font-bold truncate ${active ? "text-primary" : "text-foreground"}`}>{title}</div>
-          <div className="text-[9px] text-muted-foreground truncate">{subtitle}</div>
+
+      <div className={`px-2 py-1.5 border-t border-border ${active ? "bg-primary/5" : "bg-muted/30"}`}>
+        <div className="flex items-center justify-between gap-2">
+          <span className={`text-[11px] font-bold truncate ${active ? "text-primary" : "text-foreground"}`}>{title}</span>
+          <span className="shrink-0 text-[8px] font-bold uppercase tracking-wider px-1 py-0.5 rounded bg-emerald-500/10 text-emerald-700">Fast</span>
         </div>
-        <span className={`shrink-0 text-[8px] font-bold uppercase tracking-wider px-1 py-0.5 rounded ${styles.chipBg} ${styles.chipText}`}>Fast</span>
       </div>
     </button>
   );
 }
+
+function BrandPill({ label, color }: { label: string; color: string }) {
+  return (
+    <span
+      className="text-[8px] font-bold px-1.5 py-0.5 rounded-md text-white shadow-sm"
+      style={{ background: `linear-gradient(135deg, ${color}, color-mix(in oklab, ${color} 70%, black))` }}
+    >
+      {label}
+    </span>
+  );
+}
+
