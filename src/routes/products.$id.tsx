@@ -139,17 +139,17 @@ function ProductPage() {
       <section className="mx-auto max-w-3xl px-3 mt-4 space-y-4">
         {/* Step 1 — Select Recharge */}
         <Step n={1} title="Select Recharge">
-          <div className="grid grid-cols-2 gap-2.5">
+          <div className={`grid gap-2.5 ${product.pack_type === "diamond" ? "grid-cols-2" : "grid-cols-1"}`}>
             {related.map((p) => {
               const active = p.id === selected.id;
+              const isDiamond = p.pack_type === "diamond";
               const m = /^(\d+)/.exec(p.name_en);
               const qty = m ? m[1] : null;
-              const rest = m ? p.name_en.slice(m[0].length).trim() : p.name_en;
               return (
                 <button
                   key={p.id}
                   onClick={() => setSelectedId(p.id)}
-                  className={`relative flex items-center gap-1.5 px-2.5 h-12 rounded-xl border-2 bg-card text-left transition-all ${
+                  className={`relative flex items-center gap-2 px-3 h-12 rounded-xl border-2 bg-card text-left transition-all ${
                     active
                       ? "border-primary glow-red"
                       : "border-border hover:border-neon-violet/40"
@@ -160,19 +160,23 @@ function ProductPage() {
                   }`}>
                     {active && <span className="h-1.5 w-1.5 rounded-full bg-white" />}
                   </span>
-                  <span className="flex-1 min-w-0 font-semibold leading-none text-foreground flex items-baseline gap-1 whitespace-nowrap overflow-hidden">
-                    <span className="text-[12px]">{qty ?? p.name_en}</span>
-                    {qty && <span className="text-[12px]">Diamond</span>}
-                    {qty && <span className="text-[11px] leading-none">💎</span>}
-                  </span>
-
-
+                  {isDiamond ? (
+                    <span className="flex-1 min-w-0 font-semibold leading-none text-foreground flex items-baseline gap-1 whitespace-nowrap overflow-hidden">
+                      <span className="text-[12px]">{qty ?? p.name_en}</span>
+                      {qty && <span className="text-[12px]">Diamond</span>}
+                      {qty && <span className="text-[11px] leading-none">💎</span>}
+                    </span>
+                  ) : (
+                    <span className="flex-1 min-w-0 font-semibold text-[13px] leading-tight text-foreground truncate">
+                      {p.name_bn || p.name_en}
+                    </span>
+                  )}
                   <span className="font-display text-[12px] text-primary tracking-wide whitespace-nowrap shrink-0 self-end pb-1">
                     {Number(p.price).toFixed(0)} TK
                   </span>
-
                 </button>
               );
+
             })}
           </div>
         </Step>
