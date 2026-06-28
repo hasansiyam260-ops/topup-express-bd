@@ -85,6 +85,7 @@ function WalletPage() {
         {/* Confirm */}
         <button
           disabled={!valid}
+          onClick={() => valid && setCheckoutOpen(true)}
           className="btn-red w-full py-3 rounded-xl text-sm font-bold tracking-wide disabled:opacity-50 disabled:cursor-not-allowed shadow-[0_8px_20px_-8px_color-mix(in_oklab,var(--brand-red)_55%,transparent)] flex items-center justify-center gap-2"
         >
           <Zap className="h-4 w-4" />
