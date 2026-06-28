@@ -5,6 +5,7 @@ import { useState } from "react";
 import { adminListPayments, adminUpsertPayment, adminDeletePayment } from "@/lib/admin.functions";
 import { Plus, Pencil, Trash2 } from "lucide-react";
 import { toast } from "sonner";
+import { EditorModal, Field, ToggleRow } from "./admin.categories";
 
 export const Route = createFileRoute("/admin/payments")({
   component: AdminPayments,
@@ -35,9 +36,9 @@ function AdminPayments() {
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between gap-3">
-        <h1 className="text-2xl font-black text-slate-900">Payment Methods</h1>
-        <button onClick={() => setEditing(empty)} className="flex items-center gap-1 rounded-lg bg-rose-600 px-3 py-2 text-xs font-bold text-white shadow hover:bg-rose-700">
-          <Plus className="h-3.5 w-3.5" /> Add Method
+        <h1 className="text-xl font-black text-slate-900">Payment Methods</h1>
+        <button onClick={() => setEditing({ ...empty })} className="flex items-center gap-1.5 rounded-lg bg-rose-600 px-4 py-2.5 text-sm font-bold text-white shadow active:scale-95">
+          <Plus className="h-4 w-4" /> Add New
         </button>
       </div>
 
@@ -45,19 +46,23 @@ function AdminPayments() {
         {data.map((p: any) => (
           <div key={p.id} className="overflow-hidden rounded-xl border bg-white shadow-sm">
             <div className="h-2" style={{ background: p.brand_color || "#475569" }} />
-            <div className="p-4">
-              <div className="flex items-start justify-between">
-                <div>
-                  <div className="text-lg font-black text-slate-900">{p.name}</div>
-                  <div className="font-mono text-sm text-slate-700">{p.number}</div>
-                  <div className="mt-1 text-[11px] font-bold uppercase text-slate-500">{p.account_type}</div>
+            <div className="p-3">
+              <div className="flex items-start justify-between gap-2">
+                <div className="min-w-0">
+                  <div className="text-base font-black text-slate-900">{p.name}</div>
+                  <div className="truncate font-mono text-sm text-slate-700">{p.number}</div>
+                  <div className="mt-0.5 text-[10px] font-bold uppercase text-slate-500">{p.account_type}</div>
                 </div>
-                <span className={`rounded-full px-2 py-0.5 text-[10px] font-bold ${p.is_active ? "bg-green-100 text-green-700" : "bg-slate-100 text-slate-500"}`}>{p.is_active ? "ACTIVE" : "OFF"}</span>
+                <span className={`shrink-0 rounded-full px-2 py-0.5 text-[10px] font-bold ${p.is_active ? "bg-green-100 text-green-700" : "bg-slate-100 text-slate-500"}`}>{p.is_active ? "ON" : "OFF"}</span>
               </div>
-              {p.instructions && <p className="mt-2 text-xs text-slate-600">{p.instructions}</p>}
-              <div className="mt-3 flex justify-end gap-1">
-                <button onClick={() => setEditing(p)} className="rounded p-1.5 text-sky-600 hover:bg-sky-50"><Pencil className="h-3.5 w-3.5" /></button>
-                <button onClick={() => { if (confirm("Delete?")) delM.mutate(p.id); }} className="rounded p-1.5 text-rose-600 hover:bg-rose-50"><Trash2 className="h-3.5 w-3.5" /></button>
+              {p.instructions && <p className="mt-2 line-clamp-2 text-xs text-slate-600">{p.instructions}</p>}
+              <div className="mt-3 flex gap-2">
+                <button onClick={() => setEditing(p)} className="flex flex-1 items-center justify-center gap-1.5 rounded-lg bg-sky-600 px-3 py-2.5 text-sm font-bold text-white active:scale-95">
+                  <Pencil className="h-4 w-4" /> Edit
+                </button>
+                <button onClick={() => { if (confirm(`Delete "${p.name}"?`)) delM.mutate(p.id); }} className="flex items-center justify-center gap-1.5 rounded-lg bg-rose-50 px-3 py-2.5 text-sm font-bold text-rose-600 active:scale-95">
+                  <Trash2 className="h-4 w-4" />
+                </button>
               </div>
             </div>
           </div>
@@ -65,38 +70,28 @@ function AdminPayments() {
       </div>
 
       {editing && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
-          <div className="w-full max-w-md rounded-2xl bg-white p-5 shadow-2xl">
-            <h2 className="mb-4 text-lg font-black">{editing.id ? "Edit" : "Add"} Payment Method</h2>
-            <div className="space-y-3">
-              <Field label="Name" value={editing.name} onChange={(v) => setEditing({ ...editing, name: v })} />
-              <Field label="Number" value={editing.number} onChange={(v) => setEditing({ ...editing, number: v })} />
-              <Field label="Account Type (personal/agent/merchant)" value={editing.account_type} onChange={(v) => setEditing({ ...editing, account_type: v })} />
-              <Field label="Brand Color (hex)" value={editing.brand_color ?? ""} onChange={(v) => setEditing({ ...editing, brand_color: v })} />
-              <Field label="Logo URL" value={editing.logo_url ?? ""} onChange={(v) => setEditing({ ...editing, logo_url: v })} />
-              <Field label="Sort Order" type="number" value={String(editing.sort_order)} onChange={(v) => setEditing({ ...editing, sort_order: Number(v) })} />
-              <div>
-                <label className="mb-1 block text-[11px] font-bold uppercase text-slate-600">Instructions</label>
-                <textarea value={editing.instructions ?? ""} onChange={(e) => setEditing({ ...editing, instructions: e.target.value })} rows={3} className="w-full rounded-lg border border-slate-200 p-2 text-sm focus:border-rose-500 focus:outline-none" />
-              </div>
-              <label className="flex items-center gap-2 text-sm"><input type="checkbox" checked={editing.is_active} onChange={(e) => setEditing({ ...editing, is_active: e.target.checked })} /> Active</label>
+        <EditorModal title={editing.id ? "Edit Payment Method" : "Add Payment Method"} onClose={() => setEditing(null)} onSave={() => upsertM.mutate(editing)} saving={upsertM.isPending}>
+          <Field label="Name" hint="e.g. bKash, Nagad, Rocket"><input className="adm-input" value={editing.name} onChange={(e) => setEditing({ ...editing, name: e.target.value })} /></Field>
+          <Field label="Account Number"><input className="adm-input" value={editing.number} onChange={(e) => setEditing({ ...editing, number: e.target.value })} /></Field>
+          <Field label="Account Type">
+            <select className="adm-input" value={editing.account_type} onChange={(e) => setEditing({ ...editing, account_type: e.target.value })}>
+              <option value="personal">Personal</option>
+              <option value="agent">Agent</option>
+              <option value="merchant">Merchant</option>
+            </select>
+          </Field>
+          <Field label="Brand Color">
+            <div className="flex gap-2">
+              <input type="color" value={editing.brand_color ?? "#E2136E"} onChange={(e) => setEditing({ ...editing, brand_color: e.target.value })} className="h-12 w-16 cursor-pointer rounded-lg border border-slate-200" />
+              <input className="adm-input flex-1" value={editing.brand_color ?? ""} onChange={(e) => setEditing({ ...editing, brand_color: e.target.value })} placeholder="#E2136E" />
             </div>
-            <div className="mt-5 flex justify-end gap-2">
-              <button onClick={() => setEditing(null)} className="rounded-lg px-4 py-2 text-sm font-bold text-slate-600 hover:bg-slate-100">Cancel</button>
-              <button disabled={upsertM.isPending} onClick={() => upsertM.mutate(editing)} className="rounded-lg bg-rose-600 px-4 py-2 text-sm font-bold text-white hover:bg-rose-700 disabled:opacity-50">{upsertM.isPending ? "Saving…" : "Save"}</button>
-            </div>
-          </div>
-        </div>
+          </Field>
+          <Field label="Logo URL"><input className="adm-input" value={editing.logo_url ?? ""} onChange={(e) => setEditing({ ...editing, logo_url: e.target.value })} /></Field>
+          <Field label="Instructions" hint="Shown to user during payment"><textarea rows={3} className="adm-input" value={editing.instructions ?? ""} onChange={(e) => setEditing({ ...editing, instructions: e.target.value })} /></Field>
+          <Field label="Sort Order"><input type="number" className="adm-input" value={editing.sort_order} onChange={(e) => setEditing({ ...editing, sort_order: Number(e.target.value) })} /></Field>
+          <ToggleRow label="Active (visible to users)" checked={editing.is_active} onChange={(v) => setEditing({ ...editing, is_active: v })} />
+        </EditorModal>
       )}
-    </div>
-  );
-}
-
-function Field({ label, value, onChange, type = "text" }: { label: string; value: string; onChange: (v: string) => void; type?: string }) {
-  return (
-    <div>
-      <label className="mb-1 block text-[11px] font-bold uppercase text-slate-600">{label}</label>
-      <input type={type} value={value} onChange={(e) => onChange(e.target.value)} className="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm focus:border-rose-500 focus:outline-none" />
     </div>
   );
 }
