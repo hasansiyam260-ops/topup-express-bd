@@ -31,7 +31,6 @@ import { Route as AuthenticatedWalletRouteImport } from './routes/_authenticated
 import { Route as AuthenticatedReferralsRouteImport } from './routes/_authenticated.referrals'
 import { Route as AuthenticatedProfileRouteImport } from './routes/_authenticated.profile'
 import { Route as AuthenticatedOrdersRouteImport } from './routes/_authenticated.orders'
-import { Route as AuthenticatedCodesRouteImport } from './routes/_authenticated.codes'
 import { Route as ApiPublicHooksAutoDeliverRouteImport } from './routes/api/public/hooks/auto-deliver'
 
 const TermsRoute = TermsRouteImport.update({
@@ -143,11 +142,6 @@ const AuthenticatedOrdersRoute = AuthenticatedOrdersRouteImport.update({
   path: '/orders',
   getParentRoute: () => AuthenticatedRoute,
 } as any)
-const AuthenticatedCodesRoute = AuthenticatedCodesRouteImport.update({
-  id: '/codes',
-  path: '/codes',
-  getParentRoute: () => AuthenticatedRoute,
-} as any)
 const ApiPublicHooksAutoDeliverRoute =
   ApiPublicHooksAutoDeliverRouteImport.update({
     id: '/api/public/hooks/auto-deliver',
@@ -163,7 +157,6 @@ export interface FileRoutesByFullPath {
   '/faq': typeof FaqRoute
   '/privacy': typeof PrivacyRoute
   '/terms': typeof TermsRoute
-  '/codes': typeof AuthenticatedCodesRoute
   '/orders': typeof AuthenticatedOrdersRoute
   '/profile': typeof AuthenticatedProfileRoute
   '/referrals': typeof AuthenticatedReferralsRoute
@@ -187,7 +180,6 @@ export interface FileRoutesByTo {
   '/faq': typeof FaqRoute
   '/privacy': typeof PrivacyRoute
   '/terms': typeof TermsRoute
-  '/codes': typeof AuthenticatedCodesRoute
   '/orders': typeof AuthenticatedOrdersRoute
   '/profile': typeof AuthenticatedProfileRoute
   '/referrals': typeof AuthenticatedReferralsRoute
@@ -214,7 +206,6 @@ export interface FileRoutesById {
   '/faq': typeof FaqRoute
   '/privacy': typeof PrivacyRoute
   '/terms': typeof TermsRoute
-  '/_authenticated/codes': typeof AuthenticatedCodesRoute
   '/_authenticated/orders': typeof AuthenticatedOrdersRoute
   '/_authenticated/profile': typeof AuthenticatedProfileRoute
   '/_authenticated/referrals': typeof AuthenticatedReferralsRoute
@@ -241,7 +232,6 @@ export interface FileRouteTypes {
     | '/faq'
     | '/privacy'
     | '/terms'
-    | '/codes'
     | '/orders'
     | '/profile'
     | '/referrals'
@@ -265,7 +255,6 @@ export interface FileRouteTypes {
     | '/faq'
     | '/privacy'
     | '/terms'
-    | '/codes'
     | '/orders'
     | '/profile'
     | '/referrals'
@@ -291,7 +280,6 @@ export interface FileRouteTypes {
     | '/faq'
     | '/privacy'
     | '/terms'
-    | '/_authenticated/codes'
     | '/_authenticated/orders'
     | '/_authenticated/profile'
     | '/_authenticated/referrals'
@@ -479,13 +467,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedOrdersRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
-    '/_authenticated/codes': {
-      id: '/_authenticated/codes'
-      path: '/codes'
-      fullPath: '/codes'
-      preLoaderRoute: typeof AuthenticatedCodesRouteImport
-      parentRoute: typeof AuthenticatedRoute
-    }
     '/api/public/hooks/auto-deliver': {
       id: '/api/public/hooks/auto-deliver'
       path: '/api/public/hooks/auto-deliver'
@@ -497,7 +478,6 @@ declare module '@tanstack/react-router' {
 }
 
 interface AuthenticatedRouteChildren {
-  AuthenticatedCodesRoute: typeof AuthenticatedCodesRoute
   AuthenticatedOrdersRoute: typeof AuthenticatedOrdersRoute
   AuthenticatedProfileRoute: typeof AuthenticatedProfileRoute
   AuthenticatedReferralsRoute: typeof AuthenticatedReferralsRoute
@@ -505,7 +485,6 @@ interface AuthenticatedRouteChildren {
 }
 
 const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
-  AuthenticatedCodesRoute: AuthenticatedCodesRoute,
   AuthenticatedOrdersRoute: AuthenticatedOrdersRoute,
   AuthenticatedProfileRoute: AuthenticatedProfileRoute,
   AuthenticatedReferralsRoute: AuthenticatedReferralsRoute,
