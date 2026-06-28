@@ -133,6 +133,7 @@ function ProductPage() {
       status: "pending",
     });
     if (error) { toast.error(error.message); return false; }
+    try { await creditReferralForPurchase({ data: { amount: price } }); } catch {}
     return true;
   };
 
