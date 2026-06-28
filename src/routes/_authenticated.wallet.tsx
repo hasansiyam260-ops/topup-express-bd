@@ -199,7 +199,9 @@ function WalletPage() {
           onVerified={({ amount: a, invoiceId, brand }) => {
             try {
               const prev = Number(localStorage.getItem("uidtopup:wallet") || "0");
-              localStorage.setItem("uidtopup:wallet", String(prev + a));
+              const next = prev + a;
+              localStorage.setItem("uidtopup:wallet", String(next));
+              setBalance(next);
             } catch {}
             const entry: AddMoneyEntry = { invoiceId, brand, amount: a, ts: Date.now() };
             pushHistory(entry);
