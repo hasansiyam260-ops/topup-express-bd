@@ -173,8 +173,8 @@ function ProductPage() {
           <div className="absolute inset-0 bg-gradient-to-r from-black/85 via-black/55 to-transparent" />
           <div className="relative flex items-center gap-3 p-3 sm:p-4">
             <img
-              src={packImage(product.pack_type)}
-              alt={product.name_en}
+              src={packImage(effectiveCat)}
+              alt={categoryTitle(effectiveCat)}
               width={300}
               height={300}
               decoding="async"
@@ -182,9 +182,9 @@ function ProductPage() {
             />
             <div className="min-w-0 text-white drop-shadow-[0_2px_8px_rgba(0,0,0,0.6)]">
               <h1 className="font-display text-xl sm:text-2xl leading-tight">
-                {categoryTitle(product.pack_type)}
+                {categoryTitle(effectiveCat)}
               </h1>
-              <div className="text-[11px] tracking-[0.4em] text-white/70 uppercase mt-1">{categorySubtitle(product.pack_type)}</div>
+              <div className="text-[11px] tracking-[0.4em] text-white/70 uppercase mt-1">{categorySubtitle(effectiveCat)}</div>
             </div>
           </div>
         </div>
