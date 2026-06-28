@@ -70,14 +70,14 @@ async function tryFetch(url: string, region: string, signal: AbortSignal): Promi
 
 // Fires all candidate endpoints in parallel and returns the first valid response.
 export const getFFPlayerName = createServerFn({ method: "GET" })
-  .validator((d: { uid: string; region?: string }) => {
+  .inputValidator((d: { uid: string; region?: string }) => {
     if (!/^\d{6,12}$/.test(d.uid)) throw new Error("Invalid UID");
     return { uid: d.uid, region: (d.region || "bd").toLowerCase() };
   })
   .handler(async ({ data }): Promise<FFInfo> => {
     const region = data.region;
     const controller = new AbortController();
-    const timeout = setTimeout(() => controller.abort(), 4000);
+    const timeout = setTimeout(() => controller.abort(), 2500);
 
     const urls: Array<[string, string]> = [
       [`https://ff-info-mu.vercel.app/info?uid=${data.uid}&region=${region}`, region],
