@@ -13,6 +13,7 @@ type Method = "bkash" | "nagad" | "rocket";
 function WalletPage() {
   const [amount, setAmount] = useState<string>("");
   const [method, setMethod] = useState<Method>("bkash");
+  const [checkoutOpen, setCheckoutOpen] = useState(false);
 
   const numeric = Number(amount || 0);
   const valid = numeric >= 10;
