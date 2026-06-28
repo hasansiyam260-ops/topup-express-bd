@@ -7,7 +7,7 @@ import { AppShell } from "@/components/site/AppShell";
 import { toast } from "sonner";
 import { Mail, Lock, User2 } from "lucide-react";
 
-const searchSchema = z.object({ mode: z.enum(["login", "register"]).optional() });
+const searchSchema = z.object({ mode: z.enum(["login", "register"]).optional(), ref: z.string().optional() });
 
 export const Route = createFileRoute("/auth")({
   validateSearch: searchSchema,
