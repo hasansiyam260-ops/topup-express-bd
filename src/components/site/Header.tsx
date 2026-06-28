@@ -18,7 +18,15 @@ export function Header() {
   }, []);
 
   return (
-    <header className="sticky top-0 z-40 backdrop-blur-xl bg-background/85 border-b border-border">
+    <header
+      className="sticky top-0 z-40 backdrop-blur-xl bg-background/85 border-b border-rose-200/60"
+      style={{
+        boxShadow:
+          "0 8px 24px -10px rgba(244,63,94,0.28), 0 0 28px -6px rgba(244,63,94,0.18), inset 0 -1px 0 rgba(244,63,94,0.12)",
+        backgroundImage:
+          "radial-gradient(120% 80% at 50% 0%, rgba(244,63,94,0.10), transparent 60%)",
+      }}
+    >
       <div className="mx-auto max-w-7xl px-3 py-3 flex items-center justify-between gap-3">
         <Link to="/" className="flex items-center min-w-0" aria-label="TOP-UP EXPRESS">
           <img
