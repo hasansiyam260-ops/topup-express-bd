@@ -1,7 +1,7 @@
 import { createFileRoute, Link, useNavigate, useRouter } from "@tanstack/react-router";
-import { useSuspenseQuery, queryOptions } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
-import { getProduct, listProducts } from "@/lib/products.functions";
+import { productQueryOptions, productsQueryOptions } from "@/lib/products.queries";
 import { getFFPlayerName } from "@/lib/ff.functions";
 import { AppShell } from "@/components/site/AppShell";
 import { SecureCheckout, SuccessScreen } from "@/components/site/SecureCheckout";
@@ -11,27 +11,10 @@ import { supabase } from "@/integrations/supabase/client";
 import { Wallet, Smartphone, Info, HelpCircle, AlertTriangle, X, Plus } from "lucide-react";
 import { toast } from "sonner";
 
-const productQO = (id: string) =>
-  queryOptions({
-    queryKey: ["product", id],
-    queryFn: () => getProduct({ data: { id } }),
-    staleTime: 1000 * 60 * 5,
-    gcTime: 1000 * 60 * 15,
-  });
-
-const allQO = queryOptions({
-  queryKey: ["products"],
-  queryFn: () => listProducts(),
-  staleTime: 1000 * 60 * 5,
-  gcTime: 1000 * 60 * 15,
-});
-
 export const Route = createFileRoute("/products/$id")({
-  loader: async ({ params, context }) => {
-    await Promise.all([
-      context.queryClient.ensureQueryData(productQO(params.id)),
-      context.queryClient.ensureQueryData(allQO),
-    ]);
+  loader: ({ params, context }) => {
+    void context.queryClient.prefetchQuery(productQueryOptions(params.id));
+    void context.queryClient.prefetchQuery(productsQueryOptions);
   },
   head: () => ({
     meta: [
@@ -50,10 +33,13 @@ function ProductPage() {
   const { id } = Route.useParams();
   const router = useRouter();
   const navigate = useNavigate();
-  const { data: product } = useSuspenseQuery(productQO(id));
-  const { data: all } = useSuspenseQuery(allQO);
+  const { data: all = [] } = useQuery(productsQueryOptions);
+  const cachedProduct = all.find((p) => p.id === id);
+  const { data: productData } = useQuery(productQueryOptions(id));
+  const product = productData ?? cachedProduct;
 
-  const related = all.filter((p) => p.pack_type === product?.pack_type);
+  const relatedFromAll = product ? all.filter((p) => p.pack_type === product.pack_type) : [];
+  const related = relatedFromAll.length ? relatedFromAll : product ? [product] : [];
   const [selectedId, setSelectedId] = useState(id);
   useEffect(() => setSelectedId(id), [id]);
   const selected = related.find((p) => p.id === selectedId) ?? product;
@@ -76,7 +62,7 @@ function ProductPage() {
     return () => sub.subscription.unsubscribe();
   }, []);
 
-  if (!product || !selected) return null;
+  if (!product || !selected) return <ProductLoadingShell />;
 
   const checkPlayer = async () => {
     if (!/^\d{6,12}$/.test(uid)) {
