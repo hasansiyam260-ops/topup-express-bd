@@ -118,9 +118,9 @@ function ProfilePage() {
         </div>
 
         {/* Stats overview */}
-        <div className="rounded-2xl overflow-hidden bg-white p-4 shadow-[0_10px_40px_-12px_rgba(239,68,68,0.25)] ring-1 ring-rose-200 relative">
-          <div className="absolute -top-12 -right-12 h-32 w-32 rounded-full bg-rose-300/40 blur-3xl" />
-          <div className="absolute -bottom-12 -left-12 h-32 w-32 rounded-full bg-sky-300/40 blur-3xl" />
+        <div className="rounded-2xl overflow-hidden bg-white p-4 shadow-[0_0_40px_-4px_rgba(239,68,68,0.45),0_10px_30px_-10px_rgba(239,68,68,0.35)] ring-1 ring-rose-200 relative">
+          <div className="absolute -top-12 -right-12 h-32 w-32 rounded-full bg-rose-400/50 blur-3xl" />
+          <div className="absolute -bottom-12 -left-12 h-32 w-32 rounded-full bg-rose-300/40 blur-3xl" />
           <div className="relative flex items-center gap-2 mb-3">
             <span className="grid place-items-center h-8 w-8 rounded-lg bg-gradient-to-br from-rose-500 to-sky-500 text-white ring-1 ring-white shadow-[0_4px_14px_-2px_rgba(244,63,94,0.5)]"><TrendingUp className="h-4 w-4" /></span>
             <div>
