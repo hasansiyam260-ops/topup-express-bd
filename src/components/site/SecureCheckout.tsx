@@ -194,8 +194,10 @@ function BrandPayPage({
             </div>
             <div className="min-w-0">
               <div className="font-bold text-slate-700 text-[13px] leading-tight tracking-[0.15em]">TOP-UP EXPRESS</div>
-              <div className="text-[11px] text-slate-500 mt-0.5">Made In :</div>
-              <div className="text-[12px] text-slate-700 font-semibold">Hridoy Ahmed</div>
+              <div className="text-[12px] text-slate-700 mt-0.5">
+                <span className="text-slate-500">Made In :</span>{" "}
+                <span className="font-semibold">Hridoy Ahmed</span>
+              </div>
             </div>
           </div>
 
