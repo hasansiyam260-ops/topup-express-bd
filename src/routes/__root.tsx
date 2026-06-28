@@ -4,6 +4,7 @@ import {
   Link,
   createRootRouteWithContext,
   useRouter,
+  useRouterState,
   HeadContent,
   Scripts,
 } from "@tanstack/react-router";
@@ -87,7 +88,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     ],
     links: [
       { rel: "stylesheet", href: appCss },
-      { rel: "preload", as: "image", href: logoImg, fetchpriority: "high" },
+      { rel: "preload", as: "image", href: logoImg, fetchPriority: "high" },
     ],
   }),
   shellComponent: RootShell,
@@ -112,12 +113,14 @@ function RootShell({ children }: { children: ReactNode }) {
 
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
+  const pathname = useRouterState({ select: (state) => state.location.pathname });
+  const isAdminRoute = pathname.startsWith("/admin");
 
   return (
     <QueryClientProvider client={queryClient}>
       <Outlet />
-      <WelcomeNotice />
-      <LiveChat />
+      {!isAdminRoute && <WelcomeNotice />}
+      {!isAdminRoute && <LiveChat />}
       <Toaster theme="light" position="top-center" richColors />
     </QueryClientProvider>
   );
