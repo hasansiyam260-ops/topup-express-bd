@@ -110,30 +110,6 @@ function ReferralsPage() {
           </div>
         </div>
 
-        {/* Apply code (if not used yet) */}
-        {data && !data.referredBy && (
-          <div className="rounded-2xl card-soft p-4">
-            <div className="flex items-center gap-2">
-              <Sparkles className="h-4 w-4 text-amber-500" />
-              <div className="text-[11px] font-bold tracking-wider uppercase">কোড আছে? ৳20 বোনাস নিন</div>
-            </div>
-            <div className="mt-2 flex gap-2">
-              <input
-                value={codeInput}
-                onChange={(e) => setCodeInput(e.target.value.toUpperCase())}
-                placeholder="রেফারেল কোড লিখুন"
-                className="flex-1 px-4 py-3 rounded-xl bg-input border-2 border-border focus:border-rose-400 focus:outline-none text-sm tracking-widest"
-              />
-              <button
-                disabled={!codeInput || applyMut.isPending}
-                onClick={() => applyMut.mutate(codeInput)}
-                className="btn-red rounded-xl px-4 text-sm font-bold disabled:opacity-50"
-              >
-                APPLY
-              </button>
-            </div>
-          </div>
-        )}
 
         {/* How it works */}
         <div className="rounded-2xl card-soft p-4">
