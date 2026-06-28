@@ -13,6 +13,7 @@ import appCss from "../styles.css?url";
 import logoImg from "@/assets/logo-uid.webp";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { Toaster } from "sonner";
+import { WelcomeNotice } from "@/components/site/WelcomeNotice";
 
 function NotFoundComponent() {
   return (
@@ -114,6 +115,7 @@ function RootComponent() {
   return (
     <QueryClientProvider client={queryClient}>
       <Outlet />
+      <WelcomeNotice />
       <Toaster theme="light" position="top-center" richColors />
     </QueryClientProvider>
   );
