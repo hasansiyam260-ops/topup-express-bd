@@ -1,10 +1,12 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
+import { useServerFn } from "@tanstack/react-start";
 import { supabase } from "@/integrations/supabase/client";
 import { AppShell } from "@/components/site/AppShell";
-import { toast } from "sonner";
-import { LogOut, Wallet, User, ShoppingBag, CheckCircle2, XCircle, Timer, TrendingUp, Gamepad2, Hash } from "lucide-react";
+import { getFFPlayerName } from "@/lib/ff.functions";
+import { LogOut, Wallet, User, ShoppingBag, CheckCircle2, XCircle, Timer, TrendingUp, Gamepad2, Hash, Trophy, Heart, Globe2 } from "lucide-react";
+
 
 export const Route = createFileRoute("/_authenticated/profile")({
   head: () => ({ meta: [{ title: "My Profile — UIDTOPUP.COM" }] }),
@@ -172,6 +174,59 @@ function StatTile({ icon, label, value }: { icon: React.ReactNode; label: string
         <span className="truncate">{label}</span>
       </div>
       <div className="font-display text-base leading-tight mt-1 text-red-600">{value}</div>
+    </div>
+  );
+}
+
+function GameAccountCard({ uid, fallbackName }: { uid: string; fallbackName?: string | null }) {
+  const fetchInfo = useServerFn(getFFPlayerName);
+  const { data, isLoading, isError } = useQuery({
+    queryKey: ["ff-player-info", uid],
+    queryFn: () => fetchInfo({ data: { uid } }),
+    staleTime: 5 * 60 * 1000,
+    retry: 1,
+  });
+  const name = data?.name || fallbackName || "Free Fire Player";
+  return (
+    <div className="relative rounded-xl overflow-hidden p-3 bg-gradient-to-br from-indigo-600 via-blue-600 to-cyan-500 text-white shadow-[0_8px_24px_-12px_rgba(37,99,235,0.55)]">
+      <div className="absolute -top-8 -right-8 h-20 w-20 rounded-full bg-white/15 blur-2xl" />
+      <div className="relative flex items-center gap-2.5 mb-2.5">
+        <span className="grid place-items-center h-9 w-9 rounded-lg bg-white/15 ring-1 ring-white/30 shrink-0">
+          <Gamepad2 className="h-4 w-4" />
+        </span>
+        <div className="min-w-0 flex-1">
+          <div className="text-[8px] tracking-[0.3em] uppercase text-white/70 leading-none">Game Account</div>
+          <div className="font-display text-sm leading-tight mt-1 truncate">{name}</div>
+        </div>
+        {data?.region && (
+          <span className="text-[9px] font-semibold px-2 py-0.5 rounded-full bg-white/15 ring-1 ring-white/30 uppercase tracking-wider">
+            {data.region}
+          </span>
+        )}
+      </div>
+      <div className="relative grid grid-cols-2 gap-1.5">
+        <GameStat icon={<Hash className="h-3 w-3" />} label="UID" value={uid} mono />
+        <GameStat icon={<User className="h-3 w-3" />} label="Name" value={isLoading ? "…" : (isError ? "—" : name)} />
+        <GameStat icon={<Trophy className="h-3 w-3" />} label="Level" value={isLoading ? "…" : (data?.level != null ? String(data.level) : "—")} />
+        <GameStat icon={<Heart className="h-3 w-3" />} label="Likes" value={isLoading ? "…" : (data?.likes != null ? Number(data.likes).toLocaleString() : "—")} />
+      </div>
+      {isError && (
+        <div className="relative mt-2 text-[10px] text-white/80 flex items-center gap-1">
+          <Globe2 className="h-3 w-3" /> Live info unavailable
+        </div>
+      )}
+    </div>
+  );
+}
+
+function GameStat({ icon, label, value, mono }: { icon: React.ReactNode; label: string; value: string; mono?: boolean }) {
+  return (
+    <div className="rounded-lg p-2 bg-white/12 ring-1 ring-white/25 backdrop-blur-sm">
+      <div className="flex items-center gap-1 text-[8px] tracking-[0.2em] uppercase text-white/75 leading-none">
+        <span className="grid place-items-center h-4 w-4 rounded bg-white/20">{icon}</span>
+        {label}
+      </div>
+      <div className={`mt-1 text-sm font-semibold text-white leading-tight truncate ${mono ? "font-mono" : ""}`}>{value}</div>
     </div>
   );
 }
