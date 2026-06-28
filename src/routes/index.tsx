@@ -1,6 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { productsQueryOptions } from "@/lib/products.queries";
+import { listCategories } from "@/lib/categories.functions";
 import { AppShell } from "@/components/site/AppShell";
 import { packImage } from "@/lib/assets";
 import heroImg from "@/assets/hero-promo.webp";
@@ -36,20 +37,36 @@ export const Route = createFileRoute("/")({
 
 function HomePage() {
   const { data: products = [], isFetching } = useQuery(productsQueryOptions);
+  const { data: cats = [] } = useQuery({
+    queryKey: ["categories"],
+    queryFn: () => listCategories(),
+    staleTime: 1000 * 60 * 10,
+  });
 
   const firstOf = (type: string) => products.find((p) => p.pack_type === type)?.id;
   const membershipNonLite = products.find((p) => p.pack_type === "membership" && !/lite/i.test(p.name_en))?.id ?? firstOf("membership");
   const weeklyLiteId = products.find((p) => p.pack_type === "membership" && /lite/i.test(p.name_en))?.id ?? firstOf("membership");
 
-  // Exactly 6 fixed sections matching the reference grid
-  const sections = [
-    { label: "Free Fire [BD SERVER]", img: packImage("diamond"), to: firstOf("diamond"), cat: "diamond" },
-    { label: "Free Fire Membership", img: packImage("membership"), to: membershipNonLite, cat: "membership" },
-    { label: "Free Fire Level Up Pass BD", img: packImage("level_pass"), to: firstOf("level_pass"), cat: "level_pass" },
-    { label: "Weekly Lite Membership", img: packImage("weeklylite"), to: weeklyLiteId, cat: "weeklylite" },
-    { label: "Free Fire Like", img: packImage("like"), to: firstOf("like"), cat: "like" },
-    { label: "Top Up for UniPin", img: packImage("unipin"), to: firstOf("airdrop") ?? firstOf("diamond"), cat: "unipin" },
-  ];
+  // Resolve target product for each category tile by its key
+  const targetFor = (key: string): string | undefined => {
+    switch (key) {
+      case "diamond": return firstOf("diamond");
+      case "membership": return membershipNonLite;
+      case "level_pass": return firstOf("level_pass");
+      case "weeklylite": return weeklyLiteId;
+      case "like": return firstOf("like");
+      case "unipin": return firstOf("airdrop") ?? firstOf("diamond");
+      default: return firstOf(key);
+    }
+  };
+
+  // Sections come from the categories table (admin-editable). Image falls back to bundled pack art.
+  const sections = cats.map((c) => ({
+    label: c.name_en,
+    img: c.image_url || packImage(c.key),
+    to: targetFor(c.key),
+    cat: c.key,
+  }));
 
   return (
     <AppShell>
