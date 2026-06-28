@@ -1,8 +1,22 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { AppShell } from "@/components/site/AppShell";
-import { Wallet, Info, ShieldCheck, Zap } from "lucide-react";
+import { Wallet, Info, ShieldCheck, Zap, History, CheckCircle2, Hash, CreditCard, Clock } from "lucide-react";
 import { SecureCheckout } from "@/components/site/SecureCheckout";
+
+type AddMoneyEntry = { invoiceId: string; brand: string; amount: number; ts: number };
+const HISTORY_KEY = "uidtopup:addmoney:history";
+
+function loadHistory(): AddMoneyEntry[] {
+  try { return JSON.parse(localStorage.getItem(HISTORY_KEY) || "[]"); } catch { return []; }
+}
+function pushHistory(e: AddMoneyEntry) {
+  try {
+    const list = loadHistory();
+    list.unshift(e);
+    localStorage.setItem(HISTORY_KEY, JSON.stringify(list.slice(0, 50)));
+  } catch {}
+}
 
 export const Route = createFileRoute("/_authenticated/wallet")({
   head: () => ({ meta: [{ title: "Add Money — UIDTOPUP.COM" }] }),
@@ -12,6 +26,9 @@ export const Route = createFileRoute("/_authenticated/wallet")({
 function WalletPage() {
   const [amount, setAmount] = useState<string>("");
   const [checkoutOpen, setCheckoutOpen] = useState(false);
+  const [history, setHistory] = useState<AddMoneyEntry[]>([]);
+
+  useEffect(() => { setHistory(loadHistory()); }, []);
 
   const numeric = Number(amount || 0);
   const valid = numeric >= 10;
@@ -93,10 +110,93 @@ function WalletPage() {
             ওয়ালেট ব্যবহার করে যেকোনো প্রোডাক্ট <span className="font-semibold text-foreground">instantly purchase</span> করুন। bKash / Nagad / Rocket দিয়ে নিরাপদে টপআপ করতে পারবেন।
           </p>
         </div>
+
+        {/* Add Money History */}
+        <section className="rounded-2xl bg-gradient-to-br from-white via-rose-50/40 to-sky-50/40 border-2 border-rose-200/70 p-3 shadow-[0_10px_30px_-18px_rgba(244,63,94,0.45)]">
+          <div className="flex items-center justify-between mb-2.5">
+            <div className="flex items-center gap-2">
+              <span className="grid place-items-center h-7 w-7 rounded-lg bg-gradient-to-br from-rose-500 to-pink-600 text-white shadow-[0_4px_12px_-4px_rgba(244,63,94,0.6)]">
+                <History className="h-3.5 w-3.5" />
+              </span>
+              <div>
+                <h2 className="font-display text-sm tracking-wide text-rose-700 leading-none">ADD MONEY HISTORY</h2>
+                <p className="text-[9px] text-muted-foreground mt-0.5">সকল add money transaction</p>
+              </div>
+            </div>
+            <span className="text-[10px] font-bold tracking-wider uppercase bg-rose-500/10 text-rose-700 px-2 py-1 rounded-full border border-rose-300/60">
+              {history.length} {history.length === 1 ? "Entry" : "Entries"}
+            </span>
+          </div>
+
+          {history.length === 0 ? (
+            <div className="rounded-xl border border-dashed border-rose-200 bg-white/60 py-6 text-center">
+              <Wallet className="h-6 w-6 mx-auto text-rose-300 mb-1.5" />
+              <p className="text-[11px] text-muted-foreground">এখনো কোনো add money হয়নি</p>
+              <p className="text-[10px] text-muted-foreground/70 mt-0.5">প্রথম টপআপ এর পর এখানে দেখা যাবে</p>
+            </div>
+          ) : (
+            <ul className="space-y-2">
+              {history.map((h) => {
+                const d = new Date(h.ts);
+                const brandColor =
+                  h.brand === "bkash" ? "from-pink-500 to-pink-600" :
+                  h.brand === "nagad" ? "from-orange-500 to-red-600" :
+                  h.brand === "rocket" ? "from-purple-500 to-violet-700" :
+                  "from-sky-500 to-blue-600";
+                return (
+                  <li key={h.invoiceId} className="rounded-xl bg-white border border-rose-100 p-2.5 shadow-[0_4px_14px_-10px_rgba(244,63,94,0.35)]">
+                    <div className="flex items-center gap-2.5">
+                      <span className={`grid place-items-center h-9 w-9 rounded-lg bg-gradient-to-br ${brandColor} text-white shrink-0 shadow-md`}>
+                        <CheckCircle2 className="h-4 w-4" />
+                      </span>
+                      <div className="min-w-0 flex-1">
+                        <div className="flex items-center justify-between gap-2">
+                          <div className="font-display text-[15px] leading-none text-emerald-700">
+                            +৳{h.amount.toLocaleString()}
+                          </div>
+                          <span className="text-[9px] font-bold tracking-wider uppercase bg-emerald-500/10 text-emerald-700 px-1.5 py-0.5 rounded border border-emerald-300/50">
+                            Success
+                          </span>
+                        </div>
+                        <div className="mt-1.5 grid grid-cols-3 gap-1.5">
+                          <div className="rounded-md border border-rose-100 bg-rose-50/50 px-1.5 py-1">
+                            <div className="text-[8px] tracking-wider uppercase text-rose-600 font-bold flex items-center gap-0.5"><CreditCard className="h-2 w-2" />Method</div>
+                            <div className="text-[10px] font-semibold text-foreground capitalize truncate">{h.brand}</div>
+                          </div>
+                          <div className="rounded-md border border-rose-100 bg-rose-50/50 px-1.5 py-1">
+                            <div className="text-[8px] tracking-wider uppercase text-rose-600 font-bold flex items-center gap-0.5"><Hash className="h-2 w-2" />TXID</div>
+                            <div className="text-[10px] font-semibold text-foreground truncate">{h.invoiceId}</div>
+                          </div>
+                          <div className="rounded-md border border-rose-100 bg-rose-50/50 px-1.5 py-1">
+                            <div className="text-[8px] tracking-wider uppercase text-rose-600 font-bold flex items-center gap-0.5"><Clock className="h-2 w-2" />Date</div>
+                            <div className="text-[10px] font-semibold text-foreground truncate">{d.toLocaleDateString()} {d.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}</div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </li>
+                );
+              })}
+            </ul>
+          )}
+        </section>
       </div>
 
       {checkoutOpen && (
-        <SecureCheckout amount={numeric} onClose={() => setCheckoutOpen(false)} onVerified={({ amount: a }) => { try { const prev = Number(localStorage.getItem("uidtopup:wallet") || "0"); localStorage.setItem("uidtopup:wallet", String(prev + a)); } catch {} return true; }} />
+        <SecureCheckout
+          amount={numeric}
+          onClose={() => setCheckoutOpen(false)}
+          onVerified={({ amount: a, invoiceId, brand }) => {
+            try {
+              const prev = Number(localStorage.getItem("uidtopup:wallet") || "0");
+              localStorage.setItem("uidtopup:wallet", String(prev + a));
+            } catch {}
+            const entry: AddMoneyEntry = { invoiceId, brand, amount: a, ts: Date.now() };
+            pushHistory(entry);
+            setHistory((h) => [entry, ...h]);
+            return true;
+          }}
+        />
       )}
     </AppShell>
   );
