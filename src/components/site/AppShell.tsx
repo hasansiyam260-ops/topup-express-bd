@@ -11,7 +11,8 @@ export function AppShell({ children }: { children: ReactNode }) {
       <Link
         to="/admin"
         aria-label="Admin"
-        className="fixed bottom-1 left-1 z-[10001] grid h-5 w-5 place-items-center text-[10px] font-bold text-foreground/10 transition-colors hover:text-rose-500/80"
+        title="Admin"
+        className="fixed bottom-[78px] left-2 z-[10002] grid h-7 w-7 place-items-center rounded-full bg-rose-600/85 text-[11px] font-black text-white/95 shadow-[0_0_14px_rgba(225,29,72,0.45)] ring-1 ring-white/55 backdrop-blur-md transition-all hover:scale-105 hover:bg-rose-600"
       >
         A
       </Link>
