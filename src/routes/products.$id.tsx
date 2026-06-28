@@ -304,56 +304,47 @@ function Step({
 }
 
 function PayCard({
-  active, onClick, title, variant, recommended,
+  active, onClick, title, subtitle, variant, recommended,
 }: { active: boolean; onClick: () => void; title: string; subtitle?: string; icon?: React.ReactNode; brand?: string; variant: "wallet" | "instant"; recommended?: boolean }) {
-  const glow =
-    variant === "wallet"
-      ? "shadow-[0_8px_28px_-10px_rgba(245,158,11,0.55),inset_0_1px_0_rgba(255,255,255,0.08)]"
-      : "shadow-[0_8px_28px_-10px_rgba(226,19,110,0.55),inset_0_1px_0_rgba(255,255,255,0.08)]";
+  const isWallet = variant === "wallet";
   return (
     <button
       onClick={onClick}
-      className={`group relative text-left rounded-2xl overflow-hidden transition-all duration-300 ${glow} ${
-        active ? "ring-2 ring-primary -translate-y-0.5" : "ring-1 ring-white/10 hover:-translate-y-0.5"
+      className={`group relative text-left rounded-2xl overflow-hidden transition-all duration-300 border-2 ${
+        active
+          ? isWallet
+            ? "border-amber-400 shadow-[0_10px_26px_-10px_rgba(245,158,11,0.55)]"
+            : "border-primary shadow-[0_10px_26px_-10px_color-mix(in_oklab,var(--brand-red)_55%,transparent)]"
+          : "border-border hover:-translate-y-0.5 hover:shadow-md"
       }`}
       style={{
-        background:
-          variant === "wallet"
-            ? "linear-gradient(135deg,#1a0f06 0%,#2a1608 45%,#3a1d0a 100%)"
-            : "linear-gradient(135deg,#0b0716 0%,#180a2a 45%,#240b2e 100%)",
+        background: isWallet
+          ? "linear-gradient(180deg,#fff7e6 0%,#fef3d8 55%,#ffffff 100%)"
+          : "linear-gradient(180deg,#fff0f3 0%,#ffe1ea 55%,#ffffff 100%)",
       }}
     >
-      {/* glassy highlight */}
-      <span className="pointer-events-none absolute inset-x-0 top-0 h-1/2 bg-gradient-to-b from-white/10 to-transparent" />
-      <span className="pointer-events-none absolute -inset-x-6 -top-10 h-16 rotate-[8deg] bg-white/10 blur-2xl" />
-      {/* brand-tinted ambient glow */}
-      <span
-        className="pointer-events-none absolute -bottom-10 -right-8 h-24 w-24 rounded-full blur-2xl opacity-60"
-        style={{ background: variant === "wallet" ? "#f59e0b" : "#e2136e" }}
-      />
-      <span
-        className="pointer-events-none absolute -bottom-12 -left-10 h-24 w-24 rounded-full blur-2xl opacity-40"
-        style={{ background: variant === "wallet" ? "#a855f7" : "#8a3ab9" }}
-      />
+      {/* glossy top sheen */}
+      <span className="pointer-events-none absolute inset-x-0 top-0 h-1/2 bg-gradient-to-b from-white/70 to-transparent" />
+      <span className="pointer-events-none absolute -top-8 -left-6 h-16 w-28 rotate-[12deg] bg-white/60 blur-2xl" />
 
       {recommended && (
-        <span className="absolute top-1.5 right-1.5 z-10 text-[8px] font-bold tracking-wider uppercase bg-gradient-to-r from-amber-400 to-orange-500 text-black px-1.5 py-0.5 rounded-full shadow-[0_0_12px_rgba(245,158,11,0.6)]">★ Popular</span>
+        <span className="absolute top-1.5 right-1.5 z-10 text-[8px] font-extrabold tracking-wider uppercase bg-gradient-to-r from-rose-500 to-primary text-white px-2 py-0.5 rounded-full shadow-[0_4px_12px_-2px_rgba(239,68,68,0.5)]">★ Popular</span>
       )}
       {active && (
-        <span className="absolute top-1.5 left-1.5 z-10 grid place-items-center h-4 w-4 rounded-full bg-primary text-primary-foreground text-[9px] shadow-[0_0_10px_color-mix(in_oklab,var(--brand-red)_70%,transparent)]">✓</span>
+        <span className="absolute top-1.5 left-1.5 z-10 grid place-items-center h-5 w-5 rounded-full bg-primary text-white text-[10px] shadow-md">✓</span>
       )}
 
       <div className="relative h-[96px] grid place-items-center px-2 overflow-hidden">
-        <div className="absolute inset-0 sweep-shine opacity-20 pointer-events-none" />
-        {variant === "wallet" ? (
-          <div className="relative flex flex-col items-center gap-1.5">
-            <span className="relative grid place-items-center h-10 w-10 rounded-xl bg-gradient-to-br from-amber-300 via-orange-400 to-rose-500 ring-1 ring-white/30 shadow-[0_6px_18px_-4px_rgba(245,158,11,0.7)]">
-              <Wallet className="h-5 w-5 text-white drop-shadow" />
-              <span className="absolute inset-0 rounded-xl bg-gradient-to-b from-white/40 to-transparent opacity-60" />
+        <div className="absolute inset-0 sweep-shine opacity-30 pointer-events-none" />
+        {isWallet ? (
+          <div className="relative flex flex-col items-center gap-2">
+            <span className="relative grid place-items-center h-11 w-11 rounded-full bg-white ring-1 ring-amber-200 shadow-[0_6px_16px_-4px_rgba(245,158,11,0.45)]">
+              <Wallet className="h-5 w-5 text-orange-500" />
+              <span className="absolute inset-0 rounded-full bg-gradient-to-b from-white/80 to-transparent opacity-70" />
             </span>
-            <span className="font-display text-[12px] leading-none tracking-wide">
-              <span className="bg-gradient-to-r from-amber-300 to-orange-400 bg-clip-text text-transparent">TOPUP</span>{" "}
-              <span className="bg-gradient-to-r from-fuchsia-300 to-purple-400 bg-clip-text text-transparent">ওয়ালেট</span>
+            <span className="font-display text-[13px] leading-none tracking-wide">
+              <span className="text-orange-600">TOPUP</span>{" "}
+              <span className="text-purple-600">ওয়ালেট</span>
             </span>
           </div>
         ) : (
@@ -363,15 +354,18 @@ function PayCard({
               <BrandLogo brand="nagad" />
               <BrandLogo brand="rocket" />
             </div>
-            <span className="font-display text-[11px] leading-none text-white/90 tracking-wide">AUTO ADD MONEY</span>
+            <span className="font-display text-[10px] leading-none tracking-wider text-primary/80">AUTO ADD MONEY</span>
           </div>
         )}
       </div>
 
-      <div className={`relative px-2 py-1.5 border-t border-white/10 backdrop-blur-sm ${active ? "bg-white/10" : "bg-black/30"}`}>
+      <div className="relative px-2.5 py-1.5 bg-white/85 backdrop-blur-sm border-t border-border">
         <div className="flex items-center justify-between gap-2">
-          <span className={`text-[11px] font-bold truncate ${active ? "text-white" : "text-white/90"}`}>{title}</span>
-          <span className="shrink-0 text-[8px] font-bold uppercase tracking-wider px-1.5 py-0.5 rounded bg-emerald-400/20 text-emerald-300 ring-1 ring-emerald-400/30">Fast</span>
+          <div className="min-w-0">
+            <div className={`text-[12px] font-bold truncate ${active ? (isWallet ? "text-orange-700" : "text-primary") : "text-foreground"}`}>{title}</div>
+            {subtitle && <div className="text-[9px] text-muted-foreground truncate">{subtitle}</div>}
+          </div>
+          <span className="shrink-0 text-[8px] font-extrabold uppercase tracking-wider px-1.5 py-0.5 rounded bg-emerald-100 text-emerald-700 ring-1 ring-emerald-200">Fast</span>
         </div>
       </div>
     </button>
@@ -380,16 +374,16 @@ function PayCard({
 
 function BrandLogo({ brand }: { brand: "bkash" | "nagad" | "rocket" }) {
   const map = {
-    bkash: { bg: "linear-gradient(135deg,#e2136e,#a30e52)", text: "bKash", ring: "rgba(226,19,110,0.7)" },
-    nagad: { bg: "linear-gradient(135deg,#f15a29,#c43d12)", text: "Nagad", ring: "rgba(241,90,41,0.7)" },
-    rocket: { bg: "linear-gradient(135deg,#8a3ab9,#5b2487)", text: "Rocket", ring: "rgba(138,58,185,0.7)" },
+    bkash: { bg: "linear-gradient(135deg,#e2136e,#a30e52)", text: "bKash", ring: "rgba(226,19,110,0.55)" },
+    nagad: { bg: "linear-gradient(135deg,#f15a29,#c43d12)", text: "Nagad", ring: "rgba(241,90,41,0.55)" },
+    rocket: { bg: "linear-gradient(135deg,#8a3ab9,#5b2487)", text: "Rocket", ring: "rgba(138,58,185,0.55)" },
   }[brand];
   return (
     <span
-      className="relative inline-flex items-center justify-center text-[8px] font-extrabold text-white px-1.5 py-1 rounded-md ring-1 ring-white/30"
-      style={{ background: map.bg, boxShadow: `0 4px 12px -2px ${map.ring}, inset 0 1px 0 rgba(255,255,255,0.35)` }}
+      className="relative inline-flex items-center justify-center text-[8px] font-extrabold text-white px-1.5 py-1 rounded-md ring-1 ring-white/40"
+      style={{ background: map.bg, boxShadow: `0 4px 10px -2px ${map.ring}, inset 0 1px 0 rgba(255,255,255,0.4)` }}
     >
-      <span className="absolute inset-x-0 top-0 h-1/2 rounded-t-md bg-gradient-to-b from-white/35 to-transparent" />
+      <span className="absolute inset-x-0 top-0 h-1/2 rounded-t-md bg-gradient-to-b from-white/40 to-transparent" />
       <span className="relative drop-shadow-sm">{map.text}</span>
     </span>
   );
