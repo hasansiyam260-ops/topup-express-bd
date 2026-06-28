@@ -54,12 +54,12 @@ function HomePage() {
   return (
     <AppShell>
       {/* HERO PROMO BANNER — clean glassy premium */}
-      <section className="mx-auto max-w-3xl px-3 pt-4">
+      <section className="mx-auto max-w-3xl px-3 pt-2">
         <div
-          className="relative rounded-2xl overflow-hidden group bg-black"
+          className="relative h-[134px] sm:h-[160px] md:h-[178px] rounded-2xl overflow-hidden group bg-card"
           style={{
             boxShadow:
-              "0 20px 50px -20px rgba(168,85,247,0.45), 0 10px 30px -12px rgba(244,63,94,0.35)",
+              "0 10px 28px -18px color-mix(in oklab, var(--neon-violet) 55%, transparent), 0 6px 20px -16px color-mix(in oklab, var(--brand-red) 45%, transparent), inset 0 1px 0 color-mix(in oklab, white 45%, transparent)",
           }}
         >
           <img
@@ -67,7 +67,7 @@ function HomePage() {
             alt="Free Fire Diamond Topup"
             width={1536}
             height={896}
-            className="w-full h-auto block transition-transform duration-700 group-hover:scale-[1.03]"
+            className="w-full h-full object-cover object-center block transition-transform duration-700 group-hover:scale-[1.02]"
           />
           {/* Glossy top sheen — glassy premium */}
           <span
@@ -84,7 +84,7 @@ function HomePage() {
             className="absolute inset-0 rounded-2xl pointer-events-none"
             style={{
               boxShadow:
-                "inset 0 1px 0 rgba(255,255,255,0.35), inset 0 -1px 0 rgba(0,0,0,0.25)",
+                "inset 0 1px 0 color-mix(in oklab, white 35%, transparent), inset 0 -1px 0 color-mix(in oklab, black 22%, transparent)",
             }}
           />
           {/* Sweep shine on hover */}
