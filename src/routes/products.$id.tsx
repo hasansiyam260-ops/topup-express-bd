@@ -290,11 +290,11 @@ function Step({
   n, title, children, rightSlot,
 }: { n: number; title: string; children: React.ReactNode; rightSlot?: React.ReactNode }) {
   return (
-    <div className="rounded-2xl border border-border bg-card p-4 sm:p-5 card-soft">
-      <div className="flex items-center justify-between gap-3 mb-4 pb-3 border-b border-border">
-        <div className="flex items-center gap-3">
-          <span className="grid place-items-center h-9 w-9 rounded-full bg-primary text-primary-foreground font-display text-lg shadow-[0_0_0_4px_color-mix(in_oklab,var(--brand-red)_15%,transparent)]">{n}</span>
-          <h3 className="font-display text-2xl">{title}</h3>
+    <div className="rounded-xl border border-border bg-card p-3 sm:p-3.5 card-soft">
+      <div className="flex items-center justify-between gap-2 mb-2.5 pb-2 border-b border-border">
+        <div className="flex items-center gap-2">
+          <span className="grid place-items-center h-6 w-6 rounded-full bg-primary text-primary-foreground font-display text-xs shadow-[0_0_0_3px_color-mix(in_oklab,var(--brand-red)_15%,transparent)]">{n}</span>
+          <h3 className="font-display text-base uppercase tracking-wide">{title}</h3>
         </div>
         {rightSlot}
       </div>
