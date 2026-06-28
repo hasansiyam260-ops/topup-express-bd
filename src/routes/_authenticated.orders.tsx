@@ -419,6 +419,7 @@ function statusTheme(status: string) {
         noteFg: "#334155",
         note: "Status update পাবেন শীঘ্রই।",
         icon: <Clock className="h-3 w-3" />,
+        metaTone: "slate" as const,
       };
   }
 }
