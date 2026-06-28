@@ -129,24 +129,22 @@ function MethodCard({ active, onClick, brand }: { active: boolean; onClick: () =
   return (
     <button
       onClick={onClick}
-      className={`relative rounded-2xl overflow-hidden border-2 transition-all duration-300 group ${
-        active ? "border-primary scale-[1.03]" : "border-border hover:-translate-y-0.5 hover:border-primary/40"
+      className={`relative rounded-xl overflow-hidden border-2 transition-all duration-300 ${
+        active ? "border-primary scale-[1.02]" : "border-border hover:-translate-y-0.5 hover:border-primary/40"
       }`}
-      style={active ? { boxShadow: `0 14px 30px -10px ${cfg.glow}` } : undefined}
+      style={active ? { boxShadow: `0 8px 20px -8px ${cfg.glow}` } : undefined}
     >
       {active && (
-        <span className="absolute top-1.5 right-1.5 z-10 grid place-items-center h-5 w-5 rounded-full bg-white text-primary text-[10px] font-bold shadow-md ring-2 ring-primary">✓</span>
+        <span className="absolute top-1 right-1 z-10 grid place-items-center h-4 w-4 rounded-full bg-white text-primary text-[8px] font-bold shadow ring-1 ring-primary">✓</span>
       )}
       <div
-        className="relative h-[88px] grid place-items-center text-white overflow-hidden"
+        className="relative h-12 grid place-items-center text-white overflow-hidden"
         style={{ backgroundImage: cfg.bg }}
       >
-        {/* glossy highlight */}
         <span className="absolute inset-x-0 top-0 h-1/2 bg-gradient-to-b from-white/25 to-transparent pointer-events-none" />
-        <span className="absolute -top-6 -right-6 h-16 w-16 rounded-full bg-white/15 blur-xl pointer-events-none" />
-        <div className="relative scale-[0.9]">{cfg.logo}</div>
+        <div className="relative scale-[0.7]">{cfg.logo}</div>
       </div>
-      <div className={`py-2 text-center text-[13px] font-bold tracking-wide ${active ? "bg-primary/8 text-primary" : "bg-card text-foreground"}`}>
+      <div className={`py-1 text-center text-[11px] font-bold tracking-wide ${active ? "bg-primary/8 text-primary" : "bg-card text-foreground"}`}>
         {cfg.name}
       </div>
     </button>
