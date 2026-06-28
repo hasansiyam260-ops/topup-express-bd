@@ -4,10 +4,11 @@ import { useEffect, useState } from "react";
 import { getProduct, listProducts } from "@/lib/products.functions";
 import { getFFPlayerName } from "@/lib/ff.functions";
 import { AppShell } from "@/components/site/AppShell";
+import { SecureCheckout, SuccessScreen } from "@/components/site/SecureCheckout";
 import { packImage } from "@/lib/assets";
 import heroImg from "@/assets/hero-promo.jpg";
 import { supabase } from "@/integrations/supabase/client";
-import { Wallet, Smartphone, Info, HelpCircle } from "lucide-react";
+import { Wallet, Smartphone, Info, HelpCircle, AlertTriangle, X, Plus } from "lucide-react";
 import { toast } from "sonner";
 
 const productQO = (id: string) =>
@@ -53,6 +54,9 @@ function ProductPage() {
   const [payment, setPayment] = useState<"wallet" | "instant" | null>(null);
   const [submitting, setSubmitting] = useState(false);
   const [authed, setAuthed] = useState(false);
+  const [checkoutOpen, setCheckoutOpen] = useState(false);
+  const [insufficientOpen, setInsufficientOpen] = useState(false);
+  const [walletSuccess, setWalletSuccess] = useState<{ amount: number; invoice: string } | null>(null);
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data }) => setAuthed(!!data.session));
@@ -82,20 +86,14 @@ function ProductPage() {
     }
   };
 
-  const submitOrder = async () => {
-    if (!authed) {
-      navigate({ to: "/auth", search: { mode: "login" } });
-      return;
-    }
-    if (!playerName) return toast.error("Please verify your Player UID first");
-    if (!payment) return toast.error("Choose a payment method");
-    setSubmitting(true);
+  const price = Number(selected.price);
+
+  const placeOrder = async (method: "wallet" | "instant"): Promise<boolean> => {
     const { data: session } = await supabase.auth.getSession();
     const userId = session.session?.user.id;
     if (!userId) {
-      setSubmitting(false);
       navigate({ to: "/auth", search: { mode: "login" } });
-      return;
+      return false;
     }
     const { error } = await supabase.from("orders").insert({
       user_id: userId,
@@ -103,14 +101,41 @@ function ProductPage() {
       product_name: selected.name_en,
       player_uid: uid,
       player_name: playerName,
-      amount: Number(selected.price),
-      payment_method: payment,
+      amount: price,
+      payment_method: method,
       status: "pending",
     });
+    if (error) { toast.error(error.message); return false; }
+    return true;
+  };
+
+  const submitOrder = async () => {
+    if (!authed) { navigate({ to: "/auth", search: { mode: "login" } }); return; }
+    if (!playerName) return toast.error("Please verify your Player UID first");
+    if (!payment) return toast.error("Choose a payment method");
+
+    if (payment === "instant") {
+      // Open Secure Checkout — order will be placed after Transaction ID is verified
+      setCheckoutOpen(true);
+      return;
+    }
+
+    // Wallet flow: check balance
+    let balance = 0;
+    try { balance = Number(localStorage.getItem("uidtopup:wallet") || "0"); } catch {}
+    if (balance < price) {
+      setInsufficientOpen(true);
+      return;
+    }
+
+    setSubmitting(true);
+    const ok = await placeOrder("wallet");
+    if (ok) {
+      try { localStorage.setItem("uidtopup:wallet", String(balance - price)); } catch {}
+      const invoice = Math.random().toString(36).slice(2, 14).toUpperCase();
+      setWalletSuccess({ amount: price, invoice });
+    }
     setSubmitting(false);
-    if (error) return toast.error(error.message);
-    toast.success("Order placed! Delivery within 10 seconds.");
-    router.navigate({ to: "/orders" });
   };
 
   return (
@@ -282,6 +307,43 @@ function ProductPage() {
           <Link to="/" className="text-sm text-muted-foreground hover:text-primary">← Back to all packs</Link>
         </div>
       </section>
+
+      {checkoutOpen && (
+        <SecureCheckout
+          amount={price}
+          onClose={() => { setCheckoutOpen(false); router.navigate({ to: "/orders" }); }}
+          onVerified={async () => {
+            const ok = await placeOrder("instant");
+            if (ok) toast.success("Order placed! Delivery within 10 seconds.");
+            return ok;
+          }}
+          successCopy={{
+            badge: "Order Placed",
+            title: "অর্ডার সফলভাবে সম্পন্ন হয়েছে",
+            subtitle: `${selected.name_en} • UID ${uid}`,
+            amountLabel: "Paid Amount",
+            channel: "Mobile Banking",
+          }}
+        />
+      )}
+
+      {insufficientOpen && (
+        <InsufficientBalanceModal
+          required={price}
+          onClose={() => setInsufficientOpen(false)}
+          onAddMoney={() => { setInsufficientOpen(false); navigate({ to: "/wallet" }); }}
+        />
+      )}
+
+      {walletSuccess && (
+        <WalletPaidSuccess
+          amount={walletSuccess.amount}
+          invoice={walletSuccess.invoice}
+          productName={selected.name_en}
+          uid={uid}
+          onClose={() => { setWalletSuccess(null); router.navigate({ to: "/orders" }); }}
+        />
+      )}
     </AppShell>
   );
 }
@@ -395,3 +457,53 @@ function BrandLogo({ brand }: { brand: "bkash" | "nagad" | "rocket" }) {
   );
 }
 
+
+function InsufficientBalanceModal({ required, onClose, onAddMoney }: { required: number; onClose: () => void; onAddMoney: () => void }) {
+  return (
+    <div className="fixed inset-0 z-[80] bg-black/70 backdrop-blur-md flex items-center justify-center p-4 animate-in fade-in duration-200">
+      <div className="relative w-full max-w-sm rounded-3xl overflow-hidden shadow-2xl bg-gradient-to-br from-[#1a0a0a] via-[#2a0f10] to-[#0a0506] text-white">
+        <div className="absolute -top-20 -right-20 h-52 w-52 rounded-full bg-rose-500/30 blur-3xl pointer-events-none" />
+        <div className="absolute -bottom-24 -left-20 h-52 w-52 rounded-full bg-orange-500/20 blur-3xl pointer-events-none" />
+        <button onClick={onClose} className="absolute top-3 right-3 z-10 grid place-items-center h-8 w-8 rounded-full bg-white/10 hover:bg-white/20 text-white/80">
+          <X className="h-4 w-4" />
+        </button>
+        <div className="relative px-6 pt-8 pb-6 flex flex-col items-center text-center">
+          <div className="relative grid place-items-center">
+            <span className="absolute h-24 w-24 rounded-full bg-rose-500/30 blur-2xl animate-pulse" />
+            <div className="relative h-20 w-20 rounded-full bg-gradient-to-br from-rose-400 to-rose-600 grid place-items-center shadow-[0_10px_40px_-10px_rgba(244,63,94,0.8)] ring-4 ring-rose-300/30">
+              <AlertTriangle className="h-10 w-10 text-white" strokeWidth={2.5} />
+            </div>
+          </div>
+          <div className="mt-5 text-[10px] tracking-[0.4em] uppercase text-rose-300/90">Insufficient Balance</div>
+          <h2 className="font-display text-xl tracking-wide mt-1">ওয়ালেটে পর্যাপ্ত টাকা নেই</h2>
+          <p className="text-white/60 text-[12px] mt-1.5 leading-relaxed">
+            এই অর্ডার সম্পন্ন করতে আপনার <span className="font-bold text-rose-300">৳{required.toLocaleString()}</span> দরকার। অনুগ্রহ করে প্রথমে wallet এ টাকা যোগ করুন।
+          </p>
+          <div className="mt-5 w-full grid grid-cols-2 gap-2.5">
+            <button onClick={onClose} className="rounded-xl py-2.5 text-[12px] font-semibold tracking-wide bg-white/10 hover:bg-white/15 text-white/80 border border-white/15">CANCEL</button>
+            <button onClick={onAddMoney} className="rounded-xl py-2.5 text-[12px] font-bold tracking-wide bg-gradient-to-b from-rose-400 to-rose-600 hover:from-rose-300 hover:to-rose-500 shadow-[0_8px_22px_-8px_rgba(244,63,94,0.7)] flex items-center justify-center gap-1.5">
+              <Plus className="h-3.5 w-3.5" /> ADD MONEY
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function WalletPaidSuccess({ amount, invoice, productName, uid, onClose }: { amount: number; invoice: string; productName: string; uid: string; onClose: () => void }) {
+  return (
+    <SuccessScreen
+      amount={amount}
+      invoiceId={invoice}
+      onClose={onClose}
+      copy={{
+        badge: "Order Placed",
+        title: "অর্ডার সফলভাবে সম্পন্ন হয়েছে",
+        subtitle: `${productName} • UID ${uid}`,
+        amountLabel: "Paid From Wallet",
+        channel: "TOPUP Wallet",
+      }}
+    />
+  );
+}
