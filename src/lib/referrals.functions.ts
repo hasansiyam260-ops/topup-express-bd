@@ -108,7 +108,7 @@ export const creditReferralForPurchase = createServerFn({ method: "POST" })
       referrer_id: me.referred_by,
       referee_id: userId,
       amount: credit,
-      source: "topup",
+      source: "purchase",
     });
 
     return { credited: credit };
