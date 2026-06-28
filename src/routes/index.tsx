@@ -52,7 +52,62 @@ function HomePage() {
   ];
 
   return (
-...
+    <AppShell>
+      {/* HERO PROMO BANNER */}
+      <section className="mx-auto max-w-3xl px-3 pt-4">
+        <div className="relative rounded-2xl overflow-hidden glow-violet sweep-shine group">
+          <img
+            src={heroImg}
+            alt="Free Fire Diamond Topup"
+            width={1536}
+            height={896}
+            className="w-full h-auto block transition-transform duration-700 group-hover:scale-[1.02]"
+          />
+          <a
+            href="#packs"
+            aria-label="Topup now"
+            className="absolute left-3 bottom-3 grid place-items-center h-12 w-12 rounded-full bg-primary text-primary-foreground ring-pulse"
+          >
+            <Play className="h-5 w-5 fill-current ml-0.5" />
+          </a>
+        </div>
+      </section>
+
+      {/* QUICK ACTION CHIPS */}
+      <section className="mx-auto max-w-3xl px-3 mt-4 grid grid-cols-3 gap-2.5">
+        <ChipCard
+          icon={<MessageCircle className="h-5 w-5 text-white" />}
+          tint="from-emerald-500 to-emerald-600"
+          title="Whatsapp"
+          sub="CLICK TO CHAT"
+          href="https://wa.me/8801000000000"
+        />
+        <ChipCard
+          icon={<MessagesSquare className="h-5 w-5 text-white" />}
+          tint="from-fuchsia-500 to-violet-600"
+          title="Messenger"
+          sub="SUPPORT"
+          href="https://m.me/uidtopup"
+        />
+        <ChipCard
+          icon={<Gift className="h-5 w-5 text-white" />}
+          tint="from-blue-600 to-indigo-700"
+          title="Free Diamond"
+          sub="২৫ ডায়মন্ড"
+          href="#packs"
+        />
+      </section>
+
+      {/* SECTION TITLE */}
+      <section id="packs" className="mx-auto max-w-3xl px-3 mt-8">
+        <h2 className="text-center font-display text-3xl tracking-[0.15em] text-foreground">
+          FREE FIRE
+        </h2>
+        <div className="mx-auto mt-2 h-[3px] w-16 rounded-full bg-gradient-to-r from-neon-violet to-neon-magenta" />
+      </section>
+
+      {/* PRIMARY CATEGORY GRID — 3 cols × 2 rows, fixed 6 sections */}
+      <section className="mx-auto max-w-3xl px-3 mt-5 grid grid-cols-3 gap-3">
         {sections.map((c, i) => (
           <CategoryCard key={i} to={c.to} img={c.img} label={c.label} />
         ))}
