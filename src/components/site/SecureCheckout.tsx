@@ -97,13 +97,13 @@ export function SecureCheckout({
         <div className="flex-1 overflow-y-auto px-5 py-4 space-y-4">
           <div className="flex items-center gap-2 bg-white rounded-xl shadow-sm border border-slate-200 px-3 py-2">
             <Home className="h-3.5 w-3.5 text-slate-500" />
-            <span className="flex-1 text-[11px] text-slate-500 truncate">pay.uidtopup.com</span>
+            <span className="flex-1 text-[11px] text-slate-500 truncate">pay.topupexpress.com</span>
             <Languages className="h-3.5 w-3.5 text-slate-400" />
           </div>
 
           <div className="flex flex-col items-center pt-1">
-            <div className="h-20 w-20 rounded-full bg-gradient-to-br from-[#0a0a0a] to-[#1f1f1f] grid place-items-center shadow-[0_8px_24px_-6px_rgba(0,0,0,0.4)] ring-4 ring-white overflow-hidden">
-              <img src={brandLogo.url} alt="TOP-UP EXPRESS" className="h-16 w-16 object-contain" style={{ imageRendering: "auto" }} />
+            <div className="h-24 w-24 rounded-full bg-gradient-to-br from-[#0a0a0a] to-[#1f1f1f] grid place-items-center shadow-[0_8px_24px_-6px_rgba(0,0,0,0.4)] ring-4 ring-white overflow-hidden">
+              <img src={brandLogo.url} alt="TOP-UP EXPRESS" className="h-full w-full object-cover scale-[1.35]" style={{ imageRendering: "auto" }} />
             </div>
             <h3 className="font-display text-base tracking-[0.18em] text-slate-700 mt-2 font-bold">TOP-UP EXPRESS</h3>
 
@@ -189,8 +189,8 @@ function BrandPayPage({
           </div>
 
           <div className="bg-white rounded-2xl shadow-sm border border-slate-200 p-3 flex items-center gap-3">
-            <div className="h-12 w-12 rounded-full bg-gradient-to-br from-[#0a0a0a] to-[#1f1f1f] grid place-items-center ring-2 ring-white shrink-0 overflow-hidden">
-              <img src={brandLogo.url} alt="TOP-UP EXPRESS" className="h-10 w-10 object-contain" />
+            <div className="h-14 w-14 rounded-full bg-gradient-to-br from-[#0a0a0a] to-[#1f1f1f] grid place-items-center ring-2 ring-white shrink-0 overflow-hidden">
+              <img src={brandLogo.url} alt="TOP-UP EXPRESS" className="h-full w-full object-cover scale-[1.35]" />
             </div>
             <div className="min-w-0">
               <div className="font-bold text-slate-700 text-[13px] leading-tight tracking-[0.15em]">TOP-UP EXPRESS</div>
