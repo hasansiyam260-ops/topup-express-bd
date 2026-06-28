@@ -8,7 +8,7 @@ import { SecureCheckout, SuccessScreen } from "@/components/site/SecureCheckout"
 import { packImage } from "@/lib/assets";
 import heroImg from "@/assets/hero-promo.webp";
 import { supabase } from "@/integrations/supabase/client";
-import { Wallet, Smartphone, Info, HelpCircle, AlertTriangle, X, Plus } from "lucide-react";
+import { Wallet, Smartphone, Info, HelpCircle, AlertTriangle, X, Plus, BadgeCheck, Gamepad2, Star, Shield, Clock, MessageCircle, CheckCircle2, AlertCircle } from "lucide-react";
 import { toast } from "sonner";
 
 const CATEGORY_META: Record<string, { title: string; sub: string; img?: string }> = {
