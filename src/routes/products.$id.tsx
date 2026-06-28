@@ -2,6 +2,7 @@ import { createFileRoute, Link, useNavigate, useRouter } from "@tanstack/react-r
 import { useSuspenseQuery, queryOptions } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { getProduct, listProducts } from "@/lib/products.functions";
+import { getFFPlayerName } from "@/lib/ff.functions";
 import { AppShell } from "@/components/site/AppShell";
 import { packImage } from "@/lib/assets";
 import heroImg from "@/assets/hero-promo.jpg";
@@ -69,10 +70,16 @@ function ProductPage() {
       return;
     }
     setChecking(true);
-    await new Promise((r) => setTimeout(r, 700));
-    setPlayerName(`Player_${uid.slice(-4)}`);
-    setChecking(false);
-    toast.success("Player name verified");
+    try {
+      const res = await getFFPlayerName({ data: { uid, region: "bd" } });
+      setPlayerName(res.name);
+      toast.success(`Player verified: ${res.name}`);
+    } catch (e: any) {
+      setPlayerName("");
+      toast.error(e?.message || "Could not fetch player name. Check UID.");
+    } finally {
+      setChecking(false);
+    }
   };
 
   const submitOrder = async () => {
