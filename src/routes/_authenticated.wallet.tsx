@@ -215,42 +215,50 @@ function PayTile({
   alt: string;
 }) {
   return (
-    <button
-      onClick={onClick}
-      className={`relative h-24 rounded-2xl bg-white transition-all duration-300 overflow-hidden border-2 ${
-        selected
-          ? "border-[#1e40af] scale-[1.03]"
-          : "border-slate-200 hover:border-slate-300 hover:-translate-y-0.5"
-      }`}
-      style={{
-        boxShadow: selected
-          ? `0 10px 28px -8px rgba(${glow},0.55), 0 0 0 4px rgba(${glow},0.12), inset 0 1px 0 rgba(255,255,255,0.9)`
-          : `0 4px 14px -6px rgba(${glow},0.28), inset 0 1px 0 rgba(255,255,255,0.9)`,
-      }}
-    >
-      {/* Glossy top sheen */}
-      <span className="absolute inset-x-0 top-0 h-1/2 bg-gradient-to-b from-white to-transparent pointer-events-none" />
-      {/* Brand color glow halo */}
+    <div className="relative">
+      {/* OUTER neon glow halo (sits behind the card, not inside) */}
       <span
-        className="absolute -bottom-6 left-1/2 -translate-x-1/2 h-12 w-3/4 rounded-full blur-2xl pointer-events-none transition-opacity"
-        style={{ background: `rgba(${glow},${selected ? 0.55 : 0.25})` }}
+        aria-hidden
+        className={`absolute -inset-1 rounded-[20px] blur-xl pointer-events-none transition-opacity duration-300 ${
+          selected ? "opacity-80 animate-pulse" : "opacity-30"
+        }`}
+        style={{ background: `radial-gradient(closest-side, rgba(${glow},0.85), rgba(${glow},0) 70%)` }}
       />
-      {selected && (
-        <span
-          className="absolute top-1.5 right-1.5 grid place-items-center h-5 w-5 rounded-full bg-[#1e40af] text-white text-[10px] font-bold shadow-lg ring-2 ring-white z-10"
-        >
-          ✓
-        </span>
-      )}
-      <div className="relative h-full grid place-items-center px-3">
-        <img
-          src={logo}
-          alt={alt}
-          loading="lazy"
-          className="max-h-14 w-auto object-contain drop-shadow-sm"
-        />
-      </div>
-    </button>
+      <button
+        onClick={onClick}
+        className={`relative w-full h-24 rounded-2xl bg-white transition-all duration-300 overflow-hidden border ${
+          selected ? "scale-[1.03]" : "hover:-translate-y-0.5"
+        }`}
+        style={{
+          borderColor: selected ? `rgba(${glow},0.9)` : "rgb(226,232,240)",
+          boxShadow: selected
+            ? `0 12px 28px -10px rgba(${glow},0.55), 0 0 0 3px rgba(${glow},0.18), inset 0 1px 0 rgba(255,255,255,0.95), inset 0 -24px 40px -24px rgba(${glow},0.25)`
+            : `0 6px 16px -10px rgba(15,23,42,0.18), inset 0 1px 0 rgba(255,255,255,0.95), inset 0 -20px 32px -22px rgba(${glow},0.18)`,
+        }}
+      >
+        {/* Glossy top sheen */}
+        <span className="absolute inset-x-0 top-0 h-1/2 bg-gradient-to-b from-white to-transparent pointer-events-none" />
+        {/* Diagonal shimmer sweep on hover */}
+        <span className="absolute inset-y-0 -left-1/3 w-1/3 bg-gradient-to-r from-transparent via-white/70 to-transparent skew-x-12 group-hover:translate-x-[500%] pointer-events-none opacity-0 hover:opacity-100 transition-all duration-700" />
+        {/* Selected check */}
+        {selected && (
+          <span
+            className="absolute top-1.5 right-1.5 grid place-items-center h-5 w-5 rounded-full text-white text-[10px] font-bold shadow-lg ring-2 ring-white z-10"
+            style={{ background: `rgb(${glow})` }}
+          >
+            ✓
+          </span>
+        )}
+        <div className="relative h-full grid place-items-center px-3">
+          <img
+            src={logo}
+            alt={alt}
+            loading="lazy"
+            className="max-h-14 w-auto object-contain drop-shadow-[0_2px_4px_rgba(0,0,0,0.08)]"
+          />
+        </div>
+      </button>
+    </div>
   );
 }
 
