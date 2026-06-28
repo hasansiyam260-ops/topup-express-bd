@@ -118,14 +118,7 @@ function ProfilePage() {
         </div>
 
         {/* Stats overview */}
-        <div className="relative isolate rounded-2xl bg-white p-4 ring-1 ring-rose-300 shadow-[0_8px_26px_-12px_rgba(239,68,68,0.45)]">
-          <div className="pointer-events-none absolute -top-2 -left-2 -z-10 h-14 w-14 rounded-full bg-red-500/55 blur-2xl" />
-          <div className="pointer-events-none absolute -top-2 -right-2 -z-10 h-14 w-14 rounded-full bg-red-500/55 blur-2xl" />
-          <div className="pointer-events-none absolute -bottom-2 -left-2 -z-10 h-14 w-14 rounded-full bg-red-500/55 blur-2xl" />
-          <div className="pointer-events-none absolute -bottom-2 -right-2 -z-10 h-14 w-14 rounded-full bg-red-500/55 blur-2xl" />
-          <div className="pointer-events-none absolute inset-0 -z-10 rounded-2xl shadow-[0_0_22px_3px_rgba(239,68,68,0.42),0_0_46px_8px_rgba(248,113,113,0.24)]" />
-          <div className="absolute -top-10 -right-10 h-28 w-28 rounded-full bg-rose-300/45 blur-3xl" />
-          <div className="absolute -bottom-10 -left-10 h-28 w-28 rounded-full bg-rose-300/35 blur-3xl" />
+        <div className="relative isolate rounded-2xl bg-white p-4 ring-1 ring-pink-300 shadow-[0_8px_26px_-12px_rgba(236,72,153,0.35)]">
           <div className="relative flex items-center gap-2 mb-3">
             <span className="grid place-items-center h-8 w-8 rounded-lg bg-gradient-to-br from-rose-500 to-sky-500 text-white ring-1 ring-white shadow-[0_4px_14px_-2px_rgba(244,63,94,0.5)]"><TrendingUp className="h-4 w-4" /></span>
             <div>
@@ -202,17 +195,14 @@ function Input({ label, value, onChange, max }: { label: string; value: string; 
   );
 }
 
-function StatTile({ icon, label, value, accent }: { icon: React.ReactNode; label: string; value: string; accent: "rose" | "sky" }) {
-  const styles = accent === "rose"
-    ? { bg: "bg-gradient-to-br from-rose-50 to-white", ring: "ring-rose-200", chip: "bg-rose-500 text-white", value: "text-rose-600", shadow: "shadow-[0_6px_18px_-8px_rgba(244,63,94,0.5)]" }
-    : { bg: "bg-gradient-to-br from-sky-50 to-white", ring: "ring-sky-200", chip: "bg-sky-500 text-white", value: "text-sky-600", shadow: "shadow-[0_6px_18px_-8px_rgba(14,165,233,0.5)]" };
+function StatTile({ icon, label, value }: { icon: React.ReactNode; label: string; value: string; accent?: "rose" | "sky" }) {
   return (
-    <div className={`relative overflow-hidden rounded-xl p-2.5 ${styles.bg} ring-1 ${styles.ring} ${styles.shadow}`}>
-      <div className="flex items-center gap-1.5 text-slate-600 text-[9px] tracking-[0.2em] uppercase font-semibold">
-        <span className={`grid place-items-center h-5 w-5 rounded-md ${styles.chip} shadow-sm`}>{icon}</span>
+    <div className="relative overflow-hidden rounded-xl p-2.5 bg-gradient-to-br from-pink-50 to-white ring-1 ring-pink-300 shadow-[0_6px_18px_-8px_rgba(236,72,153,0.4)]">
+      <div className="flex items-center gap-1.5 text-red-600 text-[9px] tracking-[0.2em] uppercase font-semibold">
+        <span className="grid place-items-center h-5 w-5 rounded-md bg-pink-500 text-white shadow-sm">{icon}</span>
         {label}
       </div>
-      <div className={`font-display text-xl leading-tight mt-1 ${styles.value}`}>{value}</div>
+      <div className="font-display text-xl leading-tight mt-1 text-red-600">{value}</div>
     </div>
   );
 }
