@@ -40,7 +40,7 @@ function AuthPage() {
         const { error } = await supabase.auth.signUp({
           email, password,
           options: {
-            data: { full_name: fullName },
+            data: { full_name: fullName, ref_code: (ref ?? "").toUpperCase() },
             emailRedirectTo: `${window.location.origin}/`,
           },
         });
