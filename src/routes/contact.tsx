@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { AppShell } from "@/components/site/AppShell";
-import { Facebook, Youtube, Send, Mail, MessageCircle, ArrowLeft } from "lucide-react";
+import { Send, Mail, MessageCircle, ArrowLeft } from "lucide-react";
 
 export const Route = createFileRoute("/contact")({
   head: () => ({ meta: [
