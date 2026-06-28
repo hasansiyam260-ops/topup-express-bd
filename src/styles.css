@@ -91,6 +91,17 @@
     color: var(--color-foreground);
     font-family: var(--font-sans);
     -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    font-feature-settings: "kern" 1, "liga" 1;
+  }
+  img, video, canvas, svg {
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: crisp-edges;
+  }
+  /* Re-enable smooth scaling for photos that need it */
+  img.smooth, .img-smooth img {
+    image-rendering: auto;
   }
   body {
     background-image:
