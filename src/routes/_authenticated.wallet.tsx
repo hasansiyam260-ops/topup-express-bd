@@ -1,21 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useState, useMemo } from "react";
+import { useState } from "react";
 import { AppShell } from "@/components/site/AppShell";
-import { Wallet, Info, ShieldCheck, Zap, X, Home, HelpCircle, Headphones, Languages, Lock, ChevronLeft, Copy, CheckCircle2, AlertTriangle, Sparkles } from "lucide-react";
-import { toast } from "sonner";
-import bkashLogo from "@/assets/pay-bkash.png";
-import nagadLogo from "@/assets/pay-nagad.png";
-import rocketLogo from "@/assets/pay-rocket.png";
-import upayLogo from "@/assets/pay-upay.png";
-
-type PayBrand = "bkash" | "nagad" | "rocket" | "upay";
-
-const BRAND_CFG: Record<PayBrand, { name: string; bg: string; accent: string; logo: string; number: string; instr: string }> = {
-  bkash:  { name: "bKash",  bg: "#e2136e", accent: "#b00d57", logo: bkashLogo,  number: "01335805470", instr: "BKASH" },
-  nagad:  { name: "Nagad",  bg: "#e63946", accent: "#b21f1f", logo: nagadLogo,  number: "01335805470", instr: "NAGAD" },
-  rocket: { name: "Rocket", bg: "#8b2c8a", accent: "#5c1a72", logo: rocketLogo, number: "013358054701", instr: "ROCKET" },
-  upay:   { name: "Upay",   bg: "#f5b300", accent: "#b88600", logo: upayLogo,   number: "01335805470", instr: "UPAY" },
-};
+import { Wallet, Info, ShieldCheck, Zap } from "lucide-react";
+import { SecureCheckout } from "@/components/site/SecureCheckout";
 
 export const Route = createFileRoute("/_authenticated/wallet")({
   head: () => ({ meta: [{ title: "Add Money — UIDTOPUP.COM" }] }),
