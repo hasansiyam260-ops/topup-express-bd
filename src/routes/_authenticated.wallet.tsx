@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import { AppShell } from "@/components/site/AppShell";
-import { Wallet, Info, ShieldCheck, Zap } from "lucide-react";
+import { Wallet, Info, ShieldCheck, Zap, X, Home, HelpCircle, Headphones, Languages } from "lucide-react";
 
 export const Route = createFileRoute("/_authenticated/wallet")({
   head: () => ({ meta: [{ title: "Add Money — UIDTOPUP.COM" }] }),
@@ -13,6 +13,7 @@ type Method = "bkash" | "nagad" | "rocket";
 function WalletPage() {
   const [amount, setAmount] = useState<string>("");
   const [method, setMethod] = useState<Method>("bkash");
+  const [checkoutOpen, setCheckoutOpen] = useState(false);
 
   const numeric = Number(amount || 0);
   const valid = numeric >= 10;
@@ -84,6 +85,7 @@ function WalletPage() {
         {/* Confirm */}
         <button
           disabled={!valid}
+          onClick={() => valid && setCheckoutOpen(true)}
           className="btn-red w-full py-3 rounded-xl text-sm font-bold tracking-wide disabled:opacity-50 disabled:cursor-not-allowed shadow-[0_8px_20px_-8px_color-mix(in_oklab,var(--brand-red)_55%,transparent)] flex items-center justify-center gap-2"
         >
           <Zap className="h-4 w-4" />
@@ -97,7 +99,177 @@ function WalletPage() {
           </p>
         </div>
       </div>
+
+      {checkoutOpen && (
+        <SecureCheckout amount={numeric} onClose={() => setCheckoutOpen(false)} />
+      )}
     </AppShell>
+  );
+}
+
+/* ===================== Secure Checkout Modal ===================== */
+
+function SecureCheckout({ amount, onClose }: { amount: number; onClose: () => void }) {
+  const [selected, setSelected] = useState<"bkash" | "nagad" | "rocket" | "upay" | null>(null);
+
+  return (
+    <div className="fixed inset-0 z-[80] bg-black/60 backdrop-blur-sm flex items-end sm:items-center justify-center animate-in fade-in duration-200">
+      <div
+        className="relative w-full sm:max-w-md sm:rounded-3xl rounded-t-3xl overflow-hidden shadow-2xl flex flex-col max-h-[92vh]"
+        style={{
+          background:
+            "repeating-conic-gradient(from 45deg at 50% 50%, #eef2f8 0deg 90deg, #f7f9fc 90deg 180deg) 0 0/22px 22px, linear-gradient(180deg,#f5f8fc,#eef2f8)",
+        }}
+      >
+        {/* Top bar */}
+        <div className="flex items-center justify-between px-4 py-2.5 bg-white/70 backdrop-blur border-b border-slate-200">
+          <div className="flex items-center gap-1.5 text-[10px] uppercase tracking-[0.2em] text-slate-500">
+            <ShieldCheck className="h-3 w-3 text-emerald-600" /> Secure Checkout
+          </div>
+          <button onClick={onClose} className="grid place-items-center h-7 w-7 rounded-full hover:bg-slate-100 text-slate-500">
+            <X className="h-4 w-4" />
+          </button>
+        </div>
+
+        <div className="flex-1 overflow-y-auto px-5 py-4 space-y-4">
+          {/* Address pill */}
+          <div className="flex items-center gap-2 bg-white rounded-xl shadow-sm border border-slate-200 px-3 py-2">
+            <Home className="h-3.5 w-3.5 text-slate-500" />
+            <span className="flex-1 text-[11px] text-slate-500 truncate">pay.uidtopup.com</span>
+            <Languages className="h-3.5 w-3.5 text-slate-400" />
+          </div>
+
+          {/* Logo */}
+          <div className="flex flex-col items-center pt-1">
+            <div className="h-20 w-20 rounded-full bg-gradient-to-br from-[#0a0a0a] to-[#1f1f1f] grid place-items-center shadow-[0_8px_24px_-6px_rgba(0,0,0,0.4)] ring-4 ring-white">
+              <div className="flex flex-col items-center leading-none">
+                <span style={{ fontFamily: "'Bebas Neue',sans-serif" }} className="text-white text-2xl tracking-tight">
+                  U<span className="text-red-500">i</span>
+                </span>
+                <span className="text-[6px] text-white tracking-[0.2em] mt-0.5">UIDTOPUP.COM</span>
+              </div>
+            </div>
+            <h3 className="font-display text-lg tracking-wide text-slate-600 mt-2">UIDTOPUP.COM</h3>
+
+            <div className="flex items-center gap-2 mt-2">
+              <IconBtn><Headphones className="h-3.5 w-3.5" /></IconBtn>
+              <IconBtn><HelpCircle className="h-3.5 w-3.5" /></IconBtn>
+              <IconBtn><Info className="h-3.5 w-3.5" /></IconBtn>
+            </div>
+          </div>
+
+          {/* Mobile banking header */}
+          <div className="bg-[#1e3a8a] text-white text-center py-2.5 rounded-xl shadow-md font-semibold text-sm">
+            মোবাইল ব্যাংকিং
+          </div>
+
+          {/* Methods grid */}
+          <div className="grid grid-cols-2 gap-2.5">
+            <PayTile id="bkash" selected={selected === "bkash"} onClick={() => setSelected("bkash")}>
+              <BkashOfficial />
+            </PayTile>
+            <PayTile id="nagad" selected={selected === "nagad"} onClick={() => setSelected("nagad")}>
+              <NagadOfficial />
+            </PayTile>
+            <PayTile id="rocket" selected={selected === "rocket"} onClick={() => setSelected("rocket")}>
+              <RocketOfficial />
+            </PayTile>
+            <PayTile id="upay" selected={selected === "upay"} onClick={() => setSelected("upay")}>
+              <UpayOfficial />
+            </PayTile>
+          </div>
+        </div>
+
+        {/* Pay button */}
+        <button
+          disabled={!selected}
+          className="w-full py-3.5 bg-gradient-to-b from-sky-50 to-sky-100 border-t border-sky-200 text-[#1e40af] font-bold text-base tracking-wide disabled:opacity-60 hover:from-sky-100 hover:to-sky-200 transition-colors"
+        >
+          Pay {amount.toFixed(2)} BDT
+        </button>
+      </div>
+    </div>
+  );
+}
+
+function IconBtn({ children }: { children: React.ReactNode }) {
+  return (
+    <div className="grid place-items-center h-9 w-9 rounded-lg bg-white shadow-sm border border-slate-200 text-slate-500">
+      {children}
+    </div>
+  );
+}
+
+function PayTile({ selected, onClick, children }: { id: string; selected: boolean; onClick: () => void; children: React.ReactNode }) {
+  return (
+    <button
+      onClick={onClick}
+      className={`relative h-20 rounded-xl bg-white grid place-items-center transition-all border-2 ${
+        selected ? "border-[#1e40af] shadow-[0_6px_18px_-6px_rgba(30,64,175,0.45)] scale-[1.02]" : "border-slate-200 hover:border-slate-300 shadow-sm"
+      }`}
+    >
+      {selected && (
+        <span className="absolute top-1.5 right-1.5 grid place-items-center h-4 w-4 rounded-full bg-[#1e40af] text-white text-[9px]">✓</span>
+      )}
+      {children}
+    </button>
+  );
+}
+
+/* Stylized official-looking brand marks */
+
+function BkashOfficial() {
+  return (
+    <div className="flex items-center gap-1.5">
+      <span className="text-[#e2136e] text-2xl font-bold lowercase tracking-tight" style={{ fontFamily: "'Barlow',sans-serif" }}>
+        b<span className="text-slate-700">Kash</span>
+      </span>
+      <svg viewBox="0 0 24 24" className="h-6 w-6" fill="#e2136e">
+        <path d="M2 12 L14 4 L22 8 L14 22 L10 14 Z" />
+      </svg>
+    </div>
+  );
+}
+
+function NagadOfficial() {
+  return (
+    <div className="flex items-center gap-1.5">
+      <svg viewBox="0 0 40 40" className="h-7 w-7">
+        <circle cx="20" cy="20" r="18" fill="#f47216" />
+        <circle cx="20" cy="20" r="11" fill="#fff" />
+        <circle cx="20" cy="20" r="6" fill="#e63946" />
+      </svg>
+      <span className="text-[#e63946] text-xl font-extrabold" style={{ fontFamily: "'Hind Siliguri',sans-serif" }}>
+        নগদ
+      </span>
+    </div>
+  );
+}
+
+function RocketOfficial() {
+  return (
+    <div className="flex items-center gap-1">
+      <svg viewBox="0 0 24 24" className="h-7 w-7" fill="none">
+        <path d="M12 2 L18 14 H14 V22 H10 V14 H6 Z" fill="#8b2c8a" />
+      </svg>
+      <div className="flex flex-col leading-none">
+        <span className="text-[9px] tracking-[0.2em] text-[#8b2c8a] font-bold">ROCKET</span>
+        <span className="text-[#8b2c8a] text-base font-extrabold" style={{ fontFamily: "'Hind Siliguri',sans-serif" }}>
+          রকেট
+        </span>
+      </div>
+    </div>
+  );
+}
+
+function UpayOfficial() {
+  return (
+    <div className="flex items-center gap-1">
+      <span className="text-[#ffc107] text-3xl font-black leading-none" style={{ fontFamily: "'Bebas Neue',sans-serif" }}>U</span>
+      <span className="text-slate-700 text-lg font-extrabold" style={{ fontFamily: "'Hind Siliguri',sans-serif" }}>
+        উপায়
+      </span>
+    </div>
   );
 }
 
