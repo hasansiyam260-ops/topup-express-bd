@@ -42,7 +42,7 @@ const DEMO_ORDERS: Order[] = [
   {
     id: "demo-1",
     order_number: "UID260628A91X",
-    product_name: "Free Fire [BD] — 1015 Diamond 💎",
+    product_name: "25 Diamond",
     player_uid: "3204376534",
     player_name: "FF・LegendKing",
     amount: 670,
@@ -55,7 +55,7 @@ const DEMO_ORDERS: Order[] = [
   {
     id: "demo-2",
     order_number: "UID260626BL44",
-    product_name: "Free Fire — Weekly Membership",
+    product_name: "Weekly Membership",
     player_uid: "7821094553",
     player_name: "PRO・ShadowX",
     amount: 159,
@@ -68,7 +68,7 @@ const DEMO_ORDERS: Order[] = [
   {
     id: "demo-3",
     order_number: "UID260624XK02",
-    product_name: "Free Fire — 500 Likes Pack",
+    product_name: "100 Likes",
     player_uid: "5532108899",
     player_name: "FF・NinjaBoy",
     amount: 80,
@@ -110,8 +110,8 @@ function OrdersPage() {
               <div className="text-[9px] tracking-[0.3em] uppercase text-white/70 leading-none">Order History</div>
               <h1 className="font-display text-lg leading-tight mt-0.5">MY ORDERS</h1>
             </div>
-            <span className="flex items-center gap-1 text-[9px] tracking-wider uppercase bg-white/15 backdrop-blur text-white px-2 py-0.5 rounded-full border border-white/25">
-              <Sparkles className="h-2.5 w-2.5" /> {merged.length}
+            <span className="flex items-center gap-1.5 text-[10px] font-bold tracking-wider uppercase bg-white/20 backdrop-blur text-white px-2.5 py-1 rounded-full border border-white/30 shadow-sm">
+              <Receipt className="h-3 w-3" /> {merged.length} {merged.length === 1 ? "Order" : "Orders"}
             </span>
           </div>
         </div>
