@@ -99,19 +99,20 @@ function HomePage() {
       </section>
 
       {/* SECTION TITLE */}
-      <section id="packs" className="mx-auto max-w-3xl px-3 mt-8">
-        <h2 className="text-center font-display text-3xl tracking-[0.15em] text-foreground">
+      <section id="packs" className="mx-auto max-w-3xl px-3 mt-4">
+        <h2 className="text-center font-display text-2xl tracking-[0.15em] text-foreground">
           FREE FIRE
         </h2>
-        <div className="mx-auto mt-2 h-[3px] w-16 rounded-full bg-gradient-to-r from-neon-violet to-neon-magenta" />
+        <div className="mx-auto mt-1.5 h-[3px] w-16 rounded-full bg-gradient-to-r from-neon-violet to-neon-magenta" />
       </section>
 
       {/* PRIMARY CATEGORY GRID — 3 cols × 2 rows, fixed 6 sections */}
-      <section className="mx-auto max-w-3xl px-3 mt-5 grid grid-cols-3 gap-3">
+      <section className="mx-auto max-w-3xl px-3 mt-3 grid grid-cols-3 gap-3">
         {sections.map((c, i) => (
           <CategoryCard key={i} to={c.to} img={c.img} label={c.label} />
         ))}
       </section>
+
 
       {/* LIKE - FOLLOW - SUBSCRIBE */}
       <section className="mx-auto max-w-3xl px-3 mt-12">
