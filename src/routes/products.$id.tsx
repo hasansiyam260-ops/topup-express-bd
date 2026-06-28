@@ -98,9 +98,13 @@ function ProductPage() {
     try {
       const res = await getFFPlayerName({ data: { uid, region: "bd" } });
       setPlayerName(res.name);
+      setPlayerLevel(res.level ?? null);
+      setPlayerRegion(res.region ?? "");
       toast.success(`Player verified: ${res.name}`);
     } catch (e: any) {
       setPlayerName("");
+      setPlayerLevel(null);
+      setPlayerRegion("");
       toast.error(e?.message || "Could not fetch player name. Check UID.");
     } finally {
       setChecking(false);
