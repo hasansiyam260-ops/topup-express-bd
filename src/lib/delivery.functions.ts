@@ -90,7 +90,7 @@ export const adminRetryDelivery = createServerFn({ method: "POST" })
       .from("orders").select("*").eq("id", data.order_id).maybeSingle();
     if (error || !order) throw new Error(error?.message || "Order not found");
     const { data: product } = await supabaseAdmin
-      .from("products").select("delivery_provider, provider_sku").eq("id", order.product_id).maybeSingle();
+      .from("products").select("delivery_provider, provider_sku").eq("id", order.product_id ?? "").maybeSingle();
     const providerName = product?.delivery_provider || order.delivery_provider;
     if (!providerName) throw new Error("No provider mapped to this product");
     const { data: provider } = await supabaseAdmin

@@ -30,6 +30,7 @@ import { Route as AuthenticatedWalletRouteImport } from './routes/_authenticated
 import { Route as AuthenticatedProfileRouteImport } from './routes/_authenticated.profile'
 import { Route as AuthenticatedOrdersRouteImport } from './routes/_authenticated.orders'
 import { Route as AuthenticatedCodesRouteImport } from './routes/_authenticated.codes'
+import { Route as ApiPublicHooksAutoDeliverRouteImport } from './routes/api/public/hooks/auto-deliver'
 
 const TermsRoute = TermsRouteImport.update({
   id: '/terms',
@@ -135,6 +136,12 @@ const AuthenticatedCodesRoute = AuthenticatedCodesRouteImport.update({
   path: '/codes',
   getParentRoute: () => AuthenticatedRoute,
 } as any)
+const ApiPublicHooksAutoDeliverRoute =
+  ApiPublicHooksAutoDeliverRouteImport.update({
+    id: '/api/public/hooks/auto-deliver',
+    path: '/api/public/hooks/auto-deliver',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -157,6 +164,7 @@ export interface FileRoutesByFullPath {
   '/api/livechat': typeof ApiLivechatRoute
   '/products/$id': typeof ProductsIdRoute
   '/admin/': typeof AdminIndexRoute
+  '/api/public/hooks/auto-deliver': typeof ApiPublicHooksAutoDeliverRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -178,6 +186,7 @@ export interface FileRoutesByTo {
   '/api/livechat': typeof ApiLivechatRoute
   '/products/$id': typeof ProductsIdRoute
   '/admin': typeof AdminIndexRoute
+  '/api/public/hooks/auto-deliver': typeof ApiPublicHooksAutoDeliverRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -202,6 +211,7 @@ export interface FileRoutesById {
   '/api/livechat': typeof ApiLivechatRoute
   '/products/$id': typeof ProductsIdRoute
   '/admin/': typeof AdminIndexRoute
+  '/api/public/hooks/auto-deliver': typeof ApiPublicHooksAutoDeliverRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -226,6 +236,7 @@ export interface FileRouteTypes {
     | '/api/livechat'
     | '/products/$id'
     | '/admin/'
+    | '/api/public/hooks/auto-deliver'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -247,6 +258,7 @@ export interface FileRouteTypes {
     | '/api/livechat'
     | '/products/$id'
     | '/admin'
+    | '/api/public/hooks/auto-deliver'
   id:
     | '__root__'
     | '/'
@@ -270,6 +282,7 @@ export interface FileRouteTypes {
     | '/api/livechat'
     | '/products/$id'
     | '/admin/'
+    | '/api/public/hooks/auto-deliver'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -283,6 +296,7 @@ export interface RootRouteChildren {
   TermsRoute: typeof TermsRoute
   ApiLivechatRoute: typeof ApiLivechatRoute
   ProductsIdRoute: typeof ProductsIdRoute
+  ApiPublicHooksAutoDeliverRoute: typeof ApiPublicHooksAutoDeliverRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -434,6 +448,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedCodesRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
+    '/api/public/hooks/auto-deliver': {
+      id: '/api/public/hooks/auto-deliver'
+      path: '/api/public/hooks/auto-deliver'
+      fullPath: '/api/public/hooks/auto-deliver'
+      preLoaderRoute: typeof ApiPublicHooksAutoDeliverRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -488,6 +509,7 @@ const rootRouteChildren: RootRouteChildren = {
   TermsRoute: TermsRoute,
   ApiLivechatRoute: ApiLivechatRoute,
   ProductsIdRoute: ProductsIdRoute,
+  ApiPublicHooksAutoDeliverRoute: ApiPublicHooksAutoDeliverRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

@@ -26,7 +26,7 @@ export const Route = createFileRoute("/api/public/hooks/auto-deliver")({
         if (!order) return new Response("Order not found", { status: 404 });
 
         const { data: product } = await supabaseAdmin
-          .from("products").select("delivery_provider, provider_sku").eq("id", order.product_id).maybeSingle();
+          .from("products").select("delivery_provider, provider_sku").eq("id", order.product_id ?? "").maybeSingle();
         const providerName = product?.delivery_provider;
         if (!providerName || !product?.provider_sku) {
           await supabaseAdmin.from("orders").update({ delivery_status: "skipped" }).eq("id", orderId);
