@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { AppShell } from "@/components/site/AppShell";
 import { toast } from "sonner";
-import { LogOut, Wallet, User } from "lucide-react";
+import { LogOut, Wallet, User, ShoppingBag, CheckCircle2, XCircle, Timer, TrendingUp, Gamepad2, Hash } from "lucide-react";
 
 export const Route = createFileRoute("/_authenticated/profile")({
   head: () => ({ meta: [{ title: "My Profile — UIDTOPUP.COM" }] }),
@@ -23,6 +23,29 @@ function ProfilePage() {
       const { data, error } = await supabase.from("profiles").select("*").eq("id", u.user.id).maybeSingle();
       if (error) throw error;
       return { ...data, email: u.user.email };
+    },
+  });
+
+  const { data: orderStats } = useQuery({
+    queryKey: ["my-order-stats"],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("orders")
+        .select("amount,status,player_uid,player_name,product_name,created_at,updated_at")
+        .order("created_at", { ascending: false });
+      if (error) throw error;
+      const rows = data ?? [];
+      const total = rows.length;
+      const completed = rows.filter((o) => o.status === "completed");
+      const cancelled = rows.filter((o) => o.status === "cancelled" || o.status === "failed");
+      const pending = rows.filter((o) => o.status === "pending" || o.status === "processing");
+      const spent = completed.reduce((s, o) => s + Number(o.amount || 0), 0);
+      const times = completed
+        .map((o) => (new Date(o.updated_at).getTime() - new Date(o.created_at).getTime()) / 60000)
+        .filter((m) => m > 0 && m < 60 * 24);
+      const avgMin = times.length ? Math.round(times.reduce((a, b) => a + b, 0) / times.length) : null;
+      const last = rows.find((o) => o.player_uid);
+      return { total, completed: completed.length, cancelled: cancelled.length, pending: pending.length, spent, avgMin, last };
     },
   });
 
@@ -94,6 +117,49 @@ function ProfilePage() {
           <button onClick={() => navigate({ to: "/wallet" })} className="btn-red px-4 py-2.5 rounded-xl text-sm shrink-0">Add Money</button>
         </div>
 
+        {/* Stats overview */}
+        <div className="rounded-2xl overflow-hidden bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white p-4 shadow-[0_10px_30px_-14px_rgba(2,6,23,0.6)] relative">
+          <div className="absolute -top-10 -right-10 h-28 w-28 rounded-full bg-cyan-500/20 blur-3xl" />
+          <div className="absolute -bottom-10 -left-10 h-28 w-28 rounded-full bg-fuchsia-500/20 blur-3xl" />
+          <div className="relative flex items-center gap-2 mb-3">
+            <span className="grid place-items-center h-8 w-8 rounded-lg bg-white/10 ring-1 ring-white/20"><TrendingUp className="h-4 w-4" /></span>
+            <div>
+              <div className="text-[9px] tracking-[0.3em] uppercase text-white/60 leading-none">Activity</div>
+              <h2 className="font-display text-base leading-tight mt-0.5">MY STATS</h2>
+            </div>
+          </div>
+          <div className="relative grid grid-cols-2 gap-2">
+            <StatTile icon={<ShoppingBag className="h-3.5 w-3.5" />} label="Total Orders" value={String(orderStats?.total ?? 0)} tint="from-sky-500/30 to-sky-500/0" />
+            <StatTile icon={<Wallet className="h-3.5 w-3.5" />} label="Total Spent" value={`৳${Number(orderStats?.spent ?? 0).toLocaleString()}`} tint="from-amber-500/30 to-amber-500/0" />
+            <StatTile icon={<CheckCircle2 className="h-3.5 w-3.5" />} label="Completed" value={String(orderStats?.completed ?? 0)} tint="from-emerald-500/30 to-emerald-500/0" />
+            <StatTile icon={<XCircle className="h-3.5 w-3.5" />} label="Cancelled" value={String(orderStats?.cancelled ?? 0)} tint="from-rose-500/30 to-rose-500/0" />
+            <StatTile icon={<Timer className="h-3.5 w-3.5" />} label="Avg Delivery" value={orderStats?.avgMin ? `${orderStats.avgMin}m` : "—"} tint="from-violet-500/30 to-violet-500/0" />
+            <StatTile icon={<ShoppingBag className="h-3.5 w-3.5" />} label="Pending" value={String(orderStats?.pending ?? 0)} tint="from-yellow-500/30 to-yellow-500/0" />
+          </div>
+        </div>
+
+        {/* Game identity */}
+        {orderStats?.last && (
+          <div className="relative rounded-2xl overflow-hidden p-4 bg-gradient-to-br from-indigo-600 via-blue-600 to-cyan-500 text-white shadow-[0_10px_30px_-14px_rgba(37,99,235,0.5)]">
+            <div className="absolute -top-10 -right-10 h-28 w-28 rounded-full bg-white/15 blur-2xl" />
+            <div className="relative flex items-center gap-3">
+              <span className="grid place-items-center h-11 w-11 rounded-xl bg-white/15 ring-1 ring-white/30 shrink-0">
+                <Gamepad2 className="h-5 w-5" />
+              </span>
+              <div className="min-w-0 flex-1">
+                <div className="text-[9px] tracking-[0.3em] uppercase text-white/70 leading-none">Last Topup Account</div>
+                <div className="font-display text-base leading-tight mt-1 truncate">
+                  {orderStats.last.player_name || "Free Fire Player"}
+                </div>
+                <div className="flex items-center gap-1.5 mt-1 text-[11px] text-white/85 font-mono">
+                  <Hash className="h-3 w-3" /> {orderStats.last.player_uid}
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+
         <form onSubmit={save} className="rounded-2xl card-soft p-5 space-y-3">
           <h2 className="font-display text-2xl mb-2">Account Details</h2>
           <Input label="Full name" value={fullName} onChange={setFullName} max={100} />
@@ -127,6 +193,18 @@ function Input({ label, value, onChange, max }: { label: string; value: string; 
         value={value} onChange={(e) => onChange(e.target.value)} maxLength={max}
         className="w-full px-3 py-2 rounded-lg bg-input border-2 border-border focus:border-neon-violet focus:outline-none text-sm"
       />
+    </div>
+  );
+}
+
+function StatTile({ icon, label, value, tint }: { icon: React.ReactNode; label: string; value: string; tint: string }) {
+  return (
+    <div className={`relative overflow-hidden rounded-xl p-2.5 bg-white/[0.04] ring-1 ring-white/10 backdrop-blur`}>
+      <div className={`absolute inset-0 bg-gradient-to-br ${tint} opacity-60 pointer-events-none`} />
+      <div className="relative flex items-center gap-1.5 text-white/70 text-[9px] tracking-[0.2em] uppercase">
+        {icon} {label}
+      </div>
+      <div className="relative font-display text-lg leading-tight mt-0.5 text-white">{value}</div>
     </div>
   );
 }
