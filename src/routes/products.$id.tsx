@@ -262,9 +262,11 @@ function ProductPage() {
             disabled={checking || !uid}
             className="mt-2 w-full shimmer-orange py-2 rounded-lg text-sm disabled:opacity-60 disabled:cursor-not-allowed"
           >
-            {checking ? "Checking..." : playerName ? `✓ ${playerName}` : "Click to check player name"}
+            {checking ? "Checking..." : playerName ? "✓ Verified — Tap to recheck" : "Click to check player name"}
           </button>
-        </Step>
+          {playerName && (
+            <VerifiedPlayerCard name={playerName} level={playerLevel} region={playerRegion} />
+          )}
 
         {/* Step 3 — Payment */}
         <Step n={3} title="Payment Methods">
