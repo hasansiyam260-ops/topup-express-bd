@@ -214,13 +214,13 @@ function ProductPage() {
 
         {/* Step 3 — Payment */}
         <Step n={3} title="Payment Methods">
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-2 gap-2">
             <PayCard
               active={payment === "wallet"}
               onClick={() => setPayment("wallet")}
               title="Pay With Wallet"
               subtitle="Instant · 0% Fee"
-              icon={<Wallet className="h-5 w-5" />}
+              icon={<Wallet className="h-4 w-4" />}
               brand="TOPUP ওয়ালেট"
               variant="wallet"
             />
@@ -229,7 +229,7 @@ function ProductPage() {
               onClick={() => setPayment("instant")}
               title="Instant Pay"
               subtitle="Mobile Banking"
-              icon={<Smartphone className="h-5 w-5" />}
+              icon={<Smartphone className="h-4 w-4" />}
               brand="bKash · নগদ · Rocket"
               variant="instant"
               recommended
@@ -237,31 +237,31 @@ function ProductPage() {
           </div>
 
           {/* Premium price summary */}
-          <div className="mt-5 rounded-2xl border border-border bg-gradient-to-br from-card to-muted/40 p-4 shadow-sm">
+          <div className="mt-3 rounded-xl border border-border bg-gradient-to-br from-card to-muted/40 p-3 shadow-sm">
             <div className="flex items-center justify-between">
-              <span className="text-sm text-muted-foreground">Total Payable</span>
-              <span className="text-[11px] tracking-wider uppercase text-emerald-600 font-bold bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">Secure</span>
+              <span className="text-xs text-muted-foreground">Total Payable</span>
+              <span className="text-[10px] tracking-wider uppercase text-emerald-600 font-bold bg-emerald-50 px-1.5 py-0.5 rounded-full border border-emerald-200">Secure</span>
             </div>
-            <div className="mt-1 flex items-baseline gap-1">
-              <span className="font-display text-4xl text-primary tracking-tight">৳{Number(selected.price).toFixed(0)}</span>
-              <span className="text-sm text-muted-foreground">BDT</span>
+            <div className="mt-0.5 flex items-baseline gap-1">
+              <span className="font-display text-2xl text-primary tracking-tight">৳{Number(selected.price).toFixed(0)}</span>
+              <span className="text-xs text-muted-foreground">BDT</span>
             </div>
-            <div className="mt-2 flex items-center gap-2 text-xs text-muted-foreground">
-              <Info className="h-3.5 w-3.5 shrink-0" />
+            <div className="mt-1 flex items-center gap-1.5 text-[11px] text-muted-foreground">
+              <Info className="h-3 w-3 shrink-0" />
               <span>প্রোডাক্ট কিনতে আপনার প্রয়োজন <span className="text-foreground font-semibold">৳{Number(selected.price).toFixed(0)} টাকা</span></span>
             </div>
           </div>
 
           {!authed && (
-            <div className="mt-3 flex items-center gap-2 text-sm text-primary bg-primary/5 border border-primary/20 rounded-lg px-3 py-2">
-              <Info className="h-4 w-4 shrink-0" /> Please login to complete purchase
+            <div className="mt-2 flex items-center gap-2 text-xs text-primary bg-primary/5 border border-primary/20 rounded-lg px-2.5 py-1.5">
+              <Info className="h-3.5 w-3.5 shrink-0" /> Please login to complete purchase
             </div>
           )}
 
           <button
             onClick={submitOrder}
             disabled={submitting}
-            className="mt-4 w-full btn-red py-4 rounded-2xl text-base font-bold tracking-wide disabled:opacity-60 shadow-[0_10px_30px_-10px_color-mix(in_oklab,var(--brand-red)_60%,transparent)]"
+            className="mt-3 w-full btn-red py-2.5 rounded-xl text-sm font-bold tracking-wide disabled:opacity-60 shadow-[0_10px_30px_-10px_color-mix(in_oklab,var(--brand-red)_60%,transparent)]"
           >
             {authed ? (submitting ? "PLACING ORDER..." : `CONFIRM · ৳${Number(selected.price).toFixed(0)}`) : "LOGIN TO CONTINUE"}
           </button>
