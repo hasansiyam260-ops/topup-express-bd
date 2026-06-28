@@ -36,7 +36,7 @@ export const Route = createFileRoute("/")({
   notFoundComponent: () => <AppShell><div className="p-10 text-center">Not found</div></AppShell>,
 });
 
-const PACK_ORDER = ["diamond", "membership", "level_pass", "airdrop"];
+const PACK_ORDER = ["diamond", "membership", "level_pass", "airdrop", "like"];
 
 function HomePage() {
   const { data: products } = useSuspenseQuery(productsQO);
@@ -46,13 +46,15 @@ function HomePage() {
     .map((type) => products.find((p) => p.pack_type === type))
     .filter(Boolean) as typeof products;
 
+  const likeFirst = products.find((p) => p.pack_type === "like");
+
   // Extra category cards (duplicated visual style, like reference's Indonesia/Like/Voucher)
   const extraCategories = [
-    { label: "Free Fire Like", img: packImage("membership"), to: featured[1]?.id },
+    { label: "Free Fire Like", img: packImage("like"), to: likeFirst?.id },
     { label: "Free Fire Voucher for UniPin", img: packImage("level_pass"), to: featured[2]?.id },
     { label: "Free Fire Indonesia", img: packImage("airdrop"), to: featured[3]?.id },
-    { label: "Level Up Pass Indonesia", img: packImage("level_pass"), to: featured[2]?.id },
   ];
+
 
   return (
     <AppShell>
