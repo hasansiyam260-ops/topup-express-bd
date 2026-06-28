@@ -24,6 +24,7 @@ function categoryTitle(c: string) { return CATEGORY_META[c]?.title ?? "Topup Pac
 function categorySubtitle(c: string) { return CATEGORY_META[c]?.sub ?? "Premium"; }
 
 export const Route = createFileRoute("/products/$id")({
+  validateSearch: (s: Record<string, unknown>) => ({ cat: typeof s.cat === "string" ? s.cat : undefined }),
   loader: ({ params, context }) => {
     void context.queryClient.prefetchQuery(productQueryOptions(params.id));
     void context.queryClient.prefetchQuery(productsQueryOptions);
