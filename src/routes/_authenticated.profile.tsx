@@ -123,9 +123,12 @@ function ProfilePage() {
 
 
         {/* Game Account — fetched live from FF API */}
-        {orderStats?.last?.player_uid && (
-          <GameAccountCard uid={orderStats.last.player_uid} fallbackName={orderStats.last.player_name} />
-        )}
+        <GameAccountCard
+          savedUid={profile?.game_uid ?? null}
+          lastUid={orderStats?.last?.player_uid ?? null}
+          fallbackName={orderStats?.last?.player_name}
+        />
+
 
 
         <button onClick={logout} className="w-full py-3 rounded-xl border-2 border-destructive/40 text-destructive font-bold uppercase tracking-wider text-sm flex items-center justify-center gap-2 hover:bg-destructive/10">
