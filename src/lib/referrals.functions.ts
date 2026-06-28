@@ -1,8 +1,8 @@
 import { createServerFn } from "@tanstack/react-start";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 
-const CASHBACK_RATE = 0.02; // 2% of every referee top-up
-const SIGNUP_BONUS = 20; // 20 BDT one-time bonus to new user when applying a code
+const CASHBACK_RATE = 0.02; // 2% lifetime cashback to referrer on every purchase
+const FIRST_PURCHASE_BONUS = 20; // 20 BDT one-time bonus to referrer on referee's first purchase
 
 export const getMyReferralInfo = createServerFn({ method: "GET" })
   .middleware([requireSupabaseAuth])
