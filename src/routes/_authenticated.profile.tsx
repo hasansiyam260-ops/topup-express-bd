@@ -138,44 +138,11 @@ function ProfilePage() {
         </div>
 
 
-        {/* Game identity */}
-        {orderStats?.last && (
-          <div className="relative rounded-2xl overflow-hidden p-4 bg-gradient-to-br from-indigo-600 via-blue-600 to-cyan-500 text-white shadow-[0_10px_30px_-14px_rgba(37,99,235,0.5)]">
-            <div className="absolute -top-10 -right-10 h-28 w-28 rounded-full bg-white/15 blur-2xl" />
-            <div className="relative flex items-center gap-3">
-              <span className="grid place-items-center h-11 w-11 rounded-xl bg-white/15 ring-1 ring-white/30 shrink-0">
-                <Gamepad2 className="h-5 w-5" />
-              </span>
-              <div className="min-w-0 flex-1">
-                <div className="text-[9px] tracking-[0.3em] uppercase text-white/70 leading-none">Last Topup Account</div>
-                <div className="font-display text-base leading-tight mt-1 truncate">
-                  {orderStats.last.player_name || "Free Fire Player"}
-                </div>
-                <div className="flex items-center gap-1.5 mt-1 text-[11px] text-white/85 font-mono">
-                  <Hash className="h-3 w-3" /> {orderStats.last.player_uid}
-                </div>
-              </div>
-            </div>
-          </div>
+        {/* Game Account — fetched live from FF API */}
+        {orderStats?.last?.player_uid && (
+          <GameAccountCard uid={orderStats.last.player_uid} fallbackName={orderStats.last.player_name} />
         )}
 
-
-        <form onSubmit={save} className="rounded-2xl card-soft p-5 space-y-3">
-          <h2 className="font-display text-2xl mb-2">Account Details</h2>
-          <Input label="Full name" value={fullName} onChange={setFullName} max={100} />
-          <Input label="Phone" value={phone} onChange={setPhone} max={20} />
-          <Input label="Avatar URL" value={avatarUrl} onChange={setAvatarUrl} max={500} />
-          <div>
-            <label className="block text-xs uppercase tracking-widest text-muted-foreground mb-1">Address</label>
-            <textarea
-              value={address} onChange={(e) => setAddress(e.target.value)} maxLength={300} rows={3}
-              className="w-full px-3 py-2 rounded-lg bg-input border-2 border-border focus:border-neon-violet focus:outline-none text-sm"
-            />
-          </div>
-          <button disabled={saving} className="btn-red w-full py-3 rounded-xl disabled:opacity-50">
-            {saving ? "SAVING..." : "SAVE CHANGES"}
-          </button>
-        </form>
 
         <button onClick={logout} className="w-full py-3 rounded-xl border-2 border-destructive/40 text-destructive font-bold uppercase tracking-wider text-sm flex items-center justify-center gap-2 hover:bg-destructive/10">
           <LogOut className="h-4 w-4" /> Logout
