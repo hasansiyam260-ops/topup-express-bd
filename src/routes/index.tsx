@@ -1,14 +1,16 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useSuspenseQuery, queryOptions } from "@tanstack/react-query";
+import { useQuery, queryOptions } from "@tanstack/react-query";
 import { listProducts } from "@/lib/products.functions";
 import { AppShell } from "@/components/site/AppShell";
-import { packImage, PACK_LABELS } from "@/lib/assets";
-import heroImg from "@/assets/hero-promo.jpg";
+import { packImage } from "@/lib/assets";
+import heroImg from "@/assets/hero-promo.webp";
 import { MessageCircle, MessagesSquare, Gift, Facebook, Youtube, Mail, Play, Send } from "lucide-react";
 
 const productsQO = queryOptions({
   queryKey: ["products"],
   queryFn: () => listProducts(),
+  staleTime: 1000 * 60 * 5,
+  gcTime: 1000 * 60 * 15,
 });
 
 export const Route = createFileRoute("/")({
@@ -18,12 +20,13 @@ export const Route = createFileRoute("/")({
       { name: "description", content: "Bangladesh er #1 Free Fire diamond topup service. Instant 10 second delivery, Weekly & Monthly membership, Level Up Pass — best price. Pay with bKash, Nagad, Rocket." },
       { property: "og:title", content: "UIDTOPUP.COM — Premium Free Fire Topup" },
       { property: "og:description", content: "Instant Free Fire diamond topup, membership & level up pass. Trusted by thousands in Bangladesh." },
-      { property: "og:image", content: "/src/assets/hero-promo.jpg" },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
+    links: [
+      { rel: "preload", as: "image", href: heroImg },
+    ],
   }),
-  loader: ({ context }) => context.queryClient.ensureQueryData(productsQO),
   component: HomePage,
   errorComponent: ({ error, reset }) => (
     <AppShell>
@@ -37,7 +40,7 @@ export const Route = createFileRoute("/")({
 });
 
 function HomePage() {
-  const { data: products } = useSuspenseQuery(productsQO);
+  const { data: products = [] } = useQuery(productsQO);
 
   const firstOf = (type: string) => products.find((p) => p.pack_type === type)?.id;
 
@@ -66,8 +69,10 @@ function HomePage() {
             src={heroImg}
             alt="Free Fire Diamond Topup"
             width={1536}
-            height={896}
-            className="w-full h-full object-cover object-center block transition-transform duration-700 group-hover:scale-[1.02]"
+            height={768}
+            fetchPriority="high"
+            decoding="async"
+            className="w-full h-full object-cover object-center block md:transition-transform md:duration-500 md:group-hover:scale-[1.02]"
           />
           {/* Glossy top sheen — glassy premium */}
           <span
@@ -247,6 +252,7 @@ function CategoryCard({ to, img, label }: { to?: string; img: string; label: str
           width={768}
           height={768}
           loading="lazy"
+          decoding="async"
           className="w-full aspect-square object-cover"
         />
       </div>

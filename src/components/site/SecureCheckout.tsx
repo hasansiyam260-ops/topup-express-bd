@@ -1,10 +1,10 @@
 import { useState, useMemo } from "react";
 import { ShieldCheck, X, Home, HelpCircle, Headphones, Languages, Lock, ChevronLeft, Copy, CheckCircle2, AlertTriangle, Sparkles, Info } from "lucide-react";
 import { toast } from "sonner";
-import bkashLogo from "@/assets/pay-bkash.png";
-import nagadLogo from "@/assets/pay-nagad.png";
-import rocketLogo from "@/assets/pay-rocket.png";
-import upayLogo from "@/assets/pay-upay.png";
+import bkashLogo from "@/assets/pay-bkash.webp";
+import nagadLogo from "@/assets/pay-nagad.webp";
+import rocketLogo from "@/assets/pay-rocket.webp";
+import upayLogo from "@/assets/pay-upay.webp";
 
 export type PayBrand = "bkash" | "nagad" | "rocket" | "upay";
 
@@ -189,7 +189,7 @@ function BrandPayPage({
 
         <div className="flex-1 overflow-y-auto px-4 py-4 space-y-3">
           <div className="bg-white rounded-2xl shadow-sm border border-slate-200 py-5 grid place-items-center">
-            <img src={cfg.logo} alt={cfg.name} className="h-10 w-auto object-contain" />
+            <img src={cfg.logo} alt={cfg.name} width={360} height={180} decoding="async" className="h-10 w-auto object-contain" />
           </div>
 
           <div className="bg-white rounded-2xl shadow-sm border border-slate-200 p-3 flex items-center gap-3">
@@ -278,7 +278,7 @@ function PayTile({ selected, onClick, glow, logo, alt }: { selected: boolean; on
         <span className="absolute inset-x-0 top-0 h-1/2 bg-gradient-to-b from-white to-transparent pointer-events-none" />
         {selected && (<span className="absolute top-1.5 right-1.5 grid place-items-center h-5 w-5 rounded-full text-white text-[10px] font-bold shadow-lg ring-2 ring-white z-10" style={{ background: `rgb(${glow})` }}>✓</span>)}
         <div className="relative h-full grid place-items-center px-3">
-          <img src={logo} alt={alt} loading="lazy" className="max-h-14 w-auto object-contain drop-shadow-[0_2px_4px_rgba(0,0,0,0.08)]" />
+          <img src={logo} alt={alt} width={360} height={180} loading="lazy" decoding="async" className="max-h-14 w-auto object-contain drop-shadow-[0_2px_4px_rgba(0,0,0,0.08)]" />
         </div>
       </button>
     </div>

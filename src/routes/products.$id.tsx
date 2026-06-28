@@ -6,15 +6,25 @@ import { getFFPlayerName } from "@/lib/ff.functions";
 import { AppShell } from "@/components/site/AppShell";
 import { SecureCheckout, SuccessScreen } from "@/components/site/SecureCheckout";
 import { packImage } from "@/lib/assets";
-import heroImg from "@/assets/hero-promo.jpg";
+import heroImg from "@/assets/hero-promo.webp";
 import { supabase } from "@/integrations/supabase/client";
 import { Wallet, Smartphone, Info, HelpCircle, AlertTriangle, X, Plus } from "lucide-react";
 import { toast } from "sonner";
 
 const productQO = (id: string) =>
-  queryOptions({ queryKey: ["product", id], queryFn: () => getProduct({ data: { id } }) });
+  queryOptions({
+    queryKey: ["product", id],
+    queryFn: () => getProduct({ data: { id } }),
+    staleTime: 1000 * 60 * 5,
+    gcTime: 1000 * 60 * 15,
+  });
 
-const allQO = queryOptions({ queryKey: ["products"], queryFn: () => listProducts() });
+const allQO = queryOptions({
+  queryKey: ["products"],
+  queryFn: () => listProducts(),
+  staleTime: 1000 * 60 * 5,
+  gcTime: 1000 * 60 * 15,
+});
 
 export const Route = createFileRoute("/products/$id")({
   loader: async ({ params, context }) => {
@@ -146,6 +156,9 @@ function ProductPage() {
           <img
             src={heroImg}
             alt=""
+              width={900}
+              height={450}
+              decoding="async"
             className="absolute inset-0 w-full h-full object-cover"
           />
           <div className="absolute inset-0 bg-gradient-to-r from-black/85 via-black/55 to-transparent" />
@@ -155,6 +168,7 @@ function ProductPage() {
               alt={product.name_en}
               width={300}
               height={300}
+              decoding="async"
               className="h-24 w-24 sm:h-28 sm:w-28 rounded-xl object-cover ring-2 ring-white/20 shadow-2xl shrink-0"
             />
             <div className="min-w-0 text-white drop-shadow-[0_2px_8px_rgba(0,0,0,0.6)]">

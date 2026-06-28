@@ -96,7 +96,6 @@
     background-image:
       radial-gradient(ellipse 70% 50% at 50% -10%, color-mix(in oklab, var(--neon-violet) 12%, transparent), transparent 60%),
       radial-gradient(ellipse 50% 40% at 100% 100%, color-mix(in oklab, var(--neon-cyan) 10%, transparent), transparent 60%);
-    background-attachment: fixed;
   }
   h1, h2, h3, h4, .font-display {
     font-family: var(--font-display);
@@ -201,7 +200,7 @@
   }
 }
 @utility glow-pulse {
-  animation: glow-pulse 3s ease-in-out infinite;
+  filter: drop-shadow(0 0 10px color-mix(in oklab, var(--neon-violet) 35%, transparent));
 }
 
 @keyframes ring-pulse {
@@ -237,9 +236,24 @@
     inset: 0;
     background: linear-gradient(110deg, transparent 35%, rgba(255,255,255,0.55) 50%, transparent 65%);
     transform: translateX(-120%) skewX(-20deg);
-    animation: sweep 3.5s ease-in-out infinite;
+    animation: sweep 5.5s ease-in-out infinite;
     pointer-events: none;
     mix-blend-mode: overlay;
+  }
+}
+
+@media (max-width: 640px), (prefers-reduced-motion: reduce) {
+  .sweep-shine::after,
+  .float-soft,
+  .ring-pulse,
+  .shimmer-orange {
+    animation: none !important;
+  }
+
+  .hover-lift,
+  .btn-red,
+  .btn-neon {
+    transition-duration: 0.01ms !important;
   }
 }
 
