@@ -275,6 +275,9 @@ export type Database = {
           game_uid: string | null
           id: string
           phone: string | null
+          referral_code: string | null
+          referral_earnings: number
+          referred_by: string | null
           updated_at: string
         }
         Insert: {
@@ -286,6 +289,9 @@ export type Database = {
           game_uid?: string | null
           id: string
           phone?: string | null
+          referral_code?: string | null
+          referral_earnings?: number
+          referred_by?: string | null
           updated_at?: string
         }
         Update: {
@@ -297,7 +303,37 @@ export type Database = {
           game_uid?: string | null
           id?: string
           phone?: string | null
+          referral_code?: string | null
+          referral_earnings?: number
+          referred_by?: string | null
           updated_at?: string
+        }
+        Relationships: []
+      }
+      referral_credits: {
+        Row: {
+          amount: number
+          created_at: string
+          id: string
+          referee_id: string
+          referrer_id: string
+          source: string
+        }
+        Insert: {
+          amount: number
+          created_at?: string
+          id?: string
+          referee_id: string
+          referrer_id: string
+          source?: string
+        }
+        Update: {
+          amount?: number
+          created_at?: string
+          id?: string
+          referee_id?: string
+          referrer_id?: string
+          source?: string
         }
         Relationships: []
       }
@@ -345,6 +381,7 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      generate_referral_code: { Args: never; Returns: string }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
