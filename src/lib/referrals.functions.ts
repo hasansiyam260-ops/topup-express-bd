@@ -73,7 +73,7 @@ export const applyReferralCode = createServerFn({ method: "POST" })
     return { ok: true, bonus: SIGNUP_BONUS };
   });
 
-export const creditReferralForTopup = createServerFn({ method: "POST" })
+export const creditReferralForPurchase = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator((d: { amount: number }) => d)
   .handler(async ({ data, context }) => {
