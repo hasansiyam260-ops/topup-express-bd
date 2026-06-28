@@ -218,7 +218,7 @@ function OrderCard({ order }: { order: Order }) {
             <Gem className="h-5 w-5 text-cyan-300 drop-shadow-[0_0_6px_rgba(34,211,238,0.7)]" />
           </span>
           <div className="min-w-0 flex-1">
-            <div className="font-display text-base text-slate-800 leading-snug line-clamp-2">
+            <div className="font-display text-base font-bold text-red-600 leading-snug line-clamp-2">
               {order.product_name}
             </div>
             <div className="mt-1 flex items-center gap-2 text-[11px] text-slate-500">
@@ -275,11 +275,11 @@ function MetaCell({
 }) {
   return (
     <div className="min-w-0">
-      <div className="flex items-center gap-1 text-[8px] tracking-[0.25em] uppercase text-slate-400">
+      <div className="flex items-center gap-1 text-[8px] font-bold tracking-[0.25em] uppercase text-red-600">
         {icon}
         {label}
       </div>
-      <div className={`text-[11px] text-slate-700 mt-0.5 truncate ${mono ? "font-mono" : ""}`}>
+      <div className={`text-[11px] font-bold text-red-600 mt-0.5 truncate ${mono ? "font-mono" : ""}`}>
         {value}
       </div>
     </div>
