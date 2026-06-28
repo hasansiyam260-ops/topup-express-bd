@@ -14,6 +14,48 @@ export type Database = {
   }
   public: {
     Tables: {
+      categories: {
+        Row: {
+          banner_url: string | null
+          created_at: string
+          description: string | null
+          id: string
+          image_url: string | null
+          is_active: boolean
+          key: string
+          name_bn: string | null
+          name_en: string
+          sort_order: number
+          updated_at: string
+        }
+        Insert: {
+          banner_url?: string | null
+          created_at?: string
+          description?: string | null
+          id?: string
+          image_url?: string | null
+          is_active?: boolean
+          key: string
+          name_bn?: string | null
+          name_en: string
+          sort_order?: number
+          updated_at?: string
+        }
+        Update: {
+          banner_url?: string | null
+          created_at?: string
+          description?: string | null
+          id?: string
+          image_url?: string | null
+          is_active?: boolean
+          key?: string
+          name_bn?: string | null
+          name_en?: string
+          sort_order?: number
+          updated_at?: string
+        }
+        Relationships: []
+      }
       orders: {
         Row: {
           amount: number
@@ -72,6 +114,48 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      payment_methods: {
+        Row: {
+          account_type: string
+          brand_color: string | null
+          created_at: string
+          id: string
+          instructions: string | null
+          is_active: boolean
+          logo_url: string | null
+          name: string
+          number: string
+          sort_order: number
+          updated_at: string
+        }
+        Insert: {
+          account_type?: string
+          brand_color?: string | null
+          created_at?: string
+          id?: string
+          instructions?: string | null
+          is_active?: boolean
+          logo_url?: string | null
+          name: string
+          number: string
+          sort_order?: number
+          updated_at?: string
+        }
+        Update: {
+          account_type?: string
+          brand_color?: string | null
+          created_at?: string
+          id?: string
+          instructions?: string | null
+          is_active?: boolean
+          logo_url?: string | null
+          name?: string
+          number?: string
+          sort_order?: number
+          updated_at?: string
+        }
+        Relationships: []
       }
       products: {
         Row: {
@@ -157,6 +241,24 @@ export type Database = {
           id?: string
           phone?: string | null
           updated_at?: string
+        }
+        Relationships: []
+      }
+      site_content: {
+        Row: {
+          key: string
+          updated_at: string
+          value: Json
+        }
+        Insert: {
+          key: string
+          updated_at?: string
+          value: Json
+        }
+        Update: {
+          key?: string
+          updated_at?: string
+          value?: Json
         }
         Relationships: []
       }
