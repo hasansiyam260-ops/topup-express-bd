@@ -149,7 +149,7 @@ function ProductPage() {
                 <button
                   key={p.id}
                   onClick={() => setSelectedId(p.id)}
-                  className={`relative flex items-center gap-2 px-3 py-2.5 rounded-xl border-2 bg-card text-left transition-all ${
+                  className={`relative flex items-center gap-1.5 px-2.5 h-12 rounded-xl border-2 bg-card text-left transition-all ${
                     active
                       ? "border-primary glow-red"
                       : "border-border hover:border-neon-violet/40"
@@ -160,14 +160,12 @@ function ProductPage() {
                   }`}>
                     {active && <span className="h-1.5 w-1.5 rounded-full bg-white" />}
                   </span>
-                  <span className="flex-1 min-w-0 font-semibold text-[12px] leading-snug text-foreground flex items-center gap-1 flex-wrap">
-                    {qty ? <>
-                      <span>{qty}</span>
-                      <span>Diamond</span>
-                      <span className="text-sm leading-none">💎</span>
-                    </> : <span>{p.name_en}</span>}
+                  <span className="flex-1 min-w-0 font-semibold leading-none text-foreground flex items-baseline gap-1 whitespace-nowrap overflow-hidden">
+                    <span className="text-[12px]">{qty ?? p.name_en}</span>
+                    {qty && <span className="text-[11px]">Diamond</span>}
+                    {qty && <span className="text-[11px] leading-none">💎</span>}
                   </span>
-                  <span className="font-display text-[13px] text-primary tracking-wide whitespace-nowrap shrink-0">
+                  <span className="font-display text-[12px] text-primary tracking-wide whitespace-nowrap shrink-0">
                     {Number(p.price).toFixed(0)} TK
                   </span>
                 </button>
