@@ -105,17 +105,18 @@ function ProfilePage() {
           </div>
         </div>
 
-        {/* Wallet */}
-        <div className="rounded-2xl card-soft p-5 flex items-center justify-between">
-          <div className="flex items-center gap-3 min-w-0">
-            <span className="grid place-items-center h-11 w-11 rounded-xl bg-gradient-to-br from-primary to-rose-600 text-white shrink-0"><Wallet className="h-5 w-5" /></span>
+        {/* Wallet — medium compact */}
+        <div className="rounded-xl card-soft px-3 py-2.5 flex items-center justify-between">
+          <div className="flex items-center gap-2.5 min-w-0">
+            <span className="grid place-items-center h-9 w-9 rounded-lg bg-gradient-to-br from-primary to-rose-600 text-white shrink-0"><Wallet className="h-4 w-4" /></span>
             <div className="min-w-0">
-              <div className="text-[10px] tracking-widest uppercase text-muted-foreground">Wallet Balance</div>
-              <div className="font-display text-3xl text-primary leading-none">৳{Number(profile?.balance ?? 0).toFixed(0)}</div>
+              <div className="text-[9px] tracking-widest uppercase text-muted-foreground leading-none">Wallet Balance</div>
+              <div className="font-display text-xl text-primary leading-tight mt-0.5">৳{Number(profile?.balance ?? 0).toFixed(0)}</div>
             </div>
           </div>
-          <button onClick={() => navigate({ to: "/wallet" })} className="btn-red px-4 py-2.5 rounded-xl text-sm shrink-0">Add Money</button>
+          <button onClick={() => navigate({ to: "/wallet" })} className="btn-red px-3 py-1.5 rounded-lg text-xs shrink-0">Add Money</button>
         </div>
+
 
         {/* Stats overview */}
         <div className="relative isolate overflow-visible rounded-2xl bg-[linear-gradient(135deg,rgba(255,241,245,0.98),rgba(255,255,255,0.98)_50%,rgba(255,232,240,0.96))] p-3 ring-1 ring-rose-300/80 shadow-[0_0_22px_4px_rgba(244,63,94,0.35),0_0_55px_10px_rgba(244,63,94,0.22),inset_0_0_18px_rgba(244,63,94,0.10)]">
