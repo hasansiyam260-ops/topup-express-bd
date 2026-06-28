@@ -52,36 +52,18 @@ function ProfilePage() {
   });
 
   const [fullName, setFullName] = useState("");
-  const [phone, setPhone] = useState("");
-  const [address, setAddress] = useState("");
   const [avatarUrl, setAvatarUrl] = useState("");
-  const [saving, setSaving] = useState(false);
 
   useEffect(() => {
     if (profile) {
       setFullName(profile.full_name ?? "");
-      setPhone(profile.phone ?? "");
-      setAddress(profile.address ?? "");
       setAvatarUrl(profile.avatar_url ?? "");
     }
   }, [profile]);
 
-  const save = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setSaving(true);
-    const { data: u } = await supabase.auth.getUser();
-    if (!u.user) return setSaving(false);
-    const { error } = await supabase.from("profiles").update({
-      full_name: fullName.trim().slice(0, 100),
-      phone: phone.trim().slice(0, 20),
-      address: address.trim().slice(0, 300),
-      avatar_url: avatarUrl.trim().slice(0, 500),
-    }).eq("id", u.user.id);
-    setSaving(false);
-    if (error) return toast.error(error.message);
-    toast.success("Profile updated");
-    refetch();
-  };
+  // refetch kept for future use
+  void refetch;
+
 
   const logout = async () => {
     await queryClient.cancelQueries();
