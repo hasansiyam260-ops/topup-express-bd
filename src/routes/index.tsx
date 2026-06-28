@@ -1,17 +1,10 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useQuery, queryOptions } from "@tanstack/react-query";
-import { listProducts } from "@/lib/products.functions";
+import { useQuery } from "@tanstack/react-query";
+import { productsQueryOptions } from "@/lib/products.queries";
 import { AppShell } from "@/components/site/AppShell";
 import { packImage } from "@/lib/assets";
 import heroImg from "@/assets/hero-promo.webp";
 import { MessageCircle, MessagesSquare, Gift, Facebook, Youtube, Mail, Play, Send } from "lucide-react";
-
-const productsQO = queryOptions({
-  queryKey: ["products"],
-  queryFn: () => listProducts(),
-  staleTime: 1000 * 60 * 5,
-  gcTime: 1000 * 60 * 15,
-});
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -40,7 +33,7 @@ export const Route = createFileRoute("/")({
 });
 
 function HomePage() {
-  const { data: products = [] } = useQuery(productsQO);
+  const { data: products = [], isFetching } = useQuery(productsQueryOptions);
 
   const firstOf = (type: string) => products.find((p) => p.pack_type === type)?.id;
 
@@ -135,9 +128,9 @@ function HomePage() {
       </section>
 
       {/* PRIMARY CATEGORY GRID — 3 cols × 2 rows, fixed 6 sections */}
-      <section className="mx-auto max-w-3xl px-3 mt-3 grid grid-cols-3 gap-3">
+      <section className="mx-auto max-w-3xl px-3 mt-3 grid grid-cols-3 gap-3" aria-busy={isFetching && products.length === 0}>
         {sections.map((c, i) => (
-          <CategoryCard key={i} to={c.to} img={c.img} label={c.label} />
+          <CategoryCard key={i} to={c.to} img={c.img} label={c.label} loading={!c.to && isFetching} />
         ))}
       </section>
 
@@ -242,10 +235,11 @@ function ChipCard({
   );
 }
 
-function CategoryCard({ to, img, label }: { to?: string; img: string; label: string }) {
+function CategoryCard({ to, img, label, loading = false }: { to?: string; img: string; label: string; loading?: boolean }) {
   const content = (
     <>
       <div className="relative rounded-2xl overflow-hidden card-soft hover-lift sweep-shine">
+        {loading && <span className="absolute inset-0 z-10 skeleton-glow" aria-hidden />}
         <img
           src={img}
           alt={label}
