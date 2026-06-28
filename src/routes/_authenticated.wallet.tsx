@@ -215,12 +215,13 @@ function WalletPage() {
         <SecureCheckout
           amount={numeric}
           onClose={() => setCheckoutOpen(false)}
-          onVerified={({ amount: a, invoiceId, brand }) => {
+          onVerified={async ({ amount: a, invoiceId, brand }) => {
             try {
-              const prev = Number(localStorage.getItem("uidtopup:wallet") || "0");
-              const next = prev + a;
-              localStorage.setItem("uidtopup:wallet", String(next));
-              setBalance(next);
+              const { data: u } = await supabase.auth.getUser();
+              if (u.user) {
+                const next = Number(balance || 0) + a;
+                await supabase.from("profiles").update({ balance: next }).eq("id", u.user.id);
+              }
             } catch {}
             const entry: AddMoneyEntry = { invoiceId, brand, amount: a, ts: Date.now() };
             pushHistory(entry);
@@ -228,6 +229,7 @@ function WalletPage() {
             return true;
           }}
         />
+
       )}
     </AppShell>
   );
