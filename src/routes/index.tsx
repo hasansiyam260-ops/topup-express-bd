@@ -12,9 +12,9 @@ import { AnnouncementBar } from "@/components/site/AnnouncementBar";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "UIDTOPUP.COM — Premium Free Fire Diamond Topup Bangladesh" },
+      { title: "TOP-UP EXPRESS — Premium Free Fire Diamond Topup Bangladesh" },
       { name: "description", content: "Bangladesh er #1 Free Fire diamond topup service. Instant 10 second delivery, Weekly & Monthly membership, Level Up Pass — best price. Pay with bKash, Nagad, Rocket." },
-      { property: "og:title", content: "UIDTOPUP.COM — Premium Free Fire Topup" },
+      { property: "og:title", content: "TOP-UP EXPRESS — Premium Free Fire Topup" },
       { property: "og:description", content: "Instant Free Fire diamond topup, membership & level up pass. Trusted by thousands in Bangladesh." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
@@ -132,7 +132,7 @@ function HomePage() {
           glow="rgba(124,58,237,.48)"
           title="MESSENGER"
           sub="SUPPORT"
-          href="https://m.me/uidtopup"
+          href="https://m.me/topupexpress"
         />
         <ChipCard
           icon={<Send className="h-[17px] w-[17px] -translate-x-[1px] text-white" />}
@@ -221,12 +221,12 @@ function HomePage() {
             <span className="grid place-items-center h-9 w-9 rounded-full bg-rose-100 text-rose-600">
               <Mail className="h-4 w-4" />
             </span>
-            <span className="text-sm font-medium">admin@uidtopup.com</span>
+            <span className="text-sm font-medium">admin@topupexpress.com</span>
           </div>
           <p className="mt-4 text-sm text-muted-foreground">
             ওয়েবসাইটে কোন সমস্যা থাকলে এখানে অভিযোগ জানাতে পারে।
           </p>
-          <a href="mailto:admin@uidtopup.com" className="inline-block mt-4 btn-red px-6 py-3 rounded-full text-sm">
+          <a href="mailto:admin@topupexpress.com" className="inline-block mt-4 btn-red px-6 py-3 rounded-full text-sm">
             অভিযোগ এবং সমস্যা
           </a>
           <div className="mt-6 grid grid-cols-2 gap-y-2 text-sm font-semibold text-foreground/80 text-left max-w-xs mx-auto">
@@ -315,7 +315,7 @@ function SubBrand({
       </span>
       <div className="mt-2 font-display text-base leading-tight">{title}</div>
       <div className="text-[10px] tracking-[0.2em] text-muted-foreground mt-0.5">{sub}</div>
-      <span className="absolute bottom-2 left-1/2 -translate-x-1/2 text-[9px] tracking-[0.15em] text-foreground/40">UIDTOPUP.COM</span>
+      <span className="absolute bottom-2 left-1/2 -translate-x-1/2 text-[9px] tracking-[0.15em] text-foreground/40">TOP-UP EXPRESS</span>
     </div>
   );
 }

@@ -10,7 +10,7 @@ import { LogOut, Wallet, User, ShoppingBag, CheckCircle2, XCircle, Timer, Trendi
 
 
 export const Route = createFileRoute("/_authenticated/profile")({
-  head: () => ({ meta: [{ title: "My Profile — UIDTOPUP.COM" }] }),
+  head: () => ({ meta: [{ title: "My Profile — TOP-UP EXPRESS" }] }),
   component: ProfilePage,
 });
 

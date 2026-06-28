@@ -83,7 +83,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
       { name: "theme-color", content: "#ffffff" },
-      { title: "UIDTOPUP.COM — Premium Free Fire Diamond Topup BD" },
+      { title: "TOP-UP EXPRESS — Premium Free Fire Diamond Topup BD" },
       { name: "description", content: "Bangladesh er #1 premium Free Fire diamond topup service. Instant 10-second delivery, best price, 24/7 support." },
     ],
     links: [

@@ -19,7 +19,7 @@ function pushHistory(e: AddMoneyEntry) {
 }
 
 export const Route = createFileRoute("/_authenticated/wallet")({
-  head: () => ({ meta: [{ title: "Add Money — UIDTOPUP.COM" }] }),
+  head: () => ({ meta: [{ title: "Add Money — TOP-UP EXPRESS" }] }),
   component: WalletPage,
 });
 

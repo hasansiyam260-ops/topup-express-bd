@@ -321,7 +321,7 @@ export function SuccessScreen({ amount, invoiceId, onClose, copy }: { amount: nu
             </div>
           </div>
           <button onClick={onClose} className="mt-5 w-full rounded-xl py-3 font-display tracking-[0.15em] text-sm bg-gradient-to-b from-emerald-400 to-emerald-600 hover:from-emerald-300 hover:to-emerald-500 text-white shadow-[0_10px_30px_-10px_rgba(16,185,129,0.7)] transition-all">DONE</button>
-          <div className="mt-3 flex items-center gap-1.5 text-[10px] text-white/50"><ShieldCheck className="h-3 w-3 text-emerald-400" /> Secured by UIDTOPUP.COM Payments</div>
+          <div className="mt-3 flex items-center gap-1.5 text-[10px] text-white/50"><ShieldCheck className="h-3 w-3 text-emerald-400" /> Secured by TOP-UP EXPRESS Payments</div>
         </div>
       </div>
     </div>

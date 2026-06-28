@@ -31,7 +31,7 @@ export const Route = createFileRoute("/products/$id")({
   },
   head: () => ({
     meta: [
-      { title: "Free Fire Topup — UIDTOPUP.COM" },
+      { title: "Free Fire Topup — TOP-UP EXPRESS" },
       { name: "description", content: "Select your Free Fire pack, enter Player UID, and pay with bKash/Nagad/Rocket. Instant delivery." },
     ],
   }),
@@ -757,7 +757,7 @@ function getInfoContent(cat: string): InfoContent {
           {
             title: "গুরুত্বপূর্ণ নোটিশ",
             items: [
-              "ভুল লেভেল সিলেক্ট করে অর্ডার দিলে এবং ডায়মন্ড না পেলে <b>UID TOPUP</b> কর্তৃপক্ষ দায়ী থাকবে না।",
+              "ভুল লেভেল সিলেক্ট করে অর্ডার দিলে এবং ডায়মন্ড না পেলে <b>TOP-UP EXPRESS</b> কর্তৃপক্ষ দায়ী থাকবে না।",
               "আইডিতে Level Up Pass না থাকলেও যদি অর্ডার করেন এবং না পান, দায়ভার গ্রাহকের।",
               "অর্ডার Cancel হলে কারণ My Orders এ দেখানো হবে — সঠিক তথ্য দিয়ে পুনরায় অর্ডার করুন।",
             ],
