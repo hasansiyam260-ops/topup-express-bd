@@ -116,6 +116,25 @@ function OrdersPage() {
           </div>
         </div>
 
+        {/* Info strip — 3 lines */}
+        <div className="relative rounded-xl bg-gradient-to-r from-rose-50 via-white to-rose-50 border border-rose-200/70 px-3.5 py-2.5 shadow-[0_6px_20px_-12px_rgba(225,29,72,0.4)]">
+          <div className="absolute inset-y-0 left-0 w-1 rounded-l-xl bg-gradient-to-b from-rose-500 to-red-600" />
+          <ul className="space-y-1 pl-2">
+            <li className="flex items-center gap-2 text-[11px] text-slate-700">
+              <span className="h-1.5 w-1.5 rounded-full bg-rose-500 shrink-0" />
+              <span><span className="font-bold text-rose-600">Real-time tracking</span> — সব অর্ডারের লাইভ স্ট্যাটাস এখানেই দেখুন।</span>
+            </li>
+            <li className="flex items-center gap-2 text-[11px] text-slate-700">
+              <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 shrink-0" />
+              <span><span className="font-bold text-emerald-600">Completed</span> মানে ডায়মন্ড সফলভাবে ডেলিভার হয়েছে।</span>
+            </li>
+            <li className="flex items-center gap-2 text-[11px] text-slate-700">
+              <span className="h-1.5 w-1.5 rounded-full bg-red-500 shrink-0" />
+              <span><span className="font-bold text-red-600">Cancelled</span> অর্ডারের টাকা ওয়ালেটে ফেরত দেয়া হয়।</span>
+            </li>
+          </ul>
+        </div>
+
         {isLoading && (
           <div className="rounded-2xl card-soft p-10 text-center text-muted-foreground">
             <Loader2 className="h-6 w-6 animate-spin mx-auto mb-2 text-primary" /> Loading orders…
