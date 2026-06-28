@@ -132,7 +132,7 @@ function HomePage() {
           glow="rgba(124,58,237,.48)"
           title="MESSENGER"
           sub="SUPPORT"
-          href="https://m.me/uidtopup"
+          href="https://m.me/topupexpress"
         />
         <ChipCard
           icon={<Send className="h-[17px] w-[17px] -translate-x-[1px] text-white" />}
@@ -221,12 +221,12 @@ function HomePage() {
             <span className="grid place-items-center h-9 w-9 rounded-full bg-rose-100 text-rose-600">
               <Mail className="h-4 w-4" />
             </span>
-            <span className="text-sm font-medium">admin@uidtopup.com</span>
+            <span className="text-sm font-medium">admin@topupexpress.com</span>
           </div>
           <p className="mt-4 text-sm text-muted-foreground">
             ওয়েবসাইটে কোন সমস্যা থাকলে এখানে অভিযোগ জানাতে পারে।
           </p>
-          <a href="mailto:admin@uidtopup.com" className="inline-block mt-4 btn-red px-6 py-3 rounded-full text-sm">
+          <a href="mailto:admin@topupexpress.com" className="inline-block mt-4 btn-red px-6 py-3 rounded-full text-sm">
             অভিযোগ এবং সমস্যা
           </a>
           <div className="mt-6 grid grid-cols-2 gap-y-2 text-sm font-semibold text-foreground/80 text-left max-w-xs mx-auto">
