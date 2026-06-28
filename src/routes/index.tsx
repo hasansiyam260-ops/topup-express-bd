@@ -4,6 +4,7 @@ import { productsQueryOptions } from "@/lib/products.queries";
 import { AppShell } from "@/components/site/AppShell";
 import { packImage } from "@/lib/assets";
 import heroImg from "@/assets/hero-promo.webp";
+import logoUid from "@/assets/logo-uid.png";
 import { MessageCircle, MessagesSquare, Gift, Facebook, Youtube, Mail, Play, Send } from "lucide-react";
 import { AnnouncementBar } from "@/components/site/AnnouncementBar";
 
@@ -184,13 +185,16 @@ function HomePage() {
       {/* FOOTER */}
       <footer className="mx-auto max-w-3xl px-3 mt-14">
         <div className="rounded-2xl bg-gradient-to-b from-rose-50/60 to-background border border-border p-6 text-center">
-          <div className="flex justify-center gap-4 mb-4">
-            <a href="#" className="grid place-items-center h-10 w-10 rounded-full border border-border text-blue-600 hover:glow-violet transition">
-              <Facebook className="h-5 w-5 fill-current" />
-            </a>
-            <a href="#" className="grid place-items-center h-10 w-10 rounded-full border border-border text-red-600 hover:glow-red transition">
-              <Youtube className="h-5 w-5 fill-current" />
-            </a>
+          <div className="flex justify-center mb-4">
+            <img
+              src={logoUid}
+              alt="TOP-UP EXPRESS"
+              width={360}
+              height={144}
+              loading="lazy"
+              decoding="async"
+              className="h-14 sm:h-16 w-auto drop-shadow-[0_0_14px_rgba(236,72,153,0.35)]"
+            />
           </div>
           <h3 className="font-display text-2xl tracking-wider">Contact Us</h3>
           <div className="mt-3 mx-auto max-w-sm flex items-center gap-3 rounded-xl bg-card border border-border p-3 shadow-sm">
