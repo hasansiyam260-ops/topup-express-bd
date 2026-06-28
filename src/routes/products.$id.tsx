@@ -86,20 +86,14 @@ function ProductPage() {
     }
   };
 
-  const submitOrder = async () => {
-    if (!authed) {
-      navigate({ to: "/auth", search: { mode: "login" } });
-      return;
-    }
-    if (!playerName) return toast.error("Please verify your Player UID first");
-    if (!payment) return toast.error("Choose a payment method");
-    setSubmitting(true);
+  const price = Number(selected.price);
+
+  const placeOrder = async (method: "wallet" | "instant"): Promise<boolean> => {
     const { data: session } = await supabase.auth.getSession();
     const userId = session.session?.user.id;
     if (!userId) {
-      setSubmitting(false);
       navigate({ to: "/auth", search: { mode: "login" } });
-      return;
+      return false;
     }
     const { error } = await supabase.from("orders").insert({
       user_id: userId,
@@ -107,14 +101,41 @@ function ProductPage() {
       product_name: selected.name_en,
       player_uid: uid,
       player_name: playerName,
-      amount: Number(selected.price),
-      payment_method: payment,
+      amount: price,
+      payment_method: method,
       status: "pending",
     });
+    if (error) { toast.error(error.message); return false; }
+    return true;
+  };
+
+  const submitOrder = async () => {
+    if (!authed) { navigate({ to: "/auth", search: { mode: "login" } }); return; }
+    if (!playerName) return toast.error("Please verify your Player UID first");
+    if (!payment) return toast.error("Choose a payment method");
+
+    if (payment === "instant") {
+      // Open Secure Checkout — order will be placed after Transaction ID is verified
+      setCheckoutOpen(true);
+      return;
+    }
+
+    // Wallet flow: check balance
+    let balance = 0;
+    try { balance = Number(localStorage.getItem("uidtopup:wallet") || "0"); } catch {}
+    if (balance < price) {
+      setInsufficientOpen(true);
+      return;
+    }
+
+    setSubmitting(true);
+    const ok = await placeOrder("wallet");
+    if (ok) {
+      try { localStorage.setItem("uidtopup:wallet", String(balance - price)); } catch {}
+      const invoice = Math.random().toString(36).slice(2, 14).toUpperCase();
+      setWalletSuccess({ amount: price, invoice });
+    }
     setSubmitting(false);
-    if (error) return toast.error(error.message);
-    toast.success("Order placed! Delivery within 10 seconds.");
-    router.navigate({ to: "/orders" });
   };
 
   return (
