@@ -493,18 +493,17 @@ function InsufficientBalanceModal({ required, onClose, onAddMoney }: { required:
 
 function WalletPaidSuccess({ amount, invoice, productName, uid, onClose }: { amount: number; invoice: string; productName: string; uid: string; onClose: () => void }) {
   return (
-    <SecureCheckout
+    <SuccessScreen
       amount={amount}
+      invoiceId={invoice}
       onClose={onClose}
-      onVerified={() => true}
-      successCopy={{
+      copy={{
         badge: "Order Placed",
         title: "অর্ডার সফলভাবে সম্পন্ন হয়েছে",
         subtitle: `${productName} • UID ${uid}`,
         amountLabel: "Paid From Wallet",
         channel: "TOPUP Wallet",
       }}
-      key={invoice}
     />
   );
 }
