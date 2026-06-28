@@ -15,10 +15,7 @@ export const Route = createFileRoute("/_authenticated/referrals")({
 
 function ReferralsPage() {
   const fetchInfo = useServerFn(getMyReferralInfo);
-  const applyCode = useServerFn(applyReferralCode);
-  const qc = useQueryClient();
   const [copied, setCopied] = useState(false);
-  const [codeInput, setCodeInput] = useState("");
 
   const { data } = useQuery({
     queryKey: ["my-referral-info"],
@@ -27,16 +24,6 @@ function ReferralsPage() {
     refetchInterval: 30_000,
   });
 
-  const applyMut = useMutation({
-    mutationFn: (code: string) => applyCode({ data: { code } }),
-    onSuccess: (res) => {
-      toast.success(`সফল! ৳${res.bonus} বোনাস পেলেন 🎉`);
-      setCodeInput("");
-      qc.invalidateQueries({ queryKey: ["my-referral-info"] });
-      qc.invalidateQueries({ queryKey: ["my-wallet-balance"] });
-    },
-    onError: (e: Error) => toast.error(e.message),
-  });
 
   const shareLink = typeof window !== "undefined" && data?.code
     ? `${window.location.origin}/auth?ref=${data.code}`
