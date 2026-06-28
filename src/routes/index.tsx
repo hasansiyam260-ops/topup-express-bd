@@ -222,6 +222,10 @@ function HomePage() {
           <p className="mt-5 text-xs text-muted-foreground leading-relaxed">
             ফ্রী ফায়ার ডায়মন্ড টপ আপ কম দামে ভালো সার্ভিস। যেকোনো অর্ডার জনিত সমস্যায় ফেসবুক মেসেঞ্জারে অর্ডারের স্ক্রিনশট এবং পেমেন্টের ট্রানজেকশন আইডি লিখে মেসেজ দিন। ১৮ বছরের নিচে অভিভাবকের অনুমতি ছাড়া অর্ডার করা সম্পূর্ণভাবে নিষিদ্ধ।
           </p>
+          <div className="mt-3 text-center">
+            <Link to="/admin" className="text-[10px] text-muted-foreground/40 hover:text-rose-500 transition-colors select-none" aria-label="Admin">A</Link>
+          </div>
+
         </div>
       </footer>
     </AppShell>
