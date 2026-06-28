@@ -25,21 +25,24 @@ export const getFFPlayerName = createServerFn({ method: "GET" })
         });
         if (!res.ok) continue;
         const json: any = await res.json();
+        const ai = json?.AccountInfo ?? json?.basicInfo ?? json?.account_info ?? json?.data ?? json?.player ?? json ?? {};
         const name =
-          json?.AccountInfo?.AccountName ??
-          json?.basicInfo?.nickname ??
-          json?.account_info?.nickname ??
-          json?.nickname ??
-          json?.name ??
-          json?.data?.nickname ??
-          json?.player?.nickname ??
-          null;
+          ai?.AccountName ?? ai?.nickname ?? json?.nickname ?? json?.name ?? null;
+        const level = ai?.AccountLevel ?? ai?.level ?? ai?.Level ?? json?.level ?? null;
+        const likes = ai?.AccountLikes ?? ai?.liked ?? ai?.likes ?? json?.likes ?? null;
+        const region = ai?.AccountRegion ?? ai?.region ?? data.region;
         if (name && typeof name === "string") {
-          return { name: name as string, region: data.region };
+          return {
+            name: name as string,
+            region: String(region || data.region).toUpperCase(),
+            level: level != null ? Number(level) : null,
+            likes: likes != null ? Number(likes) : null,
+          };
         }
       } catch {
         // try next
       }
     }
-    throw new Error("Could not fetch player name. Please check the UID.");
+    throw new Error("Could not fetch player info. Please check the UID.");
   });
+

@@ -1,10 +1,12 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
+import { useServerFn } from "@tanstack/react-start";
 import { supabase } from "@/integrations/supabase/client";
 import { AppShell } from "@/components/site/AppShell";
-import { toast } from "sonner";
-import { LogOut, Wallet, User, ShoppingBag, CheckCircle2, XCircle, Timer, TrendingUp, Gamepad2, Hash } from "lucide-react";
+import { getFFPlayerName } from "@/lib/ff.functions";
+import { LogOut, Wallet, User, ShoppingBag, CheckCircle2, XCircle, Timer, TrendingUp, Gamepad2, Hash, Trophy, Heart, Globe2 } from "lucide-react";
+
 
 export const Route = createFileRoute("/_authenticated/profile")({
   head: () => ({ meta: [{ title: "My Profile — UIDTOPUP.COM" }] }),
@@ -50,36 +52,18 @@ function ProfilePage() {
   });
 
   const [fullName, setFullName] = useState("");
-  const [phone, setPhone] = useState("");
-  const [address, setAddress] = useState("");
   const [avatarUrl, setAvatarUrl] = useState("");
-  const [saving, setSaving] = useState(false);
 
   useEffect(() => {
     if (profile) {
       setFullName(profile.full_name ?? "");
-      setPhone(profile.phone ?? "");
-      setAddress(profile.address ?? "");
       setAvatarUrl(profile.avatar_url ?? "");
     }
   }, [profile]);
 
-  const save = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setSaving(true);
-    const { data: u } = await supabase.auth.getUser();
-    if (!u.user) return setSaving(false);
-    const { error } = await supabase.from("profiles").update({
-      full_name: fullName.trim().slice(0, 100),
-      phone: phone.trim().slice(0, 20),
-      address: address.trim().slice(0, 300),
-      avatar_url: avatarUrl.trim().slice(0, 500),
-    }).eq("id", u.user.id);
-    setSaving(false);
-    if (error) return toast.error(error.message);
-    toast.success("Profile updated");
-    refetch();
-  };
+  // refetch kept for future use
+  void refetch;
+
 
   const logout = async () => {
     await queryClient.cancelQueries();
@@ -105,17 +89,18 @@ function ProfilePage() {
           </div>
         </div>
 
-        {/* Wallet */}
-        <div className="rounded-2xl card-soft p-5 flex items-center justify-between">
-          <div className="flex items-center gap-3 min-w-0">
-            <span className="grid place-items-center h-11 w-11 rounded-xl bg-gradient-to-br from-primary to-rose-600 text-white shrink-0"><Wallet className="h-5 w-5" /></span>
+        {/* Wallet — medium compact */}
+        <div className="rounded-xl card-soft px-3 py-2.5 flex items-center justify-between">
+          <div className="flex items-center gap-2.5 min-w-0">
+            <span className="grid place-items-center h-9 w-9 rounded-lg bg-gradient-to-br from-primary to-rose-600 text-white shrink-0"><Wallet className="h-4 w-4" /></span>
             <div className="min-w-0">
-              <div className="text-[10px] tracking-widest uppercase text-muted-foreground">Wallet Balance</div>
-              <div className="font-display text-3xl text-primary leading-none">৳{Number(profile?.balance ?? 0).toFixed(0)}</div>
+              <div className="text-[9px] tracking-widest uppercase text-muted-foreground leading-none">Wallet Balance</div>
+              <div className="font-display text-xl text-primary leading-tight mt-0.5">৳{Number(profile?.balance ?? 0).toFixed(0)}</div>
             </div>
           </div>
-          <button onClick={() => navigate({ to: "/wallet" })} className="btn-red px-4 py-2.5 rounded-xl text-sm shrink-0">Add Money</button>
+          <button onClick={() => navigate({ to: "/wallet" })} className="btn-red px-3 py-1.5 rounded-lg text-xs shrink-0">Add Money</button>
         </div>
+
 
         {/* Stats overview */}
         <div className="relative isolate overflow-visible rounded-2xl bg-[linear-gradient(135deg,rgba(255,241,245,0.98),rgba(255,255,255,0.98)_50%,rgba(255,232,240,0.96))] p-3 ring-1 ring-rose-300/80 shadow-[0_0_22px_4px_rgba(244,63,94,0.35),0_0_55px_10px_rgba(244,63,94,0.22),inset_0_0_18px_rgba(244,63,94,0.10)]">
@@ -137,44 +122,11 @@ function ProfilePage() {
         </div>
 
 
-        {/* Game identity */}
-        {orderStats?.last && (
-          <div className="relative rounded-2xl overflow-hidden p-4 bg-gradient-to-br from-indigo-600 via-blue-600 to-cyan-500 text-white shadow-[0_10px_30px_-14px_rgba(37,99,235,0.5)]">
-            <div className="absolute -top-10 -right-10 h-28 w-28 rounded-full bg-white/15 blur-2xl" />
-            <div className="relative flex items-center gap-3">
-              <span className="grid place-items-center h-11 w-11 rounded-xl bg-white/15 ring-1 ring-white/30 shrink-0">
-                <Gamepad2 className="h-5 w-5" />
-              </span>
-              <div className="min-w-0 flex-1">
-                <div className="text-[9px] tracking-[0.3em] uppercase text-white/70 leading-none">Last Topup Account</div>
-                <div className="font-display text-base leading-tight mt-1 truncate">
-                  {orderStats.last.player_name || "Free Fire Player"}
-                </div>
-                <div className="flex items-center gap-1.5 mt-1 text-[11px] text-white/85 font-mono">
-                  <Hash className="h-3 w-3" /> {orderStats.last.player_uid}
-                </div>
-              </div>
-            </div>
-          </div>
+        {/* Game Account — fetched live from FF API */}
+        {orderStats?.last?.player_uid && (
+          <GameAccountCard uid={orderStats.last.player_uid} fallbackName={orderStats.last.player_name} />
         )}
 
-
-        <form onSubmit={save} className="rounded-2xl card-soft p-5 space-y-3">
-          <h2 className="font-display text-2xl mb-2">Account Details</h2>
-          <Input label="Full name" value={fullName} onChange={setFullName} max={100} />
-          <Input label="Phone" value={phone} onChange={setPhone} max={20} />
-          <Input label="Avatar URL" value={avatarUrl} onChange={setAvatarUrl} max={500} />
-          <div>
-            <label className="block text-xs uppercase tracking-widest text-muted-foreground mb-1">Address</label>
-            <textarea
-              value={address} onChange={(e) => setAddress(e.target.value)} maxLength={300} rows={3}
-              className="w-full px-3 py-2 rounded-lg bg-input border-2 border-border focus:border-neon-violet focus:outline-none text-sm"
-            />
-          </div>
-          <button disabled={saving} className="btn-red w-full py-3 rounded-xl disabled:opacity-50">
-            {saving ? "SAVING..." : "SAVE CHANGES"}
-          </button>
-        </form>
 
         <button onClick={logout} className="w-full py-3 rounded-xl border-2 border-destructive/40 text-destructive font-bold uppercase tracking-wider text-sm flex items-center justify-center gap-2 hover:bg-destructive/10">
           <LogOut className="h-4 w-4" /> Logout
@@ -204,6 +156,59 @@ function StatTile({ icon, label, value }: { icon: React.ReactNode; label: string
         <span className="truncate">{label}</span>
       </div>
       <div className="font-display text-base leading-tight mt-1 text-red-600">{value}</div>
+    </div>
+  );
+}
+
+function GameAccountCard({ uid, fallbackName }: { uid: string; fallbackName?: string | null }) {
+  const fetchInfo = useServerFn(getFFPlayerName);
+  const { data, isLoading, isError } = useQuery({
+    queryKey: ["ff-player-info", uid],
+    queryFn: () => fetchInfo({ data: { uid } }),
+    staleTime: 5 * 60 * 1000,
+    retry: 1,
+  });
+  const name = data?.name || fallbackName || "Free Fire Player";
+  return (
+    <div className="relative rounded-xl overflow-hidden p-3 bg-gradient-to-br from-indigo-600 via-blue-600 to-cyan-500 text-white shadow-[0_8px_24px_-12px_rgba(37,99,235,0.55)]">
+      <div className="absolute -top-8 -right-8 h-20 w-20 rounded-full bg-white/15 blur-2xl" />
+      <div className="relative flex items-center gap-2.5 mb-2.5">
+        <span className="grid place-items-center h-9 w-9 rounded-lg bg-white/15 ring-1 ring-white/30 shrink-0">
+          <Gamepad2 className="h-4 w-4" />
+        </span>
+        <div className="min-w-0 flex-1">
+          <div className="text-[8px] tracking-[0.3em] uppercase text-white/70 leading-none">Game Account</div>
+          <div className="font-display text-sm leading-tight mt-1 truncate">{name}</div>
+        </div>
+        {data?.region && (
+          <span className="text-[9px] font-semibold px-2 py-0.5 rounded-full bg-white/15 ring-1 ring-white/30 uppercase tracking-wider">
+            {data.region}
+          </span>
+        )}
+      </div>
+      <div className="relative grid grid-cols-2 gap-1.5">
+        <GameStat icon={<Hash className="h-3 w-3" />} label="UID" value={uid} mono />
+        <GameStat icon={<User className="h-3 w-3" />} label="Name" value={isLoading ? "…" : (isError ? "—" : name)} />
+        <GameStat icon={<Trophy className="h-3 w-3" />} label="Level" value={isLoading ? "…" : (data?.level != null ? String(data.level) : "—")} />
+        <GameStat icon={<Heart className="h-3 w-3" />} label="Likes" value={isLoading ? "…" : (data?.likes != null ? Number(data.likes).toLocaleString() : "—")} />
+      </div>
+      {isError && (
+        <div className="relative mt-2 text-[10px] text-white/80 flex items-center gap-1">
+          <Globe2 className="h-3 w-3" /> Live info unavailable
+        </div>
+      )}
+    </div>
+  );
+}
+
+function GameStat({ icon, label, value, mono }: { icon: React.ReactNode; label: string; value: string; mono?: boolean }) {
+  return (
+    <div className="rounded-lg p-2 bg-white/12 ring-1 ring-white/25 backdrop-blur-sm">
+      <div className="flex items-center gap-1 text-[8px] tracking-[0.2em] uppercase text-white/75 leading-none">
+        <span className="grid place-items-center h-4 w-4 rounded bg-white/20">{icon}</span>
+        {label}
+      </div>
+      <div className={`mt-1 text-sm font-semibold text-white leading-tight truncate ${mono ? "font-mono" : ""}`}>{value}</div>
     </div>
   );
 }
