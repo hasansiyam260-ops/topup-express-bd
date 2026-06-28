@@ -26,6 +26,29 @@ function ProfilePage() {
     },
   });
 
+  const { data: orderStats } = useQuery({
+    queryKey: ["my-order-stats"],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("orders")
+        .select("amount,status,player_uid,player_name,product_name,created_at,updated_at")
+        .order("created_at", { ascending: false });
+      if (error) throw error;
+      const rows = data ?? [];
+      const total = rows.length;
+      const completed = rows.filter((o) => o.status === "completed");
+      const cancelled = rows.filter((o) => o.status === "cancelled" || o.status === "failed");
+      const pending = rows.filter((o) => o.status === "pending" || o.status === "processing");
+      const spent = completed.reduce((s, o) => s + Number(o.amount || 0), 0);
+      const times = completed
+        .map((o) => (new Date(o.updated_at).getTime() - new Date(o.created_at).getTime()) / 60000)
+        .filter((m) => m > 0 && m < 60 * 24);
+      const avgMin = times.length ? Math.round(times.reduce((a, b) => a + b, 0) / times.length) : null;
+      const last = rows.find((o) => o.player_uid);
+      return { total, completed: completed.length, cancelled: cancelled.length, pending: pending.length, spent, avgMin, last };
+    },
+  });
+
   const [fullName, setFullName] = useState("");
   const [phone, setPhone] = useState("");
   const [address, setAddress] = useState("");
