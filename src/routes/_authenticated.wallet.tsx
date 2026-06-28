@@ -222,6 +222,7 @@ function WalletPage() {
               if (u.user) {
                 const next = Number(balance || 0) + a;
                 await supabase.from("profiles").update({ balance: next }).eq("id", u.user.id);
+                try { await creditReferralForTopup({ data: { amount: a } }); } catch {}
               }
             } catch {}
             const entry: AddMoneyEntry = { invoiceId, brand, amount: a, ts: Date.now() };
