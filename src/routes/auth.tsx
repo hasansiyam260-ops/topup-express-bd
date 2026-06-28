@@ -7,7 +7,7 @@ import { AppShell } from "@/components/site/AppShell";
 import { toast } from "sonner";
 import { Mail, Lock, User2 } from "lucide-react";
 
-const searchSchema = z.object({ mode: z.enum(["login", "register"]).optional() });
+const searchSchema = z.object({ mode: z.enum(["login", "register"]).optional(), ref: z.string().optional() });
 
 export const Route = createFileRoute("/auth")({
   validateSearch: searchSchema,
@@ -16,7 +16,7 @@ export const Route = createFileRoute("/auth")({
 });
 
 function AuthPage() {
-  const { mode = "login" } = Route.useSearch();
+  const { mode = "login", ref } = Route.useSearch();
   const navigate = useNavigate();
   const [tab, setTab] = useState<"login" | "register">(mode);
   useEffect(() => setTab(mode), [mode]);
@@ -40,7 +40,7 @@ function AuthPage() {
         const { error } = await supabase.auth.signUp({
           email, password,
           options: {
-            data: { full_name: fullName },
+            data: { full_name: fullName, ref_code: (ref ?? "").toUpperCase() },
             emailRedirectTo: `${window.location.origin}/`,
           },
         });

@@ -1,10 +1,10 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { AppShell } from "@/components/site/AppShell";
-import { Gift, Copy, Share2, Users, Coins, Check, Sparkles } from "lucide-react";
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { Gift, Copy, Share2, Users, Coins, Check } from "lucide-react";
+import { useQuery } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
-import { getMyReferralInfo, applyReferralCode } from "@/lib/referrals.functions";
-// Note: cashback now triggers on product purchase, not on wallet add-money.
+import { getMyReferralInfo } from "@/lib/referrals.functions";
+// Note: referral linkage happens automatically via signup link (?ref=CODE).
 import { useState } from "react";
 import { toast } from "sonner";
 
@@ -15,10 +15,7 @@ export const Route = createFileRoute("/_authenticated/referrals")({
 
 function ReferralsPage() {
   const fetchInfo = useServerFn(getMyReferralInfo);
-  const applyCode = useServerFn(applyReferralCode);
-  const qc = useQueryClient();
   const [copied, setCopied] = useState(false);
-  const [codeInput, setCodeInput] = useState("");
 
   const { data } = useQuery({
     queryKey: ["my-referral-info"],
@@ -27,16 +24,6 @@ function ReferralsPage() {
     refetchInterval: 30_000,
   });
 
-  const applyMut = useMutation({
-    mutationFn: (code: string) => applyCode({ data: { code } }),
-    onSuccess: (res) => {
-      toast.success(`সফল! ৳${res.bonus} বোনাস পেলেন 🎉`);
-      setCodeInput("");
-      qc.invalidateQueries({ queryKey: ["my-referral-info"] });
-      qc.invalidateQueries({ queryKey: ["my-wallet-balance"] });
-    },
-    onError: (e: Error) => toast.error(e.message),
-  });
 
   const shareLink = typeof window !== "undefined" && data?.code
     ? `${window.location.origin}/auth?ref=${data.code}`
@@ -77,7 +64,7 @@ function ReferralsPage() {
             <div className="min-w-0">
               <div className="text-[9px] tracking-[0.3em] uppercase text-white/80 leading-none">REFER & EARN</div>
               <h1 className="font-display text-xl leading-tight mt-1">আপনার বন্ধু আনুন, ক্যাশব্যাক জিতুন</h1>
-              <p className="text-[11px] text-white/85 mt-1">প্রতি ডায়মন্ড পারচেসে <b>2% lifetime cashback</b> + বন্ধুর জন্য <b>৳20 signup bonus</b></p>
+              <p className="text-[11px] text-white/85 mt-1">আপনার রেফার করা বন্ধু প্রতিবার পারচেস করলে <b>2% lifetime cashback</b> সরাসরি আপনার ব্যালেন্সে</p>
             </div>
           </div>
         </div>
@@ -123,39 +110,15 @@ function ReferralsPage() {
           </div>
         </div>
 
-        {/* Apply code (if not used yet) */}
-        {data && !data.referredBy && (
-          <div className="rounded-2xl card-soft p-4">
-            <div className="flex items-center gap-2">
-              <Sparkles className="h-4 w-4 text-amber-500" />
-              <div className="text-[11px] font-bold tracking-wider uppercase">কোড আছে? ৳20 বোনাস নিন</div>
-            </div>
-            <div className="mt-2 flex gap-2">
-              <input
-                value={codeInput}
-                onChange={(e) => setCodeInput(e.target.value.toUpperCase())}
-                placeholder="রেফারেল কোড লিখুন"
-                className="flex-1 px-4 py-3 rounded-xl bg-input border-2 border-border focus:border-rose-400 focus:outline-none text-sm tracking-widest"
-              />
-              <button
-                disabled={!codeInput || applyMut.isPending}
-                onClick={() => applyMut.mutate(codeInput)}
-                className="btn-red rounded-xl px-4 text-sm font-bold disabled:opacity-50"
-              >
-                APPLY
-              </button>
-            </div>
-          </div>
-        )}
 
         {/* How it works */}
         <div className="rounded-2xl card-soft p-4">
           <div className="text-[11px] font-bold tracking-wider uppercase mb-2.5">কিভাবে কাজ করে?</div>
           <ol className="space-y-2 text-sm">
-            <li className="flex gap-2"><span className="grid place-items-center h-5 w-5 rounded-full bg-rose-500 text-white text-[10px] font-bold shrink-0 mt-0.5">1</span>আপনার কোড বন্ধুদের সাথে শেয়ার করুন</li>
-            <li className="flex gap-2"><span className="grid place-items-center h-5 w-5 rounded-full bg-rose-500 text-white text-[10px] font-bold shrink-0 mt-0.5">2</span>তারা সাইন আপ করে কোড ব্যবহার করলে ৳20 বোনাস পাবে</li>
-            <li className="flex gap-2"><span className="grid place-items-center h-5 w-5 rounded-full bg-rose-500 text-white text-[10px] font-bold shrink-0 mt-0.5">3</span><span>তারা যতবার ডায়মন্ড/প্যাকেজ কিনবে, আপনি প্রতিবার <b>2% cashback</b> পাবেন (lifetime)</span></li>
-            <li className="flex gap-2"><span className="grid place-items-center h-5 w-5 rounded-full bg-rose-500 text-white text-[10px] font-bold shrink-0 mt-0.5">4</span><span>ক্যাশব্যাক সরাসরি আপনার <b>Main Balance</b> এ জমা হবে — instant!</span></li>
+            <li className="flex gap-2"><span className="grid place-items-center h-5 w-5 rounded-full bg-rose-500 text-white text-[10px] font-bold shrink-0 mt-0.5">1</span>আপনার রেফারেল লিংক বন্ধুদের সাথে শেয়ার করুন</li>
+            <li className="flex gap-2"><span className="grid place-items-center h-5 w-5 rounded-full bg-rose-500 text-white text-[10px] font-bold shrink-0 mt-0.5">2</span>তারা আপনার লিংক থেকে সাইন আপ করলে অটোমেটিক আপনার সাথে কানেক্ট হয়ে যাবে</li>
+            <li className="flex gap-2"><span className="grid place-items-center h-5 w-5 rounded-full bg-rose-500 text-white text-[10px] font-bold shrink-0 mt-0.5">3</span><span>তারা যখনই ডায়মন্ড/প্যাকেজ কিনবে, আপনি প্রতিবার <b>2% cashback</b> পাবেন (lifetime)</span></li>
+            <li className="flex gap-2"><span className="grid place-items-center h-5 w-5 rounded-full bg-rose-500 text-white text-[10px] font-bold shrink-0 mt-0.5">4</span><span>ক্যাশব্যাক সরাসরি আপনার <b>Main Balance</b> এ অটো জমা হবে — instant!</span></li>
           </ol>
         </div>
 
