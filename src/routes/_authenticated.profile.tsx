@@ -174,8 +174,8 @@ function GameAccountCard({ savedUid, lastUid }: { savedUid: string | null; lastU
     queryKey: ["ff-player-info-v2", activeUid],
     queryFn: () => fetchInfo({ data: { uid: activeUid } }),
     enabled: !!activeUid && /^\d{6,12}$/.test(activeUid),
-    staleTime: 30 * 1000,
-    refetchInterval: 60 * 1000,
+    staleTime: 0,
+    refetchInterval: 15000,
     refetchOnWindowFocus: true,
     retry: 1,
   });

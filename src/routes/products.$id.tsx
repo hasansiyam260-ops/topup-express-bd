@@ -146,9 +146,17 @@ function ProductPage() {
       return;
     }
 
-    // Wallet flow: check balance
-    let balance = 0;
-    try { balance = Number(localStorage.getItem("uidtopup:wallet") || "0"); } catch {}
+    // Wallet flow: check real live database balance
+    const { data: userData } = await supabase.auth.getUser();
+    const userId = userData.user?.id;
+    if (!userId) { navigate({ to: "/auth", search: { mode: "login" } }); return; }
+    const { data: walletRow, error: walletError } = await supabase
+      .from("profiles")
+      .select("balance")
+      .eq("id", userId)
+      .maybeSingle();
+    if (walletError) return toast.error(walletError.message);
+    const balance = Number(walletRow?.balance ?? 0);
     if (balance < price) {
       setInsufficientOpen(true);
       return;
@@ -157,7 +165,11 @@ function ProductPage() {
     setSubmitting(true);
     const ok = await placeOrder("wallet");
     if (ok) {
-      try { localStorage.setItem("uidtopup:wallet", String(balance - price)); } catch {}
+      const { error: balanceError } = await supabase
+        .from("profiles")
+        .update({ balance: balance - price })
+        .eq("id", userId);
+      if (balanceError) { toast.error(balanceError.message); setSubmitting(false); return; }
       const invoice = Math.random().toString(36).slice(2, 14).toUpperCase();
       setWalletSuccess({ amount: price, invoice });
     }
