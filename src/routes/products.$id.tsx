@@ -54,6 +54,9 @@ function ProductPage() {
   const [payment, setPayment] = useState<"wallet" | "instant" | null>(null);
   const [submitting, setSubmitting] = useState(false);
   const [authed, setAuthed] = useState(false);
+  const [checkoutOpen, setCheckoutOpen] = useState(false);
+  const [insufficientOpen, setInsufficientOpen] = useState(false);
+  const [walletSuccess, setWalletSuccess] = useState<{ amount: number; invoice: string } | null>(null);
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data }) => setAuthed(!!data.session));
