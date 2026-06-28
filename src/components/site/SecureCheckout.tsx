@@ -5,6 +5,7 @@ import bkashLogo from "@/assets/pay-bkash.webp";
 import nagadLogo from "@/assets/pay-nagad.webp";
 import rocketLogo from "@/assets/pay-rocket.webp";
 import upayLogo from "@/assets/pay-upay.webp";
+import brandLogo from "@/assets/topup-express-logo.jpg.asset.json";
 
 export type PayBrand = "bkash" | "nagad" | "rocket" | "upay";
 
@@ -101,15 +102,10 @@ export function SecureCheckout({
           </div>
 
           <div className="flex flex-col items-center pt-1">
-            <div className="h-20 w-20 rounded-full bg-gradient-to-br from-[#0a0a0a] to-[#1f1f1f] grid place-items-center shadow-[0_8px_24px_-6px_rgba(0,0,0,0.4)] ring-4 ring-white">
-              <div className="flex flex-col items-center leading-none">
-                <span style={{ fontFamily: "'Bebas Neue',sans-serif" }} className="text-white text-2xl tracking-tight">
-                  U<span className="text-red-500">i</span>
-                </span>
-                <span className="text-[6px] text-white tracking-[0.2em] mt-0.5">UIDTOPUP.COM</span>
-              </div>
+            <div className="h-20 w-20 rounded-full bg-gradient-to-br from-[#0a0a0a] to-[#1f1f1f] grid place-items-center shadow-[0_8px_24px_-6px_rgba(0,0,0,0.4)] ring-4 ring-white overflow-hidden">
+              <img src={brandLogo.url} alt="TOP-UP EXPRESS" className="h-16 w-16 object-contain" style={{ imageRendering: "auto" }} />
             </div>
-            <h3 className="font-display text-lg tracking-wide text-slate-600 mt-2">UIDTOPUP.COM</h3>
+            <h3 className="font-display text-base tracking-[0.18em] text-slate-700 mt-2 font-bold">TOP-UP EXPRESS</h3>
 
             <div className="flex items-center gap-2 mt-2">
               <IconBtn><Headphones className="h-3.5 w-3.5" /></IconBtn>
@@ -193,11 +189,11 @@ function BrandPayPage({
           </div>
 
           <div className="bg-white rounded-2xl shadow-sm border border-slate-200 p-3 flex items-center gap-3">
-            <div className="h-12 w-12 rounded-full bg-gradient-to-br from-[#0a0a0a] to-[#1f1f1f] grid place-items-center ring-2 ring-white shrink-0">
-              <span style={{ fontFamily: "'Bebas Neue',sans-serif" }} className="text-white text-base leading-none">U<span className="text-red-500">i</span></span>
+            <div className="h-12 w-12 rounded-full bg-gradient-to-br from-[#0a0a0a] to-[#1f1f1f] grid place-items-center ring-2 ring-white shrink-0 overflow-hidden">
+              <img src={brandLogo.url} alt="TOP-UP EXPRESS" className="h-10 w-10 object-contain" />
             </div>
             <div className="min-w-0">
-              <div className="font-semibold text-slate-700 text-sm leading-tight">UIDTOPUP.COM</div>
+              <div className="font-bold text-slate-700 text-[13px] leading-tight tracking-[0.15em]">TOP-UP EXPRESS</div>
               <div className="text-[11px] text-slate-500 mt-0.5">ইনভয়েস আইডিঃ</div>
               <div className="text-[12px] text-slate-700 font-mono break-all">{invoiceId}</div>
             </div>
