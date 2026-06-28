@@ -50,7 +50,10 @@ function ProfilePage() {
       const last = rows.find((o) => o.player_uid);
       return { total, completed: completed.length, cancelled: cancelled.length, pending: pending.length, spent, avgMin, last };
     },
+    refetchOnWindowFocus: true,
+    refetchInterval: 15000,
   });
+
 
   const [fullName, setFullName] = useState("");
   const [avatarUrl, setAvatarUrl] = useState("");
@@ -175,9 +178,12 @@ function GameAccountCard({ savedUid, lastUid, fallbackName }: { savedUid: string
     queryKey: ["ff-player-info-v2", activeUid],
     queryFn: () => fetchInfo({ data: { uid: activeUid } }),
     enabled: !!activeUid && /^\d{6,12}$/.test(activeUid),
-    staleTime: 5 * 60 * 1000,
+    staleTime: 30 * 1000,
+    refetchInterval: 60 * 1000,
+    refetchOnWindowFocus: true,
     retry: 1,
   });
+
 
   const saveUid = async (uid: string) => {
     if (!/^\d{6,12}$/.test(uid)) return toast.error("Enter a valid Free Fire UID (6–12 digits)");
