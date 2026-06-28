@@ -77,7 +77,7 @@ function ReferralsPage() {
             <div className="min-w-0">
               <div className="text-[9px] tracking-[0.3em] uppercase text-white/80 leading-none">REFER & EARN</div>
               <h1 className="font-display text-xl leading-tight mt-1">আপনার বন্ধু আনুন, ক্যাশব্যাক জিতুন</h1>
-              <p className="text-[11px] text-white/85 mt-1">প্রতি টপআপে <b>2% lifetime cashback</b> + বন্ধুর জন্য <b>৳20 signup bonus</b></p>
+              <p className="text-[11px] text-white/85 mt-1">প্রতি ডায়মন্ড পারচেসে <b>2% lifetime cashback</b> + বন্ধুর জন্য <b>৳20 signup bonus</b></p>
             </div>
           </div>
         </div>
