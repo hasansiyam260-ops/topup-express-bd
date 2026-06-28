@@ -118,7 +118,7 @@ function ProfilePage() {
         </div>
 
         {/* Stats overview */}
-        <div className="rounded-2xl overflow-hidden bg-white p-4 shadow-[0_0_40px_-4px_rgba(239,68,68,0.45),0_10px_30px_-10px_rgba(239,68,68,0.35)] ring-1 ring-rose-200 relative">
+        <div className="rounded-2xl overflow-hidden bg-white p-4 shadow-[0_0_30px_4px_rgba(239,68,68,0.35),0_0_60px_10px_rgba(239,68,68,0.2)] ring-1 ring-rose-300 relative">
           <div className="absolute -top-12 -right-12 h-32 w-32 rounded-full bg-rose-400/50 blur-3xl" />
           <div className="absolute -bottom-12 -left-12 h-32 w-32 rounded-full bg-rose-300/40 blur-3xl" />
           <div className="relative flex items-center gap-2 mb-3">
