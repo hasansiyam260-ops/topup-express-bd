@@ -324,17 +324,9 @@ function ProductPage() {
           </button>
         </Step>
 
-        {/* Product info */}
-        <div id="help" className="rounded-2xl border border-border bg-card p-4">
-          <h3 className="font-display text-xl">Product Information</h3>
-          <div className="mt-2 h-px bg-border" />
-          <ul className="mt-3 space-y-3 text-sm leading-relaxed text-foreground/85">
-            <li className="flex gap-2"><span className="text-primary mt-0.5">◉</span><span>শুধুমাত্র <b>Bangladesh</b> সার্ভারে ID Code দিয়ে টপ আপ হবে।</span></li>
-            <li className="flex gap-2"><span className="text-primary mt-0.5">◉</span><span><b>Order</b> কমপ্লিট হওয়ার পরেও আইডিতে ডায়মন্ড না গেলে সাপোর্টে মেসেজ দিন।</span></li>
-            <li className="flex gap-2"><span className="text-primary mt-0.5">◉</span><span><b>Player ID Code</b> ভুল দিয়ে Diamond না পেলে <b>TOP-UP EXPRESS</b> কর্তৃপক্ষ দায়ী নয়।</span></li>
-            <li className="flex gap-2"><span className="text-primary mt-0.5">◉</span><span>অর্ডার <b>Cancel</b> হলে কি কারণে তা Cancel হয়েছে তা অর্ডার হিস্টোরিতে দেওয়া থাকে অনুগ্রহ পূর্বক দেখে পুনরায় সঠিক তথ্য দিয়ে অর্ডার করবেন।</span></li>
-            <li className="flex gap-2"><span className="text-primary mt-0.5">◉</span><span><b>TOP-UP EXPRESS</b> এর সাথে থাকার জন্য আপনাকে ধন্যবাদ 🥰</span></li>
-          </ul>
+        {/* Product info — per-category */}
+        <div id="help">
+          <ProductInformation cat={effectiveCat} />
         </div>
 
         <div className="text-center pt-2">
