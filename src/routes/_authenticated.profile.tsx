@@ -69,14 +69,15 @@ function ProfilePage() {
     <AppShell>
       <div className="mx-auto max-w-3xl px-3 pt-4 space-y-4">
         {/* Profile header */}
-        <div className="relative rounded-2xl overflow-hidden glow-violet sweep-shine bg-gradient-to-br from-violet-600 via-fuchsia-600 to-rose-500 p-5 text-white">
-          <div className="flex items-center gap-4">
-            <div className="h-16 w-16 rounded-full ring-2 ring-white/40 bg-white/15 grid place-items-center overflow-hidden shrink-0">
-              {avatarUrl ? <img src={avatarUrl} alt="" className="h-full w-full object-cover" /> : <User className="h-7 w-7" />}
+        <div className="relative rounded-2xl overflow-hidden bg-gradient-to-br from-violet-600 via-fuchsia-600 to-rose-500 px-4 py-3 text-white shadow-[0_10px_30px_-14px_rgba(192,38,211,0.55)]">
+          <div className="absolute -top-8 -right-8 h-24 w-24 rounded-full bg-white/15 blur-2xl" />
+          <div className="relative flex items-center gap-3">
+            <div className="h-11 w-11 rounded-full ring-2 ring-white/40 bg-white/15 grid place-items-center overflow-hidden shrink-0">
+              {avatarUrl ? <img src={avatarUrl} alt="" className="h-full w-full object-cover" /> : <User className="h-5 w-5" />}
             </div>
             <div className="min-w-0">
-              <div className="font-display text-2xl truncate">{fullName || "Welcome"}</div>
-              <div className="text-xs text-white/80 truncate">{profile?.email}</div>
+              <div className="font-display text-lg leading-tight truncate">{fullName || "Welcome"}</div>
+              <div className="text-[11px] text-white/85 truncate">{profile?.email}</div>
             </div>
           </div>
         </div>

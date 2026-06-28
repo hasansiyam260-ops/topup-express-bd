@@ -25,14 +25,15 @@ function OrdersPage() {
   return (
     <AppShell>
       <div className="mx-auto max-w-3xl px-3 pt-4 space-y-4">
-        <div className="relative rounded-2xl overflow-hidden glow-violet sweep-shine bg-gradient-to-br from-rose-600 via-red-600 to-orange-500 p-5 text-white">
-          <div className="flex items-center gap-3">
-            <span className="grid place-items-center h-12 w-12 rounded-xl bg-white/15 backdrop-blur ring-1 ring-white/30">
-              <Receipt className="h-6 w-6" />
+        <div className="relative rounded-2xl overflow-hidden bg-gradient-to-br from-rose-600 via-red-600 to-orange-500 px-4 py-3 text-white shadow-[0_10px_30px_-14px_rgba(225,29,72,0.55)]">
+          <div className="absolute -top-8 -right-8 h-24 w-24 rounded-full bg-white/15 blur-2xl" />
+          <div className="relative flex items-center gap-3">
+            <span className="grid place-items-center h-9 w-9 rounded-xl bg-white/15 backdrop-blur ring-1 ring-white/30 shrink-0">
+              <Receipt className="h-4 w-4" />
             </span>
-            <div>
-              <div className="text-[10px] tracking-[0.3em] uppercase text-white/70">History</div>
-              <h1 className="font-display text-3xl leading-none">MY ORDERS</h1>
+            <div className="min-w-0">
+              <div className="text-[9px] tracking-[0.3em] uppercase text-white/70 leading-none">History</div>
+              <h1 className="font-display text-lg leading-tight mt-0.5">MY ORDERS</h1>
             </div>
           </div>
         </div>
