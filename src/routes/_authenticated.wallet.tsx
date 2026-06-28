@@ -64,6 +64,15 @@ function WalletPage() {
           </div>
         </div>
 
+        {/* Info box */}
+        <div className="rounded-xl bg-gradient-to-br from-white via-rose-50/50 to-sky-50/40 border-2 border-rose-200/70 border-l-4 border-l-rose-500 p-3 shadow-[0_6px_20px_-12px_rgba(244,63,94,0.45)]">
+          <ul className="space-y-1.5 text-[11px] leading-snug">
+            <li className="flex gap-2"><span className="text-rose-500 mt-0.5">●</span><span><span className="font-bold text-rose-700">Instant Add</span> — bKash · Nagad · Rocket দিয়ে সাথে সাথে wallet এ টাকা যোগ হবে।</span></li>
+            <li className="flex gap-2"><span className="text-emerald-500 mt-0.5">●</span><span><span className="font-bold text-emerald-700">100% Secure</span> — সকল transaction encrypted ও নিরাপদভাবে সংরক্ষিত।</span></li>
+            <li className="flex gap-2"><span className="text-rose-500 mt-0.5">●</span><span><span className="font-bold text-rose-700">Min ৳10</span> — নিজের পছন্দমতো amount দিয়ে wallet recharge করুন।</span></li>
+          </ul>
+        </div>
+
         {/* Step 1 — Manual amount (compact) */}
         <section className="rounded-2xl card-soft p-4">
           <div className="flex items-center gap-2 mb-3">
