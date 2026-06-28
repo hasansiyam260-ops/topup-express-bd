@@ -4,6 +4,7 @@ import { Gift, Copy, Share2, Users, Coins, Check, Sparkles } from "lucide-react"
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
 import { getMyReferralInfo, applyReferralCode } from "@/lib/referrals.functions";
+// Note: cashback now triggers on product purchase, not on wallet add-money.
 import { useState } from "react";
 import { toast } from "sonner";
 
@@ -76,7 +77,7 @@ function ReferralsPage() {
             <div className="min-w-0">
               <div className="text-[9px] tracking-[0.3em] uppercase text-white/80 leading-none">REFER & EARN</div>
               <h1 className="font-display text-xl leading-tight mt-1">আপনার বন্ধু আনুন, ক্যাশব্যাক জিতুন</h1>
-              <p className="text-[11px] text-white/85 mt-1">প্রতি টপআপে <b>2% lifetime cashback</b> + বন্ধুর জন্য <b>৳20 signup bonus</b></p>
+              <p className="text-[11px] text-white/85 mt-1">প্রতি ডায়মন্ড পারচেসে <b>2% lifetime cashback</b> + বন্ধুর জন্য <b>৳20 signup bonus</b></p>
             </div>
           </div>
         </div>
@@ -153,8 +154,8 @@ function ReferralsPage() {
           <ol className="space-y-2 text-sm">
             <li className="flex gap-2"><span className="grid place-items-center h-5 w-5 rounded-full bg-rose-500 text-white text-[10px] font-bold shrink-0 mt-0.5">1</span>আপনার কোড বন্ধুদের সাথে শেয়ার করুন</li>
             <li className="flex gap-2"><span className="grid place-items-center h-5 w-5 rounded-full bg-rose-500 text-white text-[10px] font-bold shrink-0 mt-0.5">2</span>তারা সাইন আপ করে কোড ব্যবহার করলে ৳20 বোনাস পাবে</li>
-            <li className="flex gap-2"><span className="grid place-items-center h-5 w-5 rounded-full bg-rose-500 text-white text-[10px] font-bold shrink-0 mt-0.5">3</span>তারা যতবার টপআপ করবে, আপনি প্রতিবার <b>2% cashback</b> পাবেন (lifetime)</li>
-            <li className="flex gap-2"><span className="grid place-items-center h-5 w-5 rounded-full bg-rose-500 text-white text-[10px] font-bold shrink-0 mt-0.5">4</span>ক্যাশব্যাক সরাসরি আপনার Wallet এ জমা হবে — instant!</li>
+            <li className="flex gap-2"><span className="grid place-items-center h-5 w-5 rounded-full bg-rose-500 text-white text-[10px] font-bold shrink-0 mt-0.5">3</span><span>তারা যতবার ডায়মন্ড/প্যাকেজ কিনবে, আপনি প্রতিবার <b>2% cashback</b> পাবেন (lifetime)</span></li>
+            <li className="flex gap-2"><span className="grid place-items-center h-5 w-5 rounded-full bg-rose-500 text-white text-[10px] font-bold shrink-0 mt-0.5">4</span><span>ক্যাশব্যাক সরাসরি আপনার <b>Main Balance</b> এ জমা হবে — instant!</span></li>
           </ol>
         </div>
 

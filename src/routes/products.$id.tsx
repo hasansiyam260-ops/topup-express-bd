@@ -6,6 +6,7 @@ import { getFFPlayerName } from "@/lib/ff.functions";
 import { getSiteValue } from "@/lib/site.functions";
 import { AppShell } from "@/components/site/AppShell";
 import { SecureCheckout, SuccessScreen } from "@/components/site/SecureCheckout";
+import { creditReferralForPurchase } from "@/lib/referrals.functions";
 import { packImage } from "@/lib/assets";
 import heroImg from "@/assets/hero-promo.webp";
 import { supabase } from "@/integrations/supabase/client";
@@ -132,6 +133,7 @@ function ProductPage() {
       status: "pending",
     });
     if (error) { toast.error(error.message); return false; }
+    try { await creditReferralForPurchase({ data: { amount: price } }); } catch {}
     return true;
   };
 
