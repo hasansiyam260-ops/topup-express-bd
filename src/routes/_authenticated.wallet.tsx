@@ -167,29 +167,26 @@ function SecureCheckout({ amount, onClose }: { amount: number; onClose: () => vo
             মোবাইল ব্যাংকিং
           </div>
 
-          {/* Methods grid */}
-          <div className="grid grid-cols-2 gap-2.5">
-            <PayTile id="bkash" selected={selected === "bkash"} onClick={() => setSelected("bkash")}>
-              <BkashOfficial />
-            </PayTile>
-            <PayTile id="nagad" selected={selected === "nagad"} onClick={() => setSelected("nagad")}>
-              <NagadOfficial />
-            </PayTile>
-            <PayTile id="rocket" selected={selected === "rocket"} onClick={() => setSelected("rocket")}>
-              <RocketOfficial />
-            </PayTile>
-            <PayTile id="upay" selected={selected === "upay"} onClick={() => setSelected("upay")}>
-              <UpayOfficial />
-            </PayTile>
+          {/* Methods grid — premium rectangular boxes with brand glow */}
+          <div className="grid grid-cols-2 gap-3">
+            <PayTile selected={selected === "bkash"} onClick={() => setSelected("bkash")} glow="226,19,110" logo={bkashLogo} alt="bKash" />
+            <PayTile selected={selected === "nagad"} onClick={() => setSelected("nagad")} glow="230,57,70" logo={nagadLogo} alt="Nagad" />
+            <PayTile selected={selected === "rocket"} onClick={() => setSelected("rocket")} glow="139,44,138" logo={rocketLogo} alt="Rocket" />
+            <PayTile selected={selected === "upay"} onClick={() => setSelected("upay")} glow="255,193,7" logo={upayLogo} alt="Upay" />
           </div>
         </div>
 
-        {/* Pay button */}
+        {/* Premium Pay button */}
         <button
           disabled={!selected}
-          className="w-full py-3.5 bg-gradient-to-b from-sky-50 to-sky-100 border-t border-sky-200 text-[#1e40af] font-bold text-base tracking-wide disabled:opacity-60 hover:from-sky-100 hover:to-sky-200 transition-colors"
+          className="group relative w-full overflow-hidden disabled:opacity-60 disabled:cursor-not-allowed"
         >
-          Pay {amount.toFixed(2)} BDT
+          <div className="relative bg-gradient-to-b from-[#1e40af] via-[#1d4ed8] to-[#1e3a8a] py-4 flex items-center justify-center gap-2.5 text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.25),0_-4px_20px_-6px_rgba(30,64,175,0.6)]">
+            <span className="absolute inset-x-0 top-0 h-1/2 bg-gradient-to-b from-white/15 to-transparent pointer-events-none" />
+            <span className="absolute inset-y-0 -left-1/3 w-1/3 bg-gradient-to-r from-transparent via-white/25 to-transparent skew-x-12 group-hover:translate-x-[500%] transition-transform duration-1000 pointer-events-none" />
+            <Lock className="h-4 w-4 relative" />
+            <span className="relative font-display text-lg tracking-[0.08em]">Pay {amount.toFixed(2)} BDT</span>
+          </div>
         </button>
       </div>
     </div>
@@ -204,76 +201,56 @@ function IconBtn({ children }: { children: React.ReactNode }) {
   );
 }
 
-function PayTile({ selected, onClick, children }: { id: string; selected: boolean; onClick: () => void; children: React.ReactNode }) {
+function PayTile({
+  selected,
+  onClick,
+  glow,
+  logo,
+  alt,
+}: {
+  selected: boolean;
+  onClick: () => void;
+  glow: string;
+  logo: string;
+  alt: string;
+}) {
   return (
     <button
       onClick={onClick}
-      className={`relative h-20 rounded-xl bg-white grid place-items-center transition-all border-2 ${
-        selected ? "border-[#1e40af] shadow-[0_6px_18px_-6px_rgba(30,64,175,0.45)] scale-[1.02]" : "border-slate-200 hover:border-slate-300 shadow-sm"
+      className={`relative h-24 rounded-2xl bg-white transition-all duration-300 overflow-hidden border-2 ${
+        selected
+          ? "border-[#1e40af] scale-[1.03]"
+          : "border-slate-200 hover:border-slate-300 hover:-translate-y-0.5"
       }`}
+      style={{
+        boxShadow: selected
+          ? `0 10px 28px -8px rgba(${glow},0.55), 0 0 0 4px rgba(${glow},0.12), inset 0 1px 0 rgba(255,255,255,0.9)`
+          : `0 4px 14px -6px rgba(${glow},0.28), inset 0 1px 0 rgba(255,255,255,0.9)`,
+      }}
     >
+      {/* Glossy top sheen */}
+      <span className="absolute inset-x-0 top-0 h-1/2 bg-gradient-to-b from-white to-transparent pointer-events-none" />
+      {/* Brand color glow halo */}
+      <span
+        className="absolute -bottom-6 left-1/2 -translate-x-1/2 h-12 w-3/4 rounded-full blur-2xl pointer-events-none transition-opacity"
+        style={{ background: `rgba(${glow},${selected ? 0.55 : 0.25})` }}
+      />
       {selected && (
-        <span className="absolute top-1.5 right-1.5 grid place-items-center h-4 w-4 rounded-full bg-[#1e40af] text-white text-[9px]">✓</span>
-      )}
-      {children}
-    </button>
-  );
-}
-
-/* Stylized official-looking brand marks */
-
-function BkashOfficial() {
-  return (
-    <div className="flex items-center gap-1.5">
-      <span className="text-[#e2136e] text-2xl font-bold lowercase tracking-tight" style={{ fontFamily: "'Barlow',sans-serif" }}>
-        b<span className="text-slate-700">Kash</span>
-      </span>
-      <svg viewBox="0 0 24 24" className="h-6 w-6" fill="#e2136e">
-        <path d="M2 12 L14 4 L22 8 L14 22 L10 14 Z" />
-      </svg>
-    </div>
-  );
-}
-
-function NagadOfficial() {
-  return (
-    <div className="flex items-center gap-1.5">
-      <svg viewBox="0 0 40 40" className="h-7 w-7">
-        <circle cx="20" cy="20" r="18" fill="#f47216" />
-        <circle cx="20" cy="20" r="11" fill="#fff" />
-        <circle cx="20" cy="20" r="6" fill="#e63946" />
-      </svg>
-      <span className="text-[#e63946] text-xl font-extrabold" style={{ fontFamily: "'Hind Siliguri',sans-serif" }}>
-        নগদ
-      </span>
-    </div>
-  );
-}
-
-function RocketOfficial() {
-  return (
-    <div className="flex items-center gap-1">
-      <svg viewBox="0 0 24 24" className="h-7 w-7" fill="none">
-        <path d="M12 2 L18 14 H14 V22 H10 V14 H6 Z" fill="#8b2c8a" />
-      </svg>
-      <div className="flex flex-col leading-none">
-        <span className="text-[9px] tracking-[0.2em] text-[#8b2c8a] font-bold">ROCKET</span>
-        <span className="text-[#8b2c8a] text-base font-extrabold" style={{ fontFamily: "'Hind Siliguri',sans-serif" }}>
-          রকেট
+        <span
+          className="absolute top-1.5 right-1.5 grid place-items-center h-5 w-5 rounded-full bg-[#1e40af] text-white text-[10px] font-bold shadow-lg ring-2 ring-white z-10"
+        >
+          ✓
         </span>
+      )}
+      <div className="relative h-full grid place-items-center px-3">
+        <img
+          src={logo}
+          alt={alt}
+          loading="lazy"
+          className="max-h-14 w-auto object-contain drop-shadow-sm"
+        />
       </div>
-    </div>
-  );
-}
-
-function UpayOfficial() {
-  return (
-    <div className="flex items-center gap-1">
-      <span className="text-[#ffc107] text-3xl font-black leading-none" style={{ fontFamily: "'Bebas Neue',sans-serif" }}>U</span>
-      <span className="text-slate-700 text-lg font-extrabold" style={{ fontFamily: "'Hind Siliguri',sans-serif" }}>
-        উপায়
-      </span>
-    </div>
+    </button>
   );
 }
 
