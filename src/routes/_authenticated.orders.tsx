@@ -274,8 +274,8 @@ function MetaCell({
   mono?: boolean;
 }) {
   return (
-    <div className="min-w-0">
-      <div className="flex items-center gap-1 text-[8px] font-bold tracking-[0.25em] uppercase text-red-600">
+    <div className="min-w-0 rounded-lg border border-red-300 bg-red-50/60 px-2 py-1.5 shadow-[0_2px_8px_-4px_rgba(225,29,72,0.35)]">
+      <div className="flex items-center gap-1 text-[8px] font-bold tracking-[0.2em] uppercase text-red-600">
         {icon}
         {label}
       </div>
