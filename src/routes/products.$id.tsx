@@ -162,9 +162,10 @@ function ProductPage() {
                   </span>
                   <span className="flex-1 min-w-0 font-semibold leading-none text-foreground flex items-baseline gap-1 whitespace-nowrap overflow-hidden">
                     <span className="text-[14px]">{qty ?? p.name_en}</span>
-                    {qty && <span className="text-[11px]">Diamond</span>}
-                    {qty && <span className="text-[11px] leading-none">💎</span>}
+                    {qty && <span className="text-[14px]">Diamond</span>}
+                    {qty && <span className="text-[13px] leading-none">💎</span>}
                   </span>
+
                   <span className="font-display text-[12px] text-primary tracking-wide whitespace-nowrap shrink-0 self-end pb-1">
                     {Number(p.price).toFixed(0)} TK
                   </span>
