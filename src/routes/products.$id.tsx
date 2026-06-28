@@ -307,6 +307,43 @@ function ProductPage() {
           <Link to="/" className="text-sm text-muted-foreground hover:text-primary">← Back to all packs</Link>
         </div>
       </section>
+
+      {checkoutOpen && (
+        <SecureCheckout
+          amount={price}
+          onClose={() => { setCheckoutOpen(false); router.navigate({ to: "/orders" }); }}
+          onVerified={async () => {
+            const ok = await placeOrder("instant");
+            if (ok) toast.success("Order placed! Delivery within 10 seconds.");
+            return ok;
+          }}
+          successCopy={{
+            badge: "Order Placed",
+            title: "অর্ডার সফলভাবে সম্পন্ন হয়েছে",
+            subtitle: `${selected.name_en} • UID ${uid}`,
+            amountLabel: "Paid Amount",
+            channel: "Mobile Banking",
+          }}
+        />
+      )}
+
+      {insufficientOpen && (
+        <InsufficientBalanceModal
+          required={price}
+          onClose={() => setInsufficientOpen(false)}
+          onAddMoney={() => { setInsufficientOpen(false); navigate({ to: "/wallet" }); }}
+        />
+      )}
+
+      {walletSuccess && (
+        <WalletPaidSuccess
+          amount={walletSuccess.amount}
+          invoice={walletSuccess.invoice}
+          productName={selected.name_en}
+          uid={uid}
+          onClose={() => { setWalletSuccess(null); router.navigate({ to: "/orders" }); }}
+        />
+      )}
     </AppShell>
   );
 }
