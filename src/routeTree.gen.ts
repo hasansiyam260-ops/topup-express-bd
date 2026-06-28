@@ -24,12 +24,14 @@ import { Route as AdminUsersRouteImport } from './routes/admin.users'
 import { Route as AdminProductsRouteImport } from './routes/admin.products'
 import { Route as AdminPaymentsRouteImport } from './routes/admin.payments'
 import { Route as AdminOrdersRouteImport } from './routes/admin.orders'
+import { Route as AdminDeliveryRouteImport } from './routes/admin.delivery'
 import { Route as AdminContentRouteImport } from './routes/admin.content'
 import { Route as AdminCategoriesRouteImport } from './routes/admin.categories'
 import { Route as AuthenticatedWalletRouteImport } from './routes/_authenticated.wallet'
 import { Route as AuthenticatedProfileRouteImport } from './routes/_authenticated.profile'
 import { Route as AuthenticatedOrdersRouteImport } from './routes/_authenticated.orders'
 import { Route as AuthenticatedCodesRouteImport } from './routes/_authenticated.codes'
+import { Route as ApiPublicHooksAutoDeliverRouteImport } from './routes/api/public/hooks/auto-deliver'
 
 const TermsRoute = TermsRouteImport.update({
   id: '/terms',
@@ -105,6 +107,11 @@ const AdminOrdersRoute = AdminOrdersRouteImport.update({
   path: '/orders',
   getParentRoute: () => AdminRoute,
 } as any)
+const AdminDeliveryRoute = AdminDeliveryRouteImport.update({
+  id: '/delivery',
+  path: '/delivery',
+  getParentRoute: () => AdminRoute,
+} as any)
 const AdminContentRoute = AdminContentRouteImport.update({
   id: '/content',
   path: '/content',
@@ -135,6 +142,12 @@ const AuthenticatedCodesRoute = AuthenticatedCodesRouteImport.update({
   path: '/codes',
   getParentRoute: () => AuthenticatedRoute,
 } as any)
+const ApiPublicHooksAutoDeliverRoute =
+  ApiPublicHooksAutoDeliverRouteImport.update({
+    id: '/api/public/hooks/auto-deliver',
+    path: '/api/public/hooks/auto-deliver',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -150,6 +163,7 @@ export interface FileRoutesByFullPath {
   '/wallet': typeof AuthenticatedWalletRoute
   '/admin/categories': typeof AdminCategoriesRoute
   '/admin/content': typeof AdminContentRoute
+  '/admin/delivery': typeof AdminDeliveryRoute
   '/admin/orders': typeof AdminOrdersRoute
   '/admin/payments': typeof AdminPaymentsRoute
   '/admin/products': typeof AdminProductsRoute
@@ -157,6 +171,7 @@ export interface FileRoutesByFullPath {
   '/api/livechat': typeof ApiLivechatRoute
   '/products/$id': typeof ProductsIdRoute
   '/admin/': typeof AdminIndexRoute
+  '/api/public/hooks/auto-deliver': typeof ApiPublicHooksAutoDeliverRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -171,6 +186,7 @@ export interface FileRoutesByTo {
   '/wallet': typeof AuthenticatedWalletRoute
   '/admin/categories': typeof AdminCategoriesRoute
   '/admin/content': typeof AdminContentRoute
+  '/admin/delivery': typeof AdminDeliveryRoute
   '/admin/orders': typeof AdminOrdersRoute
   '/admin/payments': typeof AdminPaymentsRoute
   '/admin/products': typeof AdminProductsRoute
@@ -178,6 +194,7 @@ export interface FileRoutesByTo {
   '/api/livechat': typeof ApiLivechatRoute
   '/products/$id': typeof ProductsIdRoute
   '/admin': typeof AdminIndexRoute
+  '/api/public/hooks/auto-deliver': typeof ApiPublicHooksAutoDeliverRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -195,6 +212,7 @@ export interface FileRoutesById {
   '/_authenticated/wallet': typeof AuthenticatedWalletRoute
   '/admin/categories': typeof AdminCategoriesRoute
   '/admin/content': typeof AdminContentRoute
+  '/admin/delivery': typeof AdminDeliveryRoute
   '/admin/orders': typeof AdminOrdersRoute
   '/admin/payments': typeof AdminPaymentsRoute
   '/admin/products': typeof AdminProductsRoute
@@ -202,6 +220,7 @@ export interface FileRoutesById {
   '/api/livechat': typeof ApiLivechatRoute
   '/products/$id': typeof ProductsIdRoute
   '/admin/': typeof AdminIndexRoute
+  '/api/public/hooks/auto-deliver': typeof ApiPublicHooksAutoDeliverRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -219,6 +238,7 @@ export interface FileRouteTypes {
     | '/wallet'
     | '/admin/categories'
     | '/admin/content'
+    | '/admin/delivery'
     | '/admin/orders'
     | '/admin/payments'
     | '/admin/products'
@@ -226,6 +246,7 @@ export interface FileRouteTypes {
     | '/api/livechat'
     | '/products/$id'
     | '/admin/'
+    | '/api/public/hooks/auto-deliver'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -240,6 +261,7 @@ export interface FileRouteTypes {
     | '/wallet'
     | '/admin/categories'
     | '/admin/content'
+    | '/admin/delivery'
     | '/admin/orders'
     | '/admin/payments'
     | '/admin/products'
@@ -247,6 +269,7 @@ export interface FileRouteTypes {
     | '/api/livechat'
     | '/products/$id'
     | '/admin'
+    | '/api/public/hooks/auto-deliver'
   id:
     | '__root__'
     | '/'
@@ -263,6 +286,7 @@ export interface FileRouteTypes {
     | '/_authenticated/wallet'
     | '/admin/categories'
     | '/admin/content'
+    | '/admin/delivery'
     | '/admin/orders'
     | '/admin/payments'
     | '/admin/products'
@@ -270,6 +294,7 @@ export interface FileRouteTypes {
     | '/api/livechat'
     | '/products/$id'
     | '/admin/'
+    | '/api/public/hooks/auto-deliver'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -283,6 +308,7 @@ export interface RootRouteChildren {
   TermsRoute: typeof TermsRoute
   ApiLivechatRoute: typeof ApiLivechatRoute
   ProductsIdRoute: typeof ProductsIdRoute
+  ApiPublicHooksAutoDeliverRoute: typeof ApiPublicHooksAutoDeliverRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -392,6 +418,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminOrdersRouteImport
       parentRoute: typeof AdminRoute
     }
+    '/admin/delivery': {
+      id: '/admin/delivery'
+      path: '/delivery'
+      fullPath: '/admin/delivery'
+      preLoaderRoute: typeof AdminDeliveryRouteImport
+      parentRoute: typeof AdminRoute
+    }
     '/admin/content': {
       id: '/admin/content'
       path: '/content'
@@ -434,6 +467,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedCodesRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
+    '/api/public/hooks/auto-deliver': {
+      id: '/api/public/hooks/auto-deliver'
+      path: '/api/public/hooks/auto-deliver'
+      fullPath: '/api/public/hooks/auto-deliver'
+      preLoaderRoute: typeof ApiPublicHooksAutoDeliverRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -458,6 +498,7 @@ const AuthenticatedRouteWithChildren = AuthenticatedRoute._addFileChildren(
 interface AdminRouteChildren {
   AdminCategoriesRoute: typeof AdminCategoriesRoute
   AdminContentRoute: typeof AdminContentRoute
+  AdminDeliveryRoute: typeof AdminDeliveryRoute
   AdminOrdersRoute: typeof AdminOrdersRoute
   AdminPaymentsRoute: typeof AdminPaymentsRoute
   AdminProductsRoute: typeof AdminProductsRoute
@@ -468,6 +509,7 @@ interface AdminRouteChildren {
 const AdminRouteChildren: AdminRouteChildren = {
   AdminCategoriesRoute: AdminCategoriesRoute,
   AdminContentRoute: AdminContentRoute,
+  AdminDeliveryRoute: AdminDeliveryRoute,
   AdminOrdersRoute: AdminOrdersRoute,
   AdminPaymentsRoute: AdminPaymentsRoute,
   AdminProductsRoute: AdminProductsRoute,
@@ -488,17 +530,8 @@ const rootRouteChildren: RootRouteChildren = {
   TermsRoute: TermsRoute,
   ApiLivechatRoute: ApiLivechatRoute,
   ProductsIdRoute: ProductsIdRoute,
+  ApiPublicHooksAutoDeliverRoute: ApiPublicHooksAutoDeliverRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
