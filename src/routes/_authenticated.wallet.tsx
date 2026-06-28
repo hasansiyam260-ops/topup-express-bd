@@ -66,18 +66,15 @@ function WalletPage() {
           </p>
         </section>
 
-        {/* Step 2 — Payment Method */}
+        {/* Step 2 — Payment Method (selection happens in Secure Checkout) */}
         <section className="rounded-2xl card-soft p-4">
-          <div className="flex items-center gap-2 mb-3">
+          <div className="flex items-center gap-2 mb-2">
             <span className="grid place-items-center h-7 w-7 rounded-full bg-primary text-primary-foreground font-display text-sm shadow-[0_0_0_3px_color-mix(in_oklab,var(--brand-red)_15%,transparent)]">2</span>
             <h2 className="font-display text-base tracking-wide">PAYMENT METHOD</h2>
           </div>
-
-          <div className="grid grid-cols-3 gap-2">
-            <MethodCard active={method === "bkash"} onClick={() => setMethod("bkash")} brand="bkash" />
-            <MethodCard active={method === "nagad"} onClick={() => setMethod("nagad")} brand="nagad" />
-            <MethodCard active={method === "rocket"} onClick={() => setMethod("rocket")} brand="rocket" />
-          </div>
+          <p className="text-[11px] text-muted-foreground">
+            Confirm করার পর <span className="font-semibold text-foreground">bKash · Nagad · Rocket · Upay</span> অপশন থেকে নিরাপদ Secure Checkout এ payment complete করুন।
+          </p>
         </section>
 
         {/* Confirm */}
