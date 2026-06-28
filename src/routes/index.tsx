@@ -5,6 +5,7 @@ import { AppShell } from "@/components/site/AppShell";
 import { packImage } from "@/lib/assets";
 import heroImg from "@/assets/hero-promo.webp";
 import { MessageCircle, MessagesSquare, Gift, Facebook, Youtube, Mail, Play, Send } from "lucide-react";
+import { AnnouncementBar } from "@/components/site/AnnouncementBar";
 
 export const Route = createFileRoute("/")({
   head: () => ({
