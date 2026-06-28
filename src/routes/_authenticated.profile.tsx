@@ -118,9 +118,14 @@ function ProfilePage() {
         </div>
 
         {/* Stats overview */}
-        <div className="rounded-2xl overflow-hidden bg-white p-4 shadow-[0_0_30px_4px_rgba(239,68,68,0.35),0_0_60px_10px_rgba(239,68,68,0.2)] ring-1 ring-rose-300 relative">
-          <div className="absolute -top-12 -right-12 h-32 w-32 rounded-full bg-rose-400/50 blur-3xl" />
-          <div className="absolute -bottom-12 -left-12 h-32 w-32 rounded-full bg-rose-300/40 blur-3xl" />
+        <div className="relative isolate rounded-2xl bg-white p-4 ring-1 ring-rose-300 shadow-[0_8px_26px_-12px_rgba(239,68,68,0.45)]">
+          <div className="pointer-events-none absolute -top-2 -left-2 -z-10 h-14 w-14 rounded-full bg-red-500/55 blur-2xl" />
+          <div className="pointer-events-none absolute -top-2 -right-2 -z-10 h-14 w-14 rounded-full bg-red-500/55 blur-2xl" />
+          <div className="pointer-events-none absolute -bottom-2 -left-2 -z-10 h-14 w-14 rounded-full bg-red-500/55 blur-2xl" />
+          <div className="pointer-events-none absolute -bottom-2 -right-2 -z-10 h-14 w-14 rounded-full bg-red-500/55 blur-2xl" />
+          <div className="pointer-events-none absolute inset-0 -z-10 rounded-2xl shadow-[0_0_22px_3px_rgba(239,68,68,0.42),0_0_46px_8px_rgba(248,113,113,0.24)]" />
+          <div className="absolute -top-10 -right-10 h-28 w-28 rounded-full bg-rose-300/45 blur-3xl" />
+          <div className="absolute -bottom-10 -left-10 h-28 w-28 rounded-full bg-rose-300/35 blur-3xl" />
           <div className="relative flex items-center gap-2 mb-3">
             <span className="grid place-items-center h-8 w-8 rounded-lg bg-gradient-to-br from-rose-500 to-sky-500 text-white ring-1 ring-white shadow-[0_4px_14px_-2px_rgba(244,63,94,0.5)]"><TrendingUp className="h-4 w-4" /></span>
             <div>
