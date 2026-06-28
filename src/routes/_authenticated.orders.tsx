@@ -239,13 +239,14 @@ function OrderCard({ order }: { order: Order }) {
 
         {/* Meta grid */}
         <div className="grid grid-cols-3 gap-2 pt-2 border-t border-dashed border-slate-200">
-          <MetaCell icon={<Calendar className="h-3 w-3" />} label="Date" value={dateStr} />
-          <MetaCell icon={<CreditCard className="h-3 w-3" />} label="Method" value={order.payment_method} />
+          <MetaCell icon={<Calendar className="h-3 w-3" />} label="Date" value={dateStr} tone={theme.metaTone} />
+          <MetaCell icon={<CreditCard className="h-3 w-3" />} label="Method" value={order.payment_method} tone={theme.metaTone} />
           <MetaCell
             icon={<ShieldCheck className="h-3 w-3" />}
             label="TXID"
             value={order.payment_reference || "—"}
             mono
+            tone={theme.metaTone}
           />
         </div>
 
@@ -262,24 +263,60 @@ function OrderCard({ order }: { order: Order }) {
   );
 }
 
+const META_TONES = {
+  green: {
+    border: "border-emerald-300",
+    bg: "bg-emerald-50/70",
+    text: "text-emerald-700",
+    shadow: "shadow-[0_2px_8px_-4px_rgba(16,185,129,0.35)]",
+  },
+  red: {
+    border: "border-red-300",
+    bg: "bg-red-50/70",
+    text: "text-red-600",
+    shadow: "shadow-[0_2px_8px_-4px_rgba(225,29,72,0.35)]",
+  },
+  blue: {
+    border: "border-sky-300",
+    bg: "bg-sky-50/70",
+    text: "text-sky-700",
+    shadow: "shadow-[0_2px_8px_-4px_rgba(2,132,199,0.35)]",
+  },
+  amber: {
+    border: "border-amber-300",
+    bg: "bg-amber-50/70",
+    text: "text-amber-700",
+    shadow: "shadow-[0_2px_8px_-4px_rgba(217,119,6,0.35)]",
+  },
+  slate: {
+    border: "border-slate-300",
+    bg: "bg-slate-50/70",
+    text: "text-slate-700",
+    shadow: "shadow-[0_2px_8px_-4px_rgba(71,85,105,0.3)]",
+  },
+} as const;
+
 function MetaCell({
   icon,
   label,
   value,
   mono,
+  tone = "red",
 }: {
   icon: React.ReactNode;
   label: string;
   value: string;
   mono?: boolean;
+  tone?: keyof typeof META_TONES;
 }) {
+  const t = META_TONES[tone];
   return (
-    <div className="min-w-0 rounded-lg border border-red-300 bg-red-50/60 px-2 py-1.5 shadow-[0_2px_8px_-4px_rgba(225,29,72,0.35)]">
-      <div className="flex items-center gap-1 text-[8px] font-bold tracking-[0.2em] uppercase text-red-600">
+    <div className={`min-w-0 rounded-lg border ${t.border} ${t.bg} px-2 py-1.5 ${t.shadow}`}>
+      <div className={`flex items-center gap-1 text-[8px] font-bold tracking-[0.2em] uppercase ${t.text}`}>
         {icon}
         {label}
       </div>
-      <div className={`text-[11px] font-bold text-red-600 mt-0.5 truncate ${mono ? "font-mono" : ""}`}>
+      <div className={`text-[10px] font-bold ${t.text} mt-0.5 whitespace-normal break-words leading-tight ${mono ? "font-mono" : ""}`}>
         {value}
       </div>
     </div>
@@ -306,6 +343,7 @@ function statusTheme(status: string) {
         noteFg: "#047857",
         note: "টপআপ সফলভাবে সম্পন্ন হয়েছে — Diamonds delivered to your account ✓",
         icon: <CheckCircle2 className="h-3 w-3" />,
+        metaTone: "green" as const,
       };
     case "processing":
       return {
@@ -323,6 +361,7 @@ function statusTheme(status: string) {
         noteFg: "#1d4ed8",
         note: "Order processing চলছে — সাধারণত ১–৫ মিনিটে delivery হয়।",
         icon: <Loader2 className="h-3 w-3 animate-spin" />,
+        metaTone: "blue" as const,
       };
     case "pending":
       return {
@@ -340,6 +379,7 @@ function statusTheme(status: string) {
         noteFg: "#92400e",
         note: "Payment verification এর জন্য অপেক্ষা করুন।",
         icon: <Clock className="h-3 w-3" />,
+        metaTone: "amber" as const,
       };
     case "failed":
     case "cancelled":
@@ -361,6 +401,7 @@ function statusTheme(status: string) {
             ? "Order failed — payment verify হয়নি। Support এ যোগাযোগ করুন।"
             : "Order cancelled হয়েছে। Refund (যদি প্রযোজ্য হয়) ওয়ালেটে যোগ হবে।",
         icon: <XCircle className="h-3 w-3" />,
+        metaTone: "red" as const,
       };
     default:
       return {
@@ -378,6 +419,7 @@ function statusTheme(status: string) {
         noteFg: "#334155",
         note: "Status update পাবেন শীঘ্রই।",
         icon: <Clock className="h-3 w-3" />,
+        metaTone: "slate" as const,
       };
   }
 }
