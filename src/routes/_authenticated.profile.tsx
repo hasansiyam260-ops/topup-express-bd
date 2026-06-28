@@ -117,6 +117,49 @@ function ProfilePage() {
           <button onClick={() => navigate({ to: "/wallet" })} className="btn-red px-4 py-2.5 rounded-xl text-sm shrink-0">Add Money</button>
         </div>
 
+        {/* Stats overview */}
+        <div className="rounded-2xl overflow-hidden bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white p-4 shadow-[0_10px_30px_-14px_rgba(2,6,23,0.6)] relative">
+          <div className="absolute -top-10 -right-10 h-28 w-28 rounded-full bg-cyan-500/20 blur-3xl" />
+          <div className="absolute -bottom-10 -left-10 h-28 w-28 rounded-full bg-fuchsia-500/20 blur-3xl" />
+          <div className="relative flex items-center gap-2 mb-3">
+            <span className="grid place-items-center h-8 w-8 rounded-lg bg-white/10 ring-1 ring-white/20"><TrendingUp className="h-4 w-4" /></span>
+            <div>
+              <div className="text-[9px] tracking-[0.3em] uppercase text-white/60 leading-none">Activity</div>
+              <h2 className="font-display text-base leading-tight mt-0.5">MY STATS</h2>
+            </div>
+          </div>
+          <div className="relative grid grid-cols-2 gap-2">
+            <StatTile icon={<ShoppingBag className="h-3.5 w-3.5" />} label="Total Orders" value={String(orderStats?.total ?? 0)} tint="from-sky-500/30 to-sky-500/0" />
+            <StatTile icon={<Wallet className="h-3.5 w-3.5" />} label="Total Spent" value={`৳${Number(orderStats?.spent ?? 0).toLocaleString()}`} tint="from-amber-500/30 to-amber-500/0" />
+            <StatTile icon={<CheckCircle2 className="h-3.5 w-3.5" />} label="Completed" value={String(orderStats?.completed ?? 0)} tint="from-emerald-500/30 to-emerald-500/0" />
+            <StatTile icon={<XCircle className="h-3.5 w-3.5" />} label="Cancelled" value={String(orderStats?.cancelled ?? 0)} tint="from-rose-500/30 to-rose-500/0" />
+            <StatTile icon={<Timer className="h-3.5 w-3.5" />} label="Avg Delivery" value={orderStats?.avgMin ? `${orderStats.avgMin}m` : "—"} tint="from-violet-500/30 to-violet-500/0" />
+            <StatTile icon={<ShoppingBag className="h-3.5 w-3.5" />} label="Pending" value={String(orderStats?.pending ?? 0)} tint="from-yellow-500/30 to-yellow-500/0" />
+          </div>
+        </div>
+
+        {/* Game identity */}
+        {orderStats?.last && (
+          <div className="relative rounded-2xl overflow-hidden p-4 bg-gradient-to-br from-indigo-600 via-blue-600 to-cyan-500 text-white shadow-[0_10px_30px_-14px_rgba(37,99,235,0.5)]">
+            <div className="absolute -top-10 -right-10 h-28 w-28 rounded-full bg-white/15 blur-2xl" />
+            <div className="relative flex items-center gap-3">
+              <span className="grid place-items-center h-11 w-11 rounded-xl bg-white/15 ring-1 ring-white/30 shrink-0">
+                <Gamepad2 className="h-5 w-5" />
+              </span>
+              <div className="min-w-0 flex-1">
+                <div className="text-[9px] tracking-[0.3em] uppercase text-white/70 leading-none">Last Topup Account</div>
+                <div className="font-display text-base leading-tight mt-1 truncate">
+                  {orderStats.last.player_name || "Free Fire Player"}
+                </div>
+                <div className="flex items-center gap-1.5 mt-1 text-[11px] text-white/85 font-mono">
+                  <Hash className="h-3 w-3" /> {orderStats.last.player_uid}
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+
         <form onSubmit={save} className="rounded-2xl card-soft p-5 space-y-3">
           <h2 className="font-display text-2xl mb-2">Account Details</h2>
           <Input label="Full name" value={fullName} onChange={setFullName} max={100} />
