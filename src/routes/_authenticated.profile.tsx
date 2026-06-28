@@ -118,23 +118,23 @@ function ProfilePage() {
         </div>
 
         {/* Stats overview */}
-        <div className="rounded-2xl overflow-hidden bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white p-4 shadow-[0_10px_30px_-14px_rgba(2,6,23,0.6)] relative">
-          <div className="absolute -top-10 -right-10 h-28 w-28 rounded-full bg-cyan-500/20 blur-3xl" />
-          <div className="absolute -bottom-10 -left-10 h-28 w-28 rounded-full bg-fuchsia-500/20 blur-3xl" />
+        <div className="rounded-2xl overflow-hidden bg-gradient-to-br from-white via-sky-50 to-pink-50 text-slate-800 p-4 shadow-[0_10px_40px_-12px_rgba(59,130,246,0.35)] ring-1 ring-sky-200/60 relative">
+          <div className="absolute -top-12 -right-12 h-32 w-32 rounded-full bg-sky-300/50 blur-3xl" />
+          <div className="absolute -bottom-12 -left-12 h-32 w-32 rounded-full bg-pink-300/50 blur-3xl" />
           <div className="relative flex items-center gap-2 mb-3">
-            <span className="grid place-items-center h-8 w-8 rounded-lg bg-white/10 ring-1 ring-white/20"><TrendingUp className="h-4 w-4" /></span>
+            <span className="grid place-items-center h-8 w-8 rounded-lg bg-gradient-to-br from-sky-400 to-pink-400 text-white ring-1 ring-white/70 shadow-[0_4px_14px_-2px_rgba(236,72,153,0.5)]"><TrendingUp className="h-4 w-4" /></span>
             <div>
-              <div className="text-[9px] tracking-[0.3em] uppercase text-white/60 leading-none">Activity</div>
-              <h2 className="font-display text-base leading-tight mt-0.5">MY STATS</h2>
+              <div className="text-[9px] tracking-[0.3em] uppercase text-slate-500 leading-none">Activity</div>
+              <h2 className="font-display text-base leading-tight mt-0.5 text-slate-900">MY STATS</h2>
             </div>
           </div>
           <div className="relative grid grid-cols-2 gap-2">
-            <StatTile icon={<ShoppingBag className="h-3.5 w-3.5" />} label="Total Orders" value={String(orderStats?.total ?? 0)} tint="from-sky-500/30 to-sky-500/0" />
-            <StatTile icon={<Wallet className="h-3.5 w-3.5" />} label="Total Spent" value={`৳${Number(orderStats?.spent ?? 0).toLocaleString()}`} tint="from-amber-500/30 to-amber-500/0" />
-            <StatTile icon={<CheckCircle2 className="h-3.5 w-3.5" />} label="Completed" value={String(orderStats?.completed ?? 0)} tint="from-emerald-500/30 to-emerald-500/0" />
-            <StatTile icon={<XCircle className="h-3.5 w-3.5" />} label="Cancelled" value={String(orderStats?.cancelled ?? 0)} tint="from-rose-500/30 to-rose-500/0" />
-            <StatTile icon={<Timer className="h-3.5 w-3.5" />} label="Avg Delivery" value={orderStats?.avgMin ? `${orderStats.avgMin}m` : "—"} tint="from-violet-500/30 to-violet-500/0" />
-            <StatTile icon={<ShoppingBag className="h-3.5 w-3.5" />} label="Pending" value={String(orderStats?.pending ?? 0)} tint="from-yellow-500/30 to-yellow-500/0" />
+            <StatTile icon={<ShoppingBag className="h-3.5 w-3.5" />} label="Total Orders" value={String(orderStats?.total ?? 0)} tint="from-sky-200/70 to-sky-100/0" glow="rgba(56,189,248,0.45)" />
+            <StatTile icon={<Wallet className="h-3.5 w-3.5" />} label="Total Spent" value={`৳${Number(orderStats?.spent ?? 0).toLocaleString()}`} tint="from-amber-200/70 to-amber-100/0" glow="rgba(251,191,36,0.4)" />
+            <StatTile icon={<CheckCircle2 className="h-3.5 w-3.5" />} label="Completed" value={String(orderStats?.completed ?? 0)} tint="from-emerald-200/70 to-emerald-100/0" glow="rgba(52,211,153,0.4)" />
+            <StatTile icon={<XCircle className="h-3.5 w-3.5" />} label="Cancelled" value={String(orderStats?.cancelled ?? 0)} tint="from-rose-200/70 to-rose-100/0" glow="rgba(244,114,182,0.45)" />
+            <StatTile icon={<Timer className="h-3.5 w-3.5" />} label="Avg Delivery" value={orderStats?.avgMin ? `${orderStats.avgMin}m` : "—"} tint="from-violet-200/70 to-violet-100/0" glow="rgba(167,139,250,0.45)" />
+            <StatTile icon={<ShoppingBag className="h-3.5 w-3.5" />} label="Pending" value={String(orderStats?.pending ?? 0)} tint="from-pink-200/70 to-pink-100/0" glow="rgba(236,72,153,0.45)" />
           </div>
         </div>
 
@@ -197,14 +197,14 @@ function Input({ label, value, onChange, max }: { label: string; value: string; 
   );
 }
 
-function StatTile({ icon, label, value, tint }: { icon: React.ReactNode; label: string; value: string; tint: string }) {
+function StatTile({ icon, label, value, tint, glow }: { icon: React.ReactNode; label: string; value: string; tint: string; glow: string }) {
   return (
-    <div className={`relative overflow-hidden rounded-xl p-2.5 bg-white/[0.04] ring-1 ring-white/10 backdrop-blur`}>
-      <div className={`absolute inset-0 bg-gradient-to-br ${tint} opacity-60 pointer-events-none`} />
-      <div className="relative flex items-center gap-1.5 text-white/70 text-[9px] tracking-[0.2em] uppercase">
+    <div className="relative overflow-hidden rounded-xl p-2.5 bg-white/80 ring-1 ring-white shadow-[0_4px_18px_-6px_var(--tw-shadow-color)] backdrop-blur" style={{ ['--tw-shadow-color' as any]: glow }}>
+      <div className={`absolute inset-0 bg-gradient-to-br ${tint} opacity-80 pointer-events-none`} />
+      <div className="relative flex items-center gap-1.5 text-slate-500 text-[9px] tracking-[0.2em] uppercase">
         {icon} {label}
       </div>
-      <div className="relative font-display text-lg leading-tight mt-0.5 text-white">{value}</div>
+      <div className="relative font-display text-lg leading-tight mt-0.5 text-slate-900">{value}</div>
     </div>
   );
 }
