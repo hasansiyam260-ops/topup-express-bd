@@ -285,7 +285,7 @@ function PayTile({ selected, onClick, glow, logo, alt }: { selected: boolean; on
   );
 }
 
-function SuccessScreen({ amount, invoiceId, onClose, copy }: { amount: number; invoiceId: string; onClose: () => void; copy?: SuccessCopy }) {
+export function SuccessScreen({ amount, invoiceId, onClose, copy }: { amount: number; invoiceId: string; onClose: () => void; copy?: SuccessCopy }) {
   const now = new Date();
   const dateStr = now.toLocaleString("en-GB", { dateStyle: "medium", timeStyle: "short" });
   const badge = copy?.badge ?? "Payment Successful";
