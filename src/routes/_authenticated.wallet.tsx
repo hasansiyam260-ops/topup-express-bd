@@ -1,5 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { supabase } from "@/integrations/supabase/client";
 import { AppShell } from "@/components/site/AppShell";
 import { Wallet, Info, ShieldCheck, Zap, History, CheckCircle2, Hash, CreditCard, Clock } from "lucide-react";
 import { SecureCheckout } from "@/components/site/SecureCheckout";
@@ -27,13 +29,21 @@ function WalletPage() {
   const [amount, setAmount] = useState<string>("");
   const [checkoutOpen, setCheckoutOpen] = useState(false);
   const [history, setHistory] = useState<AddMoneyEntry[]>([]);
-  const [balance, setBalance] = useState<number>(0);
 
-  useEffect(() => {
-    try { setBalance(Number(localStorage.getItem("uidtopup:wallet") || "0")); } catch {}
-  }, []);
+  const { data: balance = 0 } = useQuery({
+    queryKey: ["my-wallet-balance"],
+    queryFn: async () => {
+      const { data: u } = await supabase.auth.getUser();
+      if (!u.user) return 0;
+      const { data } = await supabase.from("profiles").select("balance").eq("id", u.user.id).maybeSingle();
+      return Number(data?.balance ?? 0);
+    },
+    refetchOnWindowFocus: true,
+    refetchInterval: 15000,
+  });
 
   useEffect(() => { setHistory(loadHistory()); }, []);
+
 
   const numeric = Number(amount || 0);
   const valid = numeric >= 10;
