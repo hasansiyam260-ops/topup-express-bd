@@ -115,10 +115,10 @@ function ReferralsPage() {
         <div className="rounded-2xl card-soft p-4">
           <div className="text-[11px] font-bold tracking-wider uppercase mb-2.5">কিভাবে কাজ করে?</div>
           <ol className="space-y-2 text-sm">
-            <li className="flex gap-2"><span className="grid place-items-center h-5 w-5 rounded-full bg-rose-500 text-white text-[10px] font-bold shrink-0 mt-0.5">1</span>আপনার কোড বন্ধুদের সাথে শেয়ার করুন</li>
-            <li className="flex gap-2"><span className="grid place-items-center h-5 w-5 rounded-full bg-rose-500 text-white text-[10px] font-bold shrink-0 mt-0.5">2</span>তারা সাইন আপ করে কোড ব্যবহার করলে ৳20 বোনাস পাবে</li>
-            <li className="flex gap-2"><span className="grid place-items-center h-5 w-5 rounded-full bg-rose-500 text-white text-[10px] font-bold shrink-0 mt-0.5">3</span><span>তারা যতবার ডায়মন্ড/প্যাকেজ কিনবে, আপনি প্রতিবার <b>2% cashback</b> পাবেন (lifetime)</span></li>
-            <li className="flex gap-2"><span className="grid place-items-center h-5 w-5 rounded-full bg-rose-500 text-white text-[10px] font-bold shrink-0 mt-0.5">4</span><span>ক্যাশব্যাক সরাসরি আপনার <b>Main Balance</b> এ জমা হবে — instant!</span></li>
+            <li className="flex gap-2"><span className="grid place-items-center h-5 w-5 rounded-full bg-rose-500 text-white text-[10px] font-bold shrink-0 mt-0.5">1</span>আপনার রেফারেল লিংক বন্ধুদের সাথে শেয়ার করুন</li>
+            <li className="flex gap-2"><span className="grid place-items-center h-5 w-5 rounded-full bg-rose-500 text-white text-[10px] font-bold shrink-0 mt-0.5">2</span>তারা আপনার লিংক থেকে সাইন আপ করলে অটোমেটিক আপনার সাথে কানেক্ট হয়ে যাবে</li>
+            <li className="flex gap-2"><span className="grid place-items-center h-5 w-5 rounded-full bg-rose-500 text-white text-[10px] font-bold shrink-0 mt-0.5">3</span><span>তারা যখনই ডায়মন্ড/প্যাকেজ কিনবে, আপনি প্রতিবার <b>2% cashback</b> পাবেন (lifetime)</span></li>
+            <li className="flex gap-2"><span className="grid place-items-center h-5 w-5 rounded-full bg-rose-500 text-white text-[10px] font-bold shrink-0 mt-0.5">4</span><span>ক্যাশব্যাক সরাসরি আপনার <b>Main Balance</b> এ অটো জমা হবে — instant!</span></li>
           </ol>
         </div>
 
