@@ -178,7 +178,7 @@ export const adminUpdateUserBalance = createServerFn({ method: "POST" })
 
 export const adminToggleRole = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
-  .inputValidator((d: { userId: string; role: "admin" | "moderator" | "user"; grant: boolean }) => d)
+  .inputValidator((d: { userId: string; role: "admin" | "user"; grant: boolean }) => d)
   .handler(async ({ data, context }) => {
     await assertAdmin(context);
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
