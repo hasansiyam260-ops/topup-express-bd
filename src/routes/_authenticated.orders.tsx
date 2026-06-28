@@ -343,6 +343,7 @@ function statusTheme(status: string) {
         noteFg: "#047857",
         note: "টপআপ সফলভাবে সম্পন্ন হয়েছে — Diamonds delivered to your account ✓",
         icon: <CheckCircle2 className="h-3 w-3" />,
+        metaTone: "green" as const,
       };
     case "processing":
       return {
@@ -360,6 +361,7 @@ function statusTheme(status: string) {
         noteFg: "#1d4ed8",
         note: "Order processing চলছে — সাধারণত ১–৫ মিনিটে delivery হয়।",
         icon: <Loader2 className="h-3 w-3 animate-spin" />,
+        metaTone: "blue" as const,
       };
     case "pending":
       return {
@@ -398,6 +400,7 @@ function statusTheme(status: string) {
             ? "Order failed — payment verify হয়নি। Support এ যোগাযোগ করুন।"
             : "Order cancelled হয়েছে। Refund (যদি প্রযোজ্য হয়) ওয়ালেটে যোগ হবে।",
         icon: <XCircle className="h-3 w-3" />,
+        metaTone: "red" as const,
       };
     default:
       return {
