@@ -11,15 +11,17 @@ import { supabase } from "@/integrations/supabase/client";
 import { Wallet, Smartphone, Info, HelpCircle, AlertTriangle, X, Plus } from "lucide-react";
 import { toast } from "sonner";
 
-const CATEGORY_META: Record<string, { title: string; sub: string }> = {
+const CATEGORY_META: Record<string, { title: string; sub: string; img?: string }> = {
   diamond: { title: "Free Fire Diamond", sub: "BD Server" },
   membership: { title: "Free Fire Membership", sub: "Weekly · Monthly" },
   level_pass: { title: "Level Up Pass", sub: "Free Fire BD" },
   like: { title: "Free Fire Likes", sub: "Profile Boost" },
-  airdrop: { title: "UniPin Voucher", sub: "Global Topup" },
+  airdrop: { title: "Special Airdrop", sub: "Free Fire BD" },
+  unipin: { title: "UniPin Voucher", sub: "Global Topup" },
+  weeklylite: { title: "Weekly Lite Membership", sub: "Weekly · 7 Days" },
 };
-function categoryTitle(t: string | null | undefined) { return CATEGORY_META[t ?? ""]?.title ?? "Topup Pack"; }
-function categorySubtitle(t: string | null | undefined) { return CATEGORY_META[t ?? ""]?.sub ?? "Premium"; }
+function categoryTitle(c: string) { return CATEGORY_META[c]?.title ?? "Topup Pack"; }
+function categorySubtitle(c: string) { return CATEGORY_META[c]?.sub ?? "Premium"; }
 
 export const Route = createFileRoute("/products/$id")({
   loader: ({ params, context }) => {
