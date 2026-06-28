@@ -349,13 +349,19 @@ function PayCard({
           </div>
         ) : (
           <div className="relative flex flex-col items-center gap-1.5">
-            <div className="flex items-center gap-1">
-              <BrandLogo brand="bkash" />
-              <BrandLogo brand="nagad" />
-              <BrandLogo brand="rocket" />
-            </div>
-            <span className="font-display text-[10px] leading-none tracking-wider text-primary/80">AUTO ADD MONEY</span>
+            <span className="relative grid place-items-center h-11 w-11 rounded-full bg-white ring-1 ring-rose-200 shadow-[0_6px_16px_-4px_rgba(226,19,110,0.45)]">
+              <Smartphone className="h-5 w-5 text-primary" />
+              <span className="absolute inset-0 rounded-full bg-gradient-to-b from-white/80 to-transparent opacity-70" />
+            </span>
+            <span className="font-display text-[11px] leading-none tracking-wide">
+              <span className="text-[#e2136e]">bKash</span>
+              <span className="text-foreground/40"> · </span>
+              <span className="text-[#f15a29]">Nagad</span>
+              <span className="text-foreground/40"> · </span>
+              <span className="text-[#8a3ab9]">Rocket</span>
+            </span>
           </div>
+
         )}
       </div>
 
