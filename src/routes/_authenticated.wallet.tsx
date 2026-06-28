@@ -1,8 +1,22 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { AppShell } from "@/components/site/AppShell";
-import { Wallet, Info, ShieldCheck, Zap } from "lucide-react";
+import { Wallet, Info, ShieldCheck, Zap, History, CheckCircle2, Hash, CreditCard, Clock } from "lucide-react";
 import { SecureCheckout } from "@/components/site/SecureCheckout";
+
+type AddMoneyEntry = { invoiceId: string; brand: string; amount: number; ts: number };
+const HISTORY_KEY = "uidtopup:addmoney:history";
+
+function loadHistory(): AddMoneyEntry[] {
+  try { return JSON.parse(localStorage.getItem(HISTORY_KEY) || "[]"); } catch { return []; }
+}
+function pushHistory(e: AddMoneyEntry) {
+  try {
+    const list = loadHistory();
+    list.unshift(e);
+    localStorage.setItem(HISTORY_KEY, JSON.stringify(list.slice(0, 50)));
+  } catch {}
+}
 
 export const Route = createFileRoute("/_authenticated/wallet")({
   head: () => ({ meta: [{ title: "Add Money — UIDTOPUP.COM" }] }),
