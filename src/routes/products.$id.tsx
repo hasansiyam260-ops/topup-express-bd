@@ -159,9 +159,9 @@ function ProductPage() {
             />
             <div className="min-w-0 text-white drop-shadow-[0_2px_8px_rgba(0,0,0,0.6)]">
               <h1 className="font-display text-xl sm:text-2xl leading-tight">
-                Free Fire <span className="text-white/90">[BD SERVER]</span>
+                {categoryTitle(product.pack_type)}
               </h1>
-              <div className="text-[11px] tracking-[0.4em] text-white/70 uppercase mt-1">Free Fire</div>
+              <div className="text-[11px] tracking-[0.4em] text-white/70 uppercase mt-1">{categorySubtitle(product.pack_type)}</div>
             </div>
           </div>
         </div>
