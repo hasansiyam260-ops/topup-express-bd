@@ -242,11 +242,33 @@
   }
 }
 
+@keyframes skeleton-glow-kf {
+  0% { background-position: 180% 0; filter: brightness(1); }
+  50% { filter: brightness(1.04); }
+  100% { background-position: -80% 0; filter: brightness(1); }
+}
+@utility skeleton-glow {
+  background: linear-gradient(110deg,
+    color-mix(in oklab, var(--card) 92%, var(--neon-violet) 8%) 0%,
+    color-mix(in oklab, white 88%, var(--neon-magenta) 12%) 42%,
+    color-mix(in oklab, var(--card) 92%, var(--neon-cyan) 8%) 72%);
+  background-size: 240% 100%;
+  animation: skeleton-glow-kf 1.25s ease-in-out infinite;
+  box-shadow:
+    inset 0 1px 0 color-mix(in oklab, white 45%, transparent),
+    0 8px 22px -16px color-mix(in oklab, var(--neon-magenta) 40%, transparent);
+}
+
 @media (prefers-reduced-motion: reduce) {
   .sweep-shine::after,
   .float-soft,
   .ring-pulse,
-  .shimmer-orange {
+  .shimmer-orange,
+  .skeleton-glow,
+  .neon-breathe,
+  .red-breathe,
+  .text-glow,
+  .conic-ring::before {
     animation: none !important;
   }
 }

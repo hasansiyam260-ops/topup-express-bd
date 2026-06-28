@@ -348,6 +348,56 @@ function ProductPage() {
   );
 }
 
+function ProductLoadingShell() {
+  return (
+    <AppShell>
+      <section className="mx-auto max-w-3xl px-3 pt-4">
+        <div className="relative rounded-2xl overflow-hidden glow-violet h-[128px] bg-card">
+          <img
+            src={heroImg}
+            alt=""
+            width={900}
+            height={450}
+            decoding="async"
+            className="absolute inset-0 w-full h-full object-cover opacity-55"
+          />
+          <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/35 to-transparent" />
+          <div className="relative flex items-center gap-3 p-3 sm:p-4">
+            <div className="h-24 w-24 rounded-xl skeleton-glow ring-2 ring-white/20 shrink-0" />
+            <div className="min-w-0 flex-1 space-y-2">
+              <div className="h-6 w-40 rounded-lg skeleton-glow" />
+              <div className="h-3 w-28 rounded-full skeleton-glow" />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="mx-auto max-w-3xl px-3 mt-4 space-y-4" aria-busy="true">
+        {[1, 2, 3].map((n) => (
+          <div key={n} className="rounded-xl border border-border bg-card p-3 sm:p-3.5 card-soft">
+            <div className="flex items-center gap-2 mb-2.5 pb-2 border-b border-border">
+              <span className="grid place-items-center h-6 w-6 rounded-full bg-primary text-primary-foreground font-display text-xs">
+                {n}
+              </span>
+              <div className="h-4 w-28 rounded-full skeleton-glow" />
+            </div>
+            <div className="grid grid-cols-2 gap-2.5">
+              <div className="h-12 rounded-xl skeleton-glow" />
+              <div className="h-12 rounded-xl skeleton-glow" />
+              {n === 1 && (
+                <>
+                  <div className="h-12 rounded-xl skeleton-glow" />
+                  <div className="h-12 rounded-xl skeleton-glow" />
+                </>
+              )}
+            </div>
+          </div>
+        ))}
+      </section>
+    </AppShell>
+  );
+}
+
 function Step({
   n, title, children, rightSlot,
 }: { n: number; title: string; children: React.ReactNode; rightSlot?: React.ReactNode }) {
