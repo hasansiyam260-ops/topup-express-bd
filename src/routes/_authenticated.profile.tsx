@@ -118,7 +118,7 @@ function ProfilePage() {
         </div>
 
         {/* Stats overview */}
-        <div className="relative isolate rounded-2xl bg-white p-4 ring-1 ring-pink-300 shadow-[0_8px_26px_-12px_rgba(236,72,153,0.35)]">
+        <div className="relative isolate overflow-hidden rounded-2xl bg-[radial-gradient(circle_at_18%_18%,rgba(255,104,104,0.32),transparent_34%),radial-gradient(circle_at_82%_76%,rgba(244,63,94,0.28),transparent_36%),linear-gradient(135deg,rgba(255,235,241,0.96),rgba(255,255,255,0.98)_42%,rgba(255,226,236,0.94))] p-4 ring-1 ring-rose-300 shadow-[0_0_0_2px_rgba(255,77,94,0.16),0_0_34px_5px_rgba(255,41,73,0.24),inset_0_0_34px_rgba(255,61,90,0.13)]">
           <div className="relative flex items-center gap-2 mb-3">
             <span className="grid place-items-center h-8 w-8 rounded-lg bg-gradient-to-br from-rose-500 to-sky-500 text-white ring-1 ring-white shadow-[0_4px_14px_-2px_rgba(244,63,94,0.5)]"><TrendingUp className="h-4 w-4" /></span>
             <div>
@@ -197,9 +197,9 @@ function Input({ label, value, onChange, max }: { label: string; value: string; 
 
 function StatTile({ icon, label, value }: { icon: React.ReactNode; label: string; value: string; accent?: "rose" | "sky" }) {
   return (
-    <div className="relative overflow-hidden rounded-xl p-2.5 bg-gradient-to-br from-pink-50 to-white ring-1 ring-pink-300 shadow-[0_6px_18px_-8px_rgba(236,72,153,0.4)]">
+    <div className="relative overflow-hidden rounded-xl p-2.5 bg-[linear-gradient(135deg,rgba(255,218,229,0.98),rgba(255,245,248,0.98)_48%,rgba(255,229,237,0.96))] ring-1 ring-rose-300 shadow-[0_7px_20px_-10px_rgba(225,29,72,0.62),inset_0_0_22px_rgba(244,63,94,0.14)]">
       <div className="flex items-center gap-1.5 text-red-600 text-[9px] tracking-[0.2em] uppercase font-semibold">
-        <span className="grid place-items-center h-5 w-5 rounded-md bg-pink-500 text-white shadow-sm">{icon}</span>
+        <span className="grid place-items-center h-5 w-5 rounded-md bg-gradient-to-br from-pink-500 to-red-500 text-white shadow-[0_5px_12px_-4px_rgba(225,29,72,0.75)]">{icon}</span>
         {label}
       </div>
       <div className="font-display text-xl leading-tight mt-1 text-red-600">{value}</div>
