@@ -190,23 +190,23 @@ function ProductPage() {
 
         {/* Step 2 — Account Info */}
         <Step n={2} title="Account Info" rightSlot={
-          <a href="#help" className="flex items-center gap-1 text-sm font-semibold underline underline-offset-4 decoration-primary">
-            <HelpCircle className="h-4 w-4 text-primary" />
+          <a href="#help" className="flex items-center gap-1 text-[11px] font-semibold underline underline-offset-4 decoration-primary">
+            <HelpCircle className="h-3.5 w-3.5 text-primary" />
             কিভাবে অর্ডার করবেন ?
           </a>
         }>
-          <label className="block text-sm font-semibold text-foreground/90 mb-2">Player UID</label>
+          <label className="block text-xs font-semibold text-foreground/90 mb-1.5">Player UID</label>
           <input
             inputMode="numeric"
             value={uid}
             onChange={(e) => { setUid(e.target.value.replace(/\D/g, "").slice(0, 12)); setPlayerName(""); }}
             placeholder="Player UID"
-            className="w-full px-4 py-3 rounded-xl bg-card border-2 border-border focus:border-neon-violet focus:outline-none focus:ring-4 focus:ring-neon-violet/15 text-foreground placeholder:text-muted-foreground"
+            className="w-full px-3 py-2 text-sm rounded-lg bg-card border-2 border-border focus:border-neon-violet focus:outline-none focus:ring-4 focus:ring-neon-violet/15 text-foreground placeholder:text-muted-foreground"
           />
           <button
             onClick={checkPlayer}
             disabled={checking || !uid}
-            className="mt-3 w-full shimmer-orange py-3 rounded-xl text-base disabled:opacity-60 disabled:cursor-not-allowed"
+            className="mt-2 w-full shimmer-orange py-2 rounded-lg text-sm disabled:opacity-60 disabled:cursor-not-allowed"
           >
             {checking ? "Checking..." : playerName ? `✓ ${playerName}` : "Click to check player name"}
           </button>
