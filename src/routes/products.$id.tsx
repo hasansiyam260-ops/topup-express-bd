@@ -267,6 +267,7 @@ function ProductPage() {
           {playerName && (
             <VerifiedPlayerCard name={playerName} level={playerLevel} region={playerRegion} />
           )}
+        </Step>
 
         {/* Step 3 — Payment */}
         <Step n={3} title="Payment Methods">
