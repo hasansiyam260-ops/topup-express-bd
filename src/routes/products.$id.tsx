@@ -219,39 +219,51 @@ function ProductPage() {
               active={payment === "wallet"}
               onClick={() => setPayment("wallet")}
               title="Pay With Wallet"
+              subtitle="Instant · 0% Fee"
               icon={<Wallet className="h-5 w-5" />}
-              tint="from-amber-100 to-orange-100"
-              accent="text-orange-600"
               brand="TOPUP ওয়ালেট"
+              variant="wallet"
             />
             <PayCard
               active={payment === "instant"}
               onClick={() => setPayment("instant")}
               title="Instant Pay"
+              subtitle="Mobile Banking"
               icon={<Smartphone className="h-5 w-5" />}
-              tint="from-rose-50 to-pink-50"
-              accent="text-pink-600"
               brand="bKash · নগদ · Rocket"
+              variant="instant"
+              recommended
             />
           </div>
 
-          <div className="mt-4 flex items-center gap-2 text-sm text-muted-foreground">
-            <Info className="h-4 w-4 shrink-0" />
-            <span>প্রোডাক্ট কিনতে আপনার প্রয়োজন <span className="text-primary font-bold">৳ {Number(selected.price).toFixed(0)} টাকা।</span></span>
+          {/* Premium price summary */}
+          <div className="mt-5 rounded-2xl border border-border bg-gradient-to-br from-card to-muted/40 p-4 shadow-sm">
+            <div className="flex items-center justify-between">
+              <span className="text-sm text-muted-foreground">Total Payable</span>
+              <span className="text-[11px] tracking-wider uppercase text-emerald-600 font-bold bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">Secure</span>
+            </div>
+            <div className="mt-1 flex items-baseline gap-1">
+              <span className="font-display text-4xl text-primary tracking-tight">৳{Number(selected.price).toFixed(0)}</span>
+              <span className="text-sm text-muted-foreground">BDT</span>
+            </div>
+            <div className="mt-2 flex items-center gap-2 text-xs text-muted-foreground">
+              <Info className="h-3.5 w-3.5 shrink-0" />
+              <span>প্রোডাক্ট কিনতে আপনার প্রয়োজন <span className="text-foreground font-semibold">৳{Number(selected.price).toFixed(0)} টাকা</span></span>
+            </div>
           </div>
 
           {!authed && (
-            <div className="mt-2 flex items-center gap-2 text-sm text-primary">
-              <Info className="h-4 w-4 shrink-0" /> Please Login To Purchase
+            <div className="mt-3 flex items-center gap-2 text-sm text-primary bg-primary/5 border border-primary/20 rounded-lg px-3 py-2">
+              <Info className="h-4 w-4 shrink-0" /> Please login to complete purchase
             </div>
           )}
 
           <button
             onClick={submitOrder}
             disabled={submitting}
-            className="mt-4 w-full btn-red py-4 rounded-xl text-base disabled:opacity-60"
+            className="mt-4 w-full btn-red py-4 rounded-2xl text-base font-bold tracking-wide disabled:opacity-60 shadow-[0_10px_30px_-10px_color-mix(in_oklab,var(--brand-red)_60%,transparent)]"
           >
-            {authed ? (submitting ? "PLACING ORDER..." : `CONFIRM ৳${Number(selected.price).toFixed(0)}`) : "LOGIN"}
+            {authed ? (submitting ? "PLACING ORDER..." : `CONFIRM · ৳${Number(selected.price).toFixed(0)}`) : "LOGIN TO CONTINUE"}
           </button>
         </Step>
 
@@ -292,23 +304,39 @@ function Step({
 }
 
 function PayCard({
-  active, onClick, title, icon, tint, accent, brand,
-}: { active: boolean; onClick: () => void; title: string; icon: React.ReactNode; tint: string; accent: string; brand: string }) {
+  active, onClick, title, subtitle, icon, brand, variant, recommended,
+}: { active: boolean; onClick: () => void; title: string; subtitle: string; icon: React.ReactNode; brand: string; variant: "wallet" | "instant"; recommended?: boolean }) {
+  const styles = variant === "wallet"
+    ? { tint: "from-amber-50 via-orange-50 to-amber-100", accent: "text-orange-700", ring: "ring-orange-200", chipBg: "bg-orange-500/10", chipText: "text-orange-700" }
+    : { tint: "from-rose-50 via-pink-50 to-rose-100", accent: "text-pink-700", ring: "ring-pink-200", chipBg: "bg-pink-500/10", chipText: "text-pink-700" };
   return (
     <button
       onClick={onClick}
-      className={`text-left rounded-xl border-2 overflow-hidden transition-all ${
-        active ? "border-primary glow-red" : "border-border hover:border-neon-violet/40"
+      className={`relative text-left rounded-2xl border-2 overflow-hidden transition-all duration-300 group ${
+        active
+          ? "border-primary glow-red scale-[1.02] shadow-[0_12px_28px_-12px_color-mix(in_oklab,var(--brand-red)_55%,transparent)]"
+          : "border-border hover:border-primary/40 hover:-translate-y-0.5 hover:shadow-lg"
       }`}
     >
-      <div className={`h-24 grid place-items-center bg-gradient-to-br ${tint}`}>
-        <div className="flex items-center gap-2">
-          <span className={`${accent}`}>{icon}</span>
-          <span className={`font-display text-lg ${accent}`}>{brand}</span>
+      {recommended && (
+        <span className="absolute top-2 right-2 z-10 text-[9px] font-bold tracking-wider uppercase bg-primary text-primary-foreground px-2 py-0.5 rounded-full shadow-md">Popular</span>
+      )}
+      {active && (
+        <span className="absolute top-2 left-2 z-10 grid place-items-center h-5 w-5 rounded-full bg-primary text-primary-foreground text-[10px] shadow-md">✓</span>
+      )}
+      <div className={`relative h-24 grid place-items-center bg-gradient-to-br ${styles.tint} overflow-hidden`}>
+        <div className="absolute inset-0 opacity-40 sweep-shine pointer-events-none" />
+        <div className="relative flex flex-col items-center gap-1.5 px-2">
+          <span className={`grid place-items-center h-9 w-9 rounded-full bg-white/80 backdrop-blur ring-2 ${styles.ring} ${styles.accent} shadow-sm`}>{icon}</span>
+          <span className={`font-display text-[15px] leading-none ${styles.accent} text-center`}>{brand}</span>
         </div>
       </div>
-      <div className={`px-3 py-2 text-sm font-semibold ${active ? "bg-primary/10 text-primary" : "bg-muted text-foreground"}`}>
-        {title}
+      <div className={`px-3 py-2.5 flex items-center justify-between gap-2 ${active ? "bg-primary/8" : "bg-card"}`}>
+        <div className="min-w-0">
+          <div className={`text-[13px] font-bold truncate ${active ? "text-primary" : "text-foreground"}`}>{title}</div>
+          <div className="text-[10px] text-muted-foreground truncate">{subtitle}</div>
+        </div>
+        <span className={`shrink-0 text-[9px] font-bold uppercase tracking-wider px-1.5 py-0.5 rounded ${styles.chipBg} ${styles.chipText}`}>Fast</span>
       </div>
     </button>
   );
