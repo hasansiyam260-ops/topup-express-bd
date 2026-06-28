@@ -195,17 +195,14 @@ function Input({ label, value, onChange, max }: { label: string; value: string; 
   );
 }
 
-function StatTile({ icon, label, value, accent }: { icon: React.ReactNode; label: string; value: string; accent: "rose" | "sky" }) {
-  const styles = accent === "rose"
-    ? { bg: "bg-gradient-to-br from-rose-50 to-white", ring: "ring-rose-200", chip: "bg-rose-500 text-white", value: "text-rose-600", shadow: "shadow-[0_6px_18px_-8px_rgba(244,63,94,0.5)]" }
-    : { bg: "bg-gradient-to-br from-sky-50 to-white", ring: "ring-sky-200", chip: "bg-sky-500 text-white", value: "text-sky-600", shadow: "shadow-[0_6px_18px_-8px_rgba(14,165,233,0.5)]" };
+function StatTile({ icon, label, value }: { icon: React.ReactNode; label: string; value: string; accent?: "rose" | "sky" }) {
   return (
-    <div className={`relative overflow-hidden rounded-xl p-2.5 ${styles.bg} ring-1 ${styles.ring} ${styles.shadow}`}>
-      <div className="flex items-center gap-1.5 text-slate-600 text-[9px] tracking-[0.2em] uppercase font-semibold">
-        <span className={`grid place-items-center h-5 w-5 rounded-md ${styles.chip} shadow-sm`}>{icon}</span>
+    <div className="relative overflow-hidden rounded-xl p-2.5 bg-gradient-to-br from-pink-50 to-white ring-1 ring-pink-300 shadow-[0_6px_18px_-8px_rgba(236,72,153,0.4)]">
+      <div className="flex items-center gap-1.5 text-red-600 text-[9px] tracking-[0.2em] uppercase font-semibold">
+        <span className="grid place-items-center h-5 w-5 rounded-md bg-pink-500 text-white shadow-sm">{icon}</span>
         {label}
       </div>
-      <div className={`font-display text-xl leading-tight mt-1 ${styles.value}`}>{value}</div>
+      <div className="font-display text-xl leading-tight mt-1 text-red-600">{value}</div>
     </div>
   );
 }
