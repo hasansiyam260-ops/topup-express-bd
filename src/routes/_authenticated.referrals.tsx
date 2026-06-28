@@ -64,7 +64,7 @@ function ReferralsPage() {
             <div className="min-w-0">
               <div className="text-[9px] tracking-[0.3em] uppercase text-white/80 leading-none">REFER & EARN</div>
               <h1 className="font-display text-xl leading-tight mt-1">আপনার বন্ধু আনুন, ক্যাশব্যাক জিতুন</h1>
-              <p className="text-[11px] text-white/85 mt-1">আপনার রেফার করা বন্ধু প্রতিবার পারচেস করলে <b>2% lifetime cashback</b> সরাসরি আপনার ব্যালেন্সে</p>
+              <p className="text-[11px] text-white/85 mt-1">বন্ধুর <b>প্রথম পারচেস</b>-এ পান ৳20 বোনাস + প্রতিবার <b>2% lifetime cashback</b> সরাসরি Main Balance এ</p>
             </div>
           </div>
         </div>
@@ -117,8 +117,10 @@ function ReferralsPage() {
           <ol className="space-y-2 text-sm">
             <li className="flex gap-2"><span className="grid place-items-center h-5 w-5 rounded-full bg-rose-500 text-white text-[10px] font-bold shrink-0 mt-0.5">1</span>আপনার রেফারেল লিংক বন্ধুদের সাথে শেয়ার করুন</li>
             <li className="flex gap-2"><span className="grid place-items-center h-5 w-5 rounded-full bg-rose-500 text-white text-[10px] font-bold shrink-0 mt-0.5">2</span>তারা আপনার লিংক থেকে সাইন আপ করলে অটোমেটিক আপনার সাথে কানেক্ট হয়ে যাবে</li>
-            <li className="flex gap-2"><span className="grid place-items-center h-5 w-5 rounded-full bg-rose-500 text-white text-[10px] font-bold shrink-0 mt-0.5">3</span><span>তারা যখনই ডায়মন্ড/প্যাকেজ কিনবে, আপনি প্রতিবার <b>2% cashback</b> পাবেন (lifetime)</span></li>
-            <li className="flex gap-2"><span className="grid place-items-center h-5 w-5 rounded-full bg-rose-500 text-white text-[10px] font-bold shrink-0 mt-0.5">4</span><span>ক্যাশব্যাক সরাসরি আপনার <b>Main Balance</b> এ অটো জমা হবে — instant!</span></li>
+            <li className="flex gap-2"><span className="grid place-items-center h-5 w-5 rounded-full bg-rose-500 text-white text-[10px] font-bold shrink-0 mt-0.5">3</span><span>বন্ধু প্রথমবার ডায়মন্ড/প্যাকেজ কিনলেই আপনি পাবেন <b>৳20 বোনাস</b></span></li>
+            <li className="flex gap-2"><span className="grid place-items-center h-5 w-5 rounded-full bg-rose-500 text-white text-[10px] font-bold shrink-0 mt-0.5">4</span><span>এরপর প্রতিবার তার পারচেসে <b>2% lifetime cashback</b> পাবেন</span></li>
+            <li className="flex gap-2"><span className="grid place-items-center h-5 w-5 rounded-full bg-rose-500 text-white text-[10px] font-bold shrink-0 mt-0.5">5</span><span>সব রিওয়ার্ড সরাসরি <b>Main Balance</b> এ instant জমা হবে</span></li>
+            
           </ol>
         </div>
 

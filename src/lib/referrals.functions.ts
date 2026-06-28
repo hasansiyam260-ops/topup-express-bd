@@ -1,8 +1,8 @@
 import { createServerFn } from "@tanstack/react-start";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 
-const CASHBACK_RATE = 0.02; // 2% of every referee top-up
-const SIGNUP_BONUS = 20; // 20 BDT one-time bonus to new user when applying a code
+const CASHBACK_RATE = 0.02; // 2% lifetime cashback to referrer on every purchase
+const FIRST_PURCHASE_BONUS = 20; // 20 BDT one-time bonus to referrer on referee's first purchase
 
 export const getMyReferralInfo = createServerFn({ method: "GET" })
   .middleware([requireSupabaseAuth])
@@ -37,48 +37,12 @@ export const getMyReferralInfo = createServerFn({ method: "GET" })
     };
   });
 
-export const applyReferralCode = createServerFn({ method: "POST" })
-  .middleware([requireSupabaseAuth])
-  .inputValidator((d: { code: string }) => d)
-  .handler(async ({ data, context }) => {
-    const { supabase, userId } = context;
-    const code = data.code.trim().toUpperCase();
-    if (!code) throw new Error("Code required");
-
-    const { data: me } = await supabase
-      .from("profiles")
-      .select("referred_by, referral_code, balance")
-      .eq("id", userId)
-      .maybeSingle();
-
-    if (!me) throw new Error("Profile not found");
-    if (me.referred_by) throw new Error("আপনি ইতিমধ্যে একটি রেফারেল কোড ব্যবহার করেছেন");
-    if (me.referral_code === code) throw new Error("নিজের কোড ব্যবহার করা যাবে না");
-
-    const { data: referrer } = await supabase
-      .from("profiles")
-      .select("id")
-      .eq("referral_code", code)
-      .maybeSingle();
-
-    if (!referrer) throw new Error("ভুল রেফারেল কোড");
-
-    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
-    const newBalance = Number(me.balance ?? 0) + SIGNUP_BONUS;
-    await supabaseAdmin
-      .from("profiles")
-      .update({ referred_by: referrer.id, balance: newBalance })
-      .eq("id", userId);
-
-    return { ok: true, bonus: SIGNUP_BONUS };
-  });
-
 export const creditReferralForPurchase = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator((d: { amount: number }) => d)
   .handler(async ({ data, context }) => {
     const { supabase, userId } = context;
-    if (!data.amount || data.amount <= 0) return { credited: 0 };
+    if (!data.amount || data.amount <= 0) return { credited: 0, bonus: 0 };
 
     const { data: me } = await supabase
       .from("profiles")
@@ -86,12 +50,23 @@ export const creditReferralForPurchase = createServerFn({ method: "POST" })
       .eq("id", userId)
       .maybeSingle();
 
-    if (!me?.referred_by) return { credited: 0 };
-
-    const credit = Math.round(data.amount * CASHBACK_RATE);
-    if (credit <= 0) return { credited: 0 };
+    if (!me?.referred_by) return { credited: 0, bonus: 0 };
 
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+
+    // Check if this is the referee's first purchase credit
+    const { data: prior } = await supabaseAdmin
+      .from("referral_credits")
+      .select("id")
+      .eq("referee_id", userId)
+      .eq("referrer_id", me.referred_by)
+      .limit(1);
+
+    const isFirstPurchase = !prior || prior.length === 0;
+    const cashback = Math.round(data.amount * CASHBACK_RATE);
+    const bonus = isFirstPurchase ? FIRST_PURCHASE_BONUS : 0;
+    const total = cashback + bonus;
+    if (total <= 0) return { credited: 0, bonus: 0 };
 
     const { data: refProfile } = await supabaseAdmin
       .from("profiles")
@@ -100,16 +75,15 @@ export const creditReferralForPurchase = createServerFn({ method: "POST" })
       .maybeSingle();
 
     await supabaseAdmin.from("profiles").update({
-      balance: Number(refProfile?.balance ?? 0) + credit,
-      referral_earnings: Number(refProfile?.referral_earnings ?? 0) + credit,
+      balance: Number(refProfile?.balance ?? 0) + total,
+      referral_earnings: Number(refProfile?.referral_earnings ?? 0) + total,
     }).eq("id", me.referred_by);
 
-    await supabaseAdmin.from("referral_credits").insert({
-      referrer_id: me.referred_by,
-      referee_id: userId,
-      amount: credit,
-      source: "purchase",
-    });
+    const rows = [] as Array<{ referrer_id: string; referee_id: string; amount: number; source: string }>;
+    if (cashback > 0) rows.push({ referrer_id: me.referred_by, referee_id: userId, amount: cashback, source: "purchase" });
+    if (bonus > 0) rows.push({ referrer_id: me.referred_by, referee_id: userId, amount: bonus, source: "first_purchase_bonus" });
+    if (rows.length) await supabaseAdmin.from("referral_credits").insert(rows);
 
-    return { credited: credit };
+    return { credited: cashback, bonus };
   });
+
