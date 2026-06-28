@@ -16,7 +16,7 @@ export const Route = createFileRoute("/auth")({
 });
 
 function AuthPage() {
-  const { mode = "login" } = Route.useSearch();
+  const { mode = "login", ref } = Route.useSearch();
   const navigate = useNavigate();
   const [tab, setTab] = useState<"login" | "register">(mode);
   useEffect(() => setTab(mode), [mode]);
