@@ -120,7 +120,7 @@ function ReferralsPage() {
             <li className="flex gap-2"><span className="grid place-items-center h-5 w-5 rounded-full bg-rose-500 text-white text-[10px] font-bold shrink-0 mt-0.5">3</span><span>বন্ধু প্রথমবার ডায়মন্ড/প্যাকেজ কিনলেই আপনি পাবেন <b>৳20 বোনাস</b></span></li>
             <li className="flex gap-2"><span className="grid place-items-center h-5 w-5 rounded-full bg-rose-500 text-white text-[10px] font-bold shrink-0 mt-0.5">4</span><span>এরপর প্রতিবার তার পারচেসে <b>2% lifetime cashback</b> পাবেন</span></li>
             <li className="flex gap-2"><span className="grid place-items-center h-5 w-5 rounded-full bg-rose-500 text-white text-[10px] font-bold shrink-0 mt-0.5">5</span><span>সব রিওয়ার্ড সরাসরি <b>Main Balance</b> এ instant জমা হবে</span></li>
-            <li className="flex gap-2"><span className="grid place-items-center h-5 w-5 rounded-full bg-rose-500 text-white text-[10px] font-bold shrink-0 mt-0.5">4</span><span>ক্যাশব্যাক সরাসরি আপনার <b>Main Balance</b> এ অটো জমা হবে — instant!</span></li>
+            
           </ol>
         </div>
 
