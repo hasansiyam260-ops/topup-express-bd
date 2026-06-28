@@ -4,7 +4,7 @@ import { listProducts } from "@/lib/products.functions";
 import { AppShell } from "@/components/site/AppShell";
 import { packImage, PACK_LABELS } from "@/lib/assets";
 import heroImg from "@/assets/hero-promo.jpg";
-import { MessageCircle, MessagesSquare, Gift, Facebook, Youtube, Mail, Play } from "lucide-react";
+import { MessageCircle, MessagesSquare, Gift, Facebook, Youtube, Mail, Play, Send } from "lucide-react";
 
 const productsQO = queryOptions({
   queryKey: ["products"],
