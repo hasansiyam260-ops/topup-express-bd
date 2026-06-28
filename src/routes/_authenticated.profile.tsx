@@ -118,23 +118,24 @@ function ProfilePage() {
         </div>
 
         {/* Stats overview */}
-        <div className="relative isolate overflow-hidden rounded-2xl bg-[radial-gradient(circle_at_18%_18%,rgba(255,104,104,0.32),transparent_34%),radial-gradient(circle_at_82%_76%,rgba(244,63,94,0.28),transparent_36%),linear-gradient(135deg,rgba(255,235,241,0.96),rgba(255,255,255,0.98)_42%,rgba(255,226,236,0.94))] p-4 ring-1 ring-rose-300 shadow-[0_0_0_2px_rgba(255,77,94,0.16),0_0_34px_5px_rgba(255,41,73,0.24),inset_0_0_34px_rgba(255,61,90,0.13)]">
-          <div className="relative flex items-center gap-2 mb-3">
-            <span className="grid place-items-center h-8 w-8 rounded-lg bg-gradient-to-br from-rose-500 to-sky-500 text-white ring-1 ring-white shadow-[0_4px_14px_-2px_rgba(244,63,94,0.5)]"><TrendingUp className="h-4 w-4" /></span>
+        <div className="relative isolate overflow-visible rounded-2xl bg-[linear-gradient(135deg,rgba(255,241,245,0.98),rgba(255,255,255,0.98)_50%,rgba(255,232,240,0.96))] p-3 ring-1 ring-rose-300/80 shadow-[0_0_22px_4px_rgba(244,63,94,0.35),0_0_55px_10px_rgba(244,63,94,0.22),inset_0_0_18px_rgba(244,63,94,0.10)]">
+          <div className="relative flex items-center gap-2 mb-2.5">
+            <span className="grid place-items-center h-7 w-7 rounded-lg bg-gradient-to-br from-rose-500 to-sky-500 text-white ring-1 ring-white shadow-[0_4px_14px_-2px_rgba(244,63,94,0.5)]"><TrendingUp className="h-3.5 w-3.5" /></span>
             <div>
-              <div className="text-[9px] tracking-[0.3em] uppercase text-slate-500 leading-none">Activity</div>
-              <h2 className="font-display text-base leading-tight mt-0.5 text-slate-900">MY STATS</h2>
+              <div className="text-[8px] tracking-[0.3em] uppercase text-slate-500 leading-none">Activity</div>
+              <h2 className="font-display text-sm leading-tight mt-0.5 text-slate-900">MY STATS</h2>
             </div>
           </div>
-          <div className="relative grid grid-cols-2 gap-2">
-            <StatTile icon={<ShoppingBag className="h-3.5 w-3.5" />} label="Total Orders" value={String(orderStats?.total ?? 0)} accent="sky" />
-            <StatTile icon={<Wallet className="h-3.5 w-3.5" />} label="Total Spent" value={`৳${Number(orderStats?.spent ?? 0).toLocaleString()}`} accent="rose" />
-            <StatTile icon={<CheckCircle2 className="h-3.5 w-3.5" />} label="Completed" value={String(orderStats?.completed ?? 0)} accent="sky" />
-            <StatTile icon={<XCircle className="h-3.5 w-3.5" />} label="Cancelled" value={String(orderStats?.cancelled ?? 0)} accent="rose" />
-            <StatTile icon={<Timer className="h-3.5 w-3.5" />} label="Avg Delivery" value={orderStats?.avgMin ? `${orderStats.avgMin}m` : "—"} accent="sky" />
-            <StatTile icon={<ShoppingBag className="h-3.5 w-3.5" />} label="Pending" value={String(orderStats?.pending ?? 0)} accent="rose" />
+          <div className="relative grid grid-cols-3 gap-1.5">
+            <StatTile icon={<ShoppingBag className="h-3 w-3" />} label="Orders" value={String(orderStats?.total ?? 0)} accent="sky" />
+            <StatTile icon={<Wallet className="h-3 w-3" />} label="Spent" value={`৳${Number(orderStats?.spent ?? 0).toLocaleString()}`} accent="rose" />
+            <StatTile icon={<CheckCircle2 className="h-3 w-3" />} label="Done" value={String(orderStats?.completed ?? 0)} accent="sky" />
+            <StatTile icon={<XCircle className="h-3 w-3" />} label="Cancel" value={String(orderStats?.cancelled ?? 0)} accent="rose" />
+            <StatTile icon={<Timer className="h-3 w-3" />} label="Avg" value={orderStats?.avgMin ? `${orderStats.avgMin}m` : "—"} accent="sky" />
+            <StatTile icon={<ShoppingBag className="h-3 w-3" />} label="Pending" value={String(orderStats?.pending ?? 0)} accent="rose" />
           </div>
         </div>
+
 
         {/* Game identity */}
         {orderStats?.last && (
@@ -197,12 +198,13 @@ function Input({ label, value, onChange, max }: { label: string; value: string; 
 
 function StatTile({ icon, label, value }: { icon: React.ReactNode; label: string; value: string; accent?: "rose" | "sky" }) {
   return (
-    <div className="relative overflow-hidden rounded-xl p-2.5 bg-[linear-gradient(135deg,rgba(255,218,229,0.98),rgba(255,245,248,0.98)_48%,rgba(255,229,237,0.96))] ring-1 ring-rose-300 shadow-[0_7px_20px_-10px_rgba(225,29,72,0.62),inset_0_0_22px_rgba(244,63,94,0.14)]">
-      <div className="flex items-center gap-1.5 text-red-600 text-[9px] tracking-[0.2em] uppercase font-semibold">
-        <span className="grid place-items-center h-5 w-5 rounded-md bg-gradient-to-br from-pink-500 to-red-500 text-white shadow-[0_5px_12px_-4px_rgba(225,29,72,0.75)]">{icon}</span>
-        {label}
+    <div className="relative overflow-hidden rounded-lg p-1.5 bg-[linear-gradient(135deg,rgba(255,224,232,0.98),rgba(255,248,250,0.98)_55%,rgba(255,232,238,0.96))] ring-1 ring-rose-300 shadow-[0_4px_14px_-6px_rgba(225,29,72,0.55),inset_0_0_14px_rgba(244,63,94,0.10)]">
+      <div className="flex items-center gap-1 text-red-600 text-[8px] tracking-[0.15em] uppercase font-semibold leading-none">
+        <span className="grid place-items-center h-4 w-4 rounded bg-gradient-to-br from-pink-500 to-red-500 text-white shadow-[0_3px_8px_-2px_rgba(225,29,72,0.75)]">{icon}</span>
+        <span className="truncate">{label}</span>
       </div>
-      <div className="font-display text-xl leading-tight mt-1 text-red-600">{value}</div>
+      <div className="font-display text-base leading-tight mt-1 text-red-600">{value}</div>
     </div>
   );
 }
+
