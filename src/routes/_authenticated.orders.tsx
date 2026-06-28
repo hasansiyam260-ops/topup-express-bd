@@ -37,48 +37,8 @@ type Order = {
   _demo?: boolean;
 };
 
-// Demo / fake orders — only used so you can preview the premium look.
-const DEMO_ORDERS: Order[] = [
-  {
-    id: "demo-1",
-    order_number: "UID260628A91X",
-    product_name: "25 Diamond",
-    player_uid: "3204376534",
-    player_name: "FF・LegendKing",
-    amount: 22,
-    status: "completed",
-    payment_method: "bKash",
-    payment_reference: "8A3K9M2P1Q",
-    created_at: new Date(Date.now() - 1000 * 60 * 60 * 5).toISOString(),
-    _demo: true,
-  },
-  {
-    id: "demo-2",
-    order_number: "UID260626BL44",
-    product_name: "Weekly Lite",
-    player_uid: "7821094553",
-    player_name: "PRO・ShadowX",
-    amount: 42,
-    status: "completed",
-    payment_method: "Nagad",
-    payment_reference: "5N7Q2L8K1B",
-    created_at: new Date(Date.now() - 1000 * 60 * 60 * 48).toISOString(),
-    _demo: true,
-  },
-  {
-    id: "demo-3",
-    order_number: "UID260624XK02",
-    product_name: "100 FF Like 1 Day Package",
-    player_uid: "5532108899",
-    player_name: "FF・NinjaBoy",
-    amount: 20,
-    status: "cancelled",
-    payment_method: "Rocket",
-    payment_reference: "—",
-    created_at: new Date(Date.now() - 1000 * 60 * 60 * 96).toISOString(),
-    _demo: true,
-  },
-];
+
+
 
 function OrdersPage() {
   const { data: orders, isLoading } = useQuery({
@@ -91,9 +51,12 @@ function OrdersPage() {
       if (error) throw error;
       return (data ?? []) as Order[];
     },
+    refetchOnWindowFocus: true,
+    refetchInterval: 15000,
   });
 
-  const merged: Order[] = [...DEMO_ORDERS, ...(orders ?? [])];
+  const merged: Order[] = orders ?? [];
+
 
   return (
     <AppShell>
