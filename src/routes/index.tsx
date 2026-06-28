@@ -277,3 +277,32 @@ function SubBrand({
     </div>
   );
 }
+
+function SocialBrand({
+  href, title, sub, ringFrom, ringTo, iconBg, glow, icon,
+}: {
+  href: string; title: string; sub: string;
+  ringFrom: string; ringTo: string; iconBg: string; glow: string;
+  icon: React.ReactNode;
+}) {
+  return (
+    <a
+      href={href}
+      target="_blank"
+      rel="noreferrer"
+      className={`group relative rounded-xl p-[1px] bg-gradient-to-br ${ringFrom} ${ringTo} hover:scale-[1.02] transition-transform`}
+    >
+      <div className={`relative rounded-[11px] bg-card/95 backdrop-blur px-2.5 py-2.5 flex items-center gap-2 overflow-hidden ${glow}`}>
+        <span className="pointer-events-none absolute inset-0 sweep-shine opacity-60" />
+        <span className={`relative grid place-items-center h-8 w-8 rounded-lg ${iconBg} shadow-md shrink-0`}>
+          {icon}
+        </span>
+        <div className="relative min-w-0 text-left">
+          <div className="font-display text-[13px] leading-none truncate">{title}</div>
+          <div className="text-[9px] tracking-[0.18em] text-muted-foreground mt-1 truncate">{sub}</div>
+        </div>
+      </div>
+    </a>
+  );
+}
+
