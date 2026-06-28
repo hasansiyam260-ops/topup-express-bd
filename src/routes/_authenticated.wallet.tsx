@@ -27,6 +27,11 @@ function WalletPage() {
   const [amount, setAmount] = useState<string>("");
   const [checkoutOpen, setCheckoutOpen] = useState(false);
   const [history, setHistory] = useState<AddMoneyEntry[]>([]);
+  const [balance, setBalance] = useState<number>(0);
+
+  useEffect(() => {
+    try { setBalance(Number(localStorage.getItem("uidtopup:wallet") || "0")); } catch {}
+  }, []);
 
   useEffect(() => { setHistory(loadHistory()); }, []);
 
