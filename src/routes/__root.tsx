@@ -78,12 +78,15 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { name: "theme-color", content: "#0a0a0a" },
-      { title: "UID Topup — Premium Free Fire Diamond Topup" },
+      { name: "theme-color", content: "#ffffff" },
+      { title: "UIDTOPUP.COM — Premium Free Fire Diamond Topup BD" },
       { name: "description", content: "Bangladesh er #1 premium Free Fire diamond topup service. Instant 10-second delivery, best price, 24/7 support." },
     ],
     links: [
       { rel: "stylesheet", href: appCss },
+      { rel: "preconnect", href: "https://fonts.googleapis.com" },
+      { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
+      { rel: "stylesheet", href: "https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&display=swap" },
     ],
   }),
   shellComponent: RootShell,
@@ -94,11 +97,11 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
 
 function RootShell({ children }: { children: ReactNode }) {
   return (
-    <html lang="en" className="dark">
+    <html lang="en">
       <head>
         <HeadContent />
       </head>
-      <body className="dark">
+      <body>
         {children}
         <Scripts />
       </body>
@@ -112,7 +115,7 @@ function RootComponent() {
   return (
     <QueryClientProvider client={queryClient}>
       <Outlet />
-      <Toaster theme="dark" position="top-center" richColors />
+      <Toaster theme="light" position="top-center" richColors />
     </QueryClientProvider>
   );
 }

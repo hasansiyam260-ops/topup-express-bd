@@ -5,7 +5,7 @@ import { getProduct, listProducts } from "@/lib/products.functions";
 import { AppShell } from "@/components/site/AppShell";
 import { packImage } from "@/lib/assets";
 import { supabase } from "@/integrations/supabase/client";
-import { CheckCircle2, Wallet, Smartphone, User2, ShieldCheck } from "lucide-react";
+import { Wallet, Smartphone, Info, HelpCircle } from "lucide-react";
 import { toast } from "sonner";
 
 const productQO = (id: string) =>
@@ -20,15 +20,15 @@ export const Route = createFileRoute("/products/$id")({
       context.queryClient.ensureQueryData(allQO),
     ]);
   },
-  head: ({ loaderData: _ }) => ({
+  head: () => ({
     meta: [
-      { title: "Free Fire Topup — UID Topup" },
+      { title: "Free Fire Topup — UIDTOPUP.COM" },
       { name: "description", content: "Select your Free Fire pack, enter Player UID, and pay with bKash/Nagad/Rocket. Instant delivery." },
     ],
   }),
   component: ProductPage,
   errorComponent: ({ error, reset }) => (
-    <AppShell><div className="p-6 text-center"><p className="text-destructive">{error.message}</p><button onClick={reset} className="btn-gold mt-4 px-4 py-2 rounded">Retry</button></div></AppShell>
+    <AppShell><div className="p-6 text-center"><p className="text-destructive">{error.message}</p><button onClick={reset} className="btn-red mt-4 px-4 py-2 rounded">Retry</button></div></AppShell>
   ),
   notFoundComponent: () => <AppShell><div className="p-10 text-center">Product not found</div></AppShell>,
 });
@@ -101,161 +101,186 @@ function ProductPage() {
     });
     setSubmitting(false);
     if (error) return toast.error(error.message);
-    toast.success("Order placed! We'll deliver within 10 seconds.");
+    toast.success("Order placed! Delivery within 10 seconds.");
     router.navigate({ to: "/orders" });
   };
 
   return (
     <AppShell>
-      {/* Banner */}
-      <section className="mx-auto max-w-5xl px-4 pt-6">
-        <div className="card-luxe rounded-2xl overflow-hidden relative">
-          <div className="flex gap-4 p-4 sm:p-6 items-center">
+      {/* Product Banner */}
+      <section className="mx-auto max-w-3xl px-3 pt-4">
+        <div className="relative rounded-2xl overflow-hidden card-soft sweep-shine">
+          <div className="flex items-center gap-3 p-3 bg-gradient-to-r from-violet-50 via-fuchsia-50 to-rose-50">
             <img
               src={packImage(product.pack_type)}
               alt={product.name_en}
-              width={768}
-              height={768}
-              className="h-24 w-24 sm:h-32 sm:w-32 rounded-xl object-cover gold-border"
+              width={300}
+              height={300}
+              className="h-24 w-24 sm:h-28 sm:w-28 rounded-xl object-cover glow-violet shrink-0"
             />
-            <div>
-              <div className="text-[11px] tracking-[0.3em] text-gold uppercase">Free Fire</div>
-              <h1 className="font-display text-3xl sm:text-5xl gold-text leading-none">{product.name_en}</h1>
-              {product.name_bn && <p className="text-muted-foreground mt-1">{product.name_bn}</p>}
+            <div className="min-w-0">
+              <h1 className="font-display text-2xl sm:text-3xl leading-tight">{product.name_en}</h1>
+              <div className="text-[11px] tracking-[0.3em] text-muted-foreground uppercase mt-1">Free Fire</div>
+              {product.name_bn && <p className="text-sm text-foreground/70 mt-1 truncate">{product.name_bn}</p>}
             </div>
           </div>
         </div>
       </section>
 
       {/* Steps */}
-      <section className="mx-auto max-w-5xl px-4 mt-6 space-y-5">
-        {/* Step 1 */}
+      <section className="mx-auto max-w-3xl px-3 mt-4 space-y-4">
+        {/* Step 1 — Select Recharge */}
         <Step n={1} title="Select Recharge">
-          <div className="grid grid-cols-2 gap-2">
+          <div className="grid grid-cols-2 gap-2.5">
             {related.map((p) => {
               const active = p.id === selected.id;
               return (
                 <button
                   key={p.id}
                   onClick={() => setSelectedId(p.id)}
-                  className={`text-left p-3 rounded-lg border transition-all ${
+                  className={`relative flex items-center justify-between gap-2 p-3 rounded-xl border-2 bg-card text-left transition-all ${
                     active
-                      ? "border-gold bg-gold/10 shadow-[0_0_0_1px_var(--gold)]"
-                      : "border-border bg-card hover:border-gold/40"
+                      ? "border-primary glow-red"
+                      : "border-border hover:border-neon-violet/40"
                   }`}
                 >
-                  <div className="flex items-start justify-between gap-2">
-                    <div className="min-w-0">
-                      <div className="font-display text-lg leading-tight truncate">{p.name_en}</div>
-                      {p.name_bn && <div className="text-xs text-muted-foreground truncate">{p.name_bn}</div>}
-                    </div>
-                    {active && <CheckCircle2 className="h-5 w-5 text-gold flex-shrink-0" />}
-                  </div>
-                  <div className="mt-2 font-display text-xl gold-text">৳{Number(p.price).toFixed(0)}</div>
+                  <span className={`grid place-items-center h-5 w-5 rounded-full border-2 shrink-0 ${
+                    active ? "border-primary bg-primary" : "border-muted-foreground/40"
+                  }`}>
+                    {active && <span className="h-2 w-2 rounded-full bg-white" />}
+                  </span>
+                  <span className="flex-1 font-semibold text-sm leading-tight">{p.name_en}</span>
+                  <span className="font-display text-base text-primary tracking-wide whitespace-nowrap">
+                    {Number(p.price).toFixed(0)} TK
+                  </span>
                 </button>
               );
             })}
           </div>
         </Step>
 
-        {/* Step 2 */}
-        <Step n={2} title="Account Info">
+        {/* Step 2 — Account Info */}
+        <Step n={2} title="Account Info" rightSlot={
+          <a href="#help" className="flex items-center gap-1 text-sm font-semibold underline underline-offset-4 decoration-primary">
+            <HelpCircle className="h-4 w-4 text-primary" />
+            কিভাবে অর্ডার করবেন ?
+          </a>
+        }>
           <label className="block text-sm font-semibold text-foreground/90 mb-2">Player UID</label>
           <input
             inputMode="numeric"
             value={uid}
             onChange={(e) => { setUid(e.target.value.replace(/\D/g, "").slice(0, 12)); setPlayerName(""); }}
-            placeholder="Enter Player UID"
-            className="w-full px-4 py-3 rounded-lg bg-input border border-border focus:border-gold focus:outline-none focus:ring-2 focus:ring-gold/30 text-foreground placeholder:text-muted-foreground"
+            placeholder="Player UID"
+            className="w-full px-4 py-3 rounded-xl bg-card border-2 border-border focus:border-neon-violet focus:outline-none focus:ring-4 focus:ring-neon-violet/15 text-foreground placeholder:text-muted-foreground"
           />
           <button
             onClick={checkPlayer}
             disabled={checking || !uid}
-            className="mt-3 w-full btn-gold py-3 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed"
+            className="mt-3 w-full shimmer-orange py-3 rounded-xl text-base disabled:opacity-60 disabled:cursor-not-allowed"
           >
             {checking ? "Checking..." : playerName ? `✓ ${playerName}` : "Click to check player name"}
           </button>
         </Step>
 
-        {/* Step 3 */}
+        {/* Step 3 — Payment */}
         <Step n={3} title="Payment Methods">
           <div className="grid grid-cols-2 gap-3">
             <PayCard
-              icon={<Wallet className="h-6 w-6" />}
-              label="Pay With Wallet"
-              sub="Use balance"
               active={payment === "wallet"}
               onClick={() => setPayment("wallet")}
+              title="Pay With Wallet"
+              icon={<Wallet className="h-5 w-5" />}
+              tint="from-amber-100 to-orange-100"
+              accent="text-orange-600"
+              brand="TOPUP ওয়ালেট"
             />
             <PayCard
-              icon={<Smartphone className="h-6 w-6" />}
-              label="Instant Pay"
-              sub="bKash · Nagad · Rocket"
               active={payment === "instant"}
               onClick={() => setPayment("instant")}
+              title="Instant Pay"
+              icon={<Smartphone className="h-5 w-5" />}
+              tint="from-rose-50 to-pink-50"
+              accent="text-pink-600"
+              brand="bKash · নগদ · Rocket"
             />
           </div>
 
-          <div className="mt-5 flex items-center gap-2 text-sm text-muted-foreground">
-            <ShieldCheck className="h-4 w-4 text-gold" />
-            <span>প্রোডাক্ট কিনতে আপনার প্রয়োজন <span className="text-gold-soft font-bold">৳ {Number(selected.price).toFixed(0)}</span></span>
+          <div className="mt-4 flex items-center gap-2 text-sm text-muted-foreground">
+            <Info className="h-4 w-4 shrink-0" />
+            <span>প্রোডাক্ট কিনতে আপনার প্রয়োজন <span className="text-primary font-bold">৳ {Number(selected.price).toFixed(0)} টাকা।</span></span>
           </div>
 
           {!authed && (
-            <div className="mt-2 flex items-center gap-2 text-sm text-destructive">
-              <User2 className="h-4 w-4" /> Please login to purchase
+            <div className="mt-2 flex items-center gap-2 text-sm text-primary">
+              <Info className="h-4 w-4 shrink-0" /> Please Login To Purchase
             </div>
           )}
 
           <button
             onClick={submitOrder}
             disabled={submitting}
-            className={`mt-4 w-full py-4 rounded-lg text-base ${authed ? "btn-gold" : "bg-destructive text-destructive-foreground font-bold tracking-widest uppercase"}`}
+            className="mt-4 w-full btn-red py-4 rounded-xl text-base disabled:opacity-60"
           >
-            {authed ? (submitting ? "Placing order..." : `Confirm Order · ৳${Number(selected.price).toFixed(0)}`) : "LOGIN"}
+            {authed ? (submitting ? "PLACING ORDER..." : `CONFIRM ৳${Number(selected.price).toFixed(0)}`) : "LOGIN"}
           </button>
         </Step>
 
         {/* Product info */}
-        <Step n={4} title="Product Information">
-          <ul className="space-y-2 text-sm text-muted-foreground">
+        <div id="help" className="rounded-2xl border border-border bg-card p-4">
+          <h3 className="font-display text-xl">Product Information</h3>
+          <div className="mt-2 h-px bg-border" />
+          <ul className="mt-3 space-y-2 text-sm text-foreground/80">
             <li>● শুধুমাত্র Bangladesh সার্ভারে ID Code দিয়ে টপ আপ হবে।</li>
             <li>● Diamond পাওয়ার পর Free Fire এ verify করে নিন।</li>
             <li>● কোন সমস্যায় Live Chat এ যোগাযোগ করুন।</li>
           </ul>
-        </Step>
+        </div>
 
-        <div className="text-center">
-          <Link to="/" className="text-sm text-muted-foreground hover:text-gold-soft">← Back to all packs</Link>
+        <div className="text-center pt-2">
+          <Link to="/" className="text-sm text-muted-foreground hover:text-primary">← Back to all packs</Link>
         </div>
       </section>
     </AppShell>
   );
 }
 
-function Step({ n, title, children }: { n: number; title: string; children: React.ReactNode }) {
+function Step({
+  n, title, children, rightSlot,
+}: { n: number; title: string; children: React.ReactNode; rightSlot?: React.ReactNode }) {
   return (
-    <div className="card-luxe rounded-2xl p-4 sm:p-5">
-      <div className="flex items-center gap-3 mb-4 pb-3 border-b border-border">
-        <span className="grid place-items-center h-9 w-9 rounded-full bg-gold text-onyx font-display text-lg shadow-[0_0_20px_var(--gold)]">{n}</span>
-        <h3 className="font-display text-2xl">{title}</h3>
+    <div className="rounded-2xl border border-border bg-card p-4 sm:p-5 card-soft">
+      <div className="flex items-center justify-between gap-3 mb-4 pb-3 border-b border-border">
+        <div className="flex items-center gap-3">
+          <span className="grid place-items-center h-9 w-9 rounded-full bg-primary text-primary-foreground font-display text-lg shadow-[0_0_0_4px_color-mix(in_oklab,var(--brand-red)_15%,transparent)]">{n}</span>
+          <h3 className="font-display text-2xl">{title}</h3>
+        </div>
+        {rightSlot}
       </div>
       {children}
     </div>
   );
 }
 
-function PayCard({ icon, label, sub, active, onClick }: { icon: React.ReactNode; label: string; sub: string; active: boolean; onClick: () => void }) {
+function PayCard({
+  active, onClick, title, icon, tint, accent, brand,
+}: { active: boolean; onClick: () => void; title: string; icon: React.ReactNode; tint: string; accent: string; brand: string }) {
   return (
     <button
       onClick={onClick}
-      className={`text-left p-4 rounded-xl border transition-all ${
-        active ? "border-gold bg-gold/10 shadow-[0_0_0_1px_var(--gold)]" : "border-border bg-card hover:border-gold/40"
+      className={`text-left rounded-xl border-2 overflow-hidden transition-all ${
+        active ? "border-primary glow-red" : "border-border hover:border-neon-violet/40"
       }`}
     >
-      <div className={`inline-grid place-items-center h-10 w-10 rounded-md mb-2 ${active ? "bg-gold text-onyx" : "bg-elevated text-gold"}`}>{icon}</div>
-      <div className="font-display text-lg leading-none">{label}</div>
-      <div className="text-xs text-muted-foreground mt-1">{sub}</div>
+      <div className={`h-24 grid place-items-center bg-gradient-to-br ${tint}`}>
+        <div className="flex items-center gap-2">
+          <span className={`${accent}`}>{icon}</span>
+          <span className={`font-display text-lg ${accent}`}>{brand}</span>
+        </div>
+      </div>
+      <div className={`px-3 py-2 text-sm font-semibold ${active ? "bg-primary/10 text-primary" : "bg-muted text-foreground"}`}>
+        {title}
+      </div>
     </button>
   );
 }
