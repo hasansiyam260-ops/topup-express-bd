@@ -12,11 +12,9 @@ export function AppShell({ children }: { children: ReactNode }) {
         to="/admin"
         aria-label="."
         tabIndex={-1}
-        className="fixed bottom-0 left-0 z-[10002] block h-6 w-6 opacity-0"
-        style={{ WebkitTapHighlightColor: "transparent" }}
-      >
-        .
-      </Link>
+        className="fixed bottom-[72px] left-1.5 z-[10002] block h-2 w-2 rounded-full bg-rose-500/70 shadow-[0_0_4px_rgba(244,63,94,0.7)]"
+      />
+
       <BottomNav />
     </div>
   );
