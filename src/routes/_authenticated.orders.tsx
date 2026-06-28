@@ -221,18 +221,19 @@ function OrderCard({ order }: { order: Order }) {
             <div className="font-display text-base font-bold text-red-600 leading-snug line-clamp-2">
               {order.product_name}
             </div>
-            <div className="mt-1.5 flex items-center gap-1.5 flex-wrap">
-              <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-gradient-to-r from-slate-900 to-slate-700 text-white text-[10px] font-mono font-semibold tracking-wider shadow-sm ring-1 ring-white/10">
+            <div className="mt-1.5 flex items-center gap-1 flex-nowrap">
+              <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-md bg-gradient-to-r from-slate-900 to-slate-700 text-white text-[9px] font-mono font-semibold tracking-wider shadow-sm ring-1 ring-white/10 shrink-0">
                 <User2 className="h-2.5 w-2.5 text-cyan-300" />
                 {order.player_uid}
               </span>
               {order.player_name && (
-                <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-gradient-to-r from-amber-50 to-yellow-50 text-amber-700 text-[10px] font-bold tracking-wide border border-amber-200 shadow-sm">
-                  <Sparkles className="h-2.5 w-2.5" />
-                  {order.player_name}
+                <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-md bg-gradient-to-r from-amber-50 to-yellow-50 text-amber-700 text-[9px] font-bold tracking-wide border border-amber-200 shadow-sm min-w-0 truncate">
+                  <Sparkles className="h-2.5 w-2.5 shrink-0" />
+                  <span className="truncate">{order.player_name}</span>
                 </span>
               )}
             </div>
+
 
           </div>
           <div className="text-right shrink-0">
