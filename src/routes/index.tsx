@@ -50,6 +50,7 @@ function HomePage() {
 
   return (
     <AppShell>
+      <AnnouncementBar />
       {/* HERO PROMO BANNER — clean glassy premium */}
       <section className="mx-auto max-w-3xl px-3 pt-2">
         <div
