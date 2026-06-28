@@ -3,6 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { productQueryOptions, productsQueryOptions } from "@/lib/products.queries";
 import { getFFPlayerName } from "@/lib/ff.functions";
+import { getSiteValue } from "@/lib/site.functions";
 import { AppShell } from "@/components/site/AppShell";
 import { SecureCheckout, SuccessScreen } from "@/components/site/SecureCheckout";
 import { packImage } from "@/lib/assets";
@@ -243,12 +244,8 @@ function ProductPage() {
         </Step>
 
         {/* Step 2 — Account Info */}
-        <Step n={2} title="Account Info" rightSlot={
-          <a href="#help" className="flex items-center gap-1 text-[11px] font-semibold underline underline-offset-4 decoration-primary">
-            <HelpCircle className="h-3.5 w-3.5 text-primary" />
-            কিভাবে অর্ডার করবেন ?
-          </a>
-        }>
+        <Step n={2} title="Account Info" rightSlot={<OrderHelpLink />}>
+
           <label className="block text-xs font-semibold text-foreground/90 mb-1.5">Player UID</label>
           <input
             inputMode="numeric"
