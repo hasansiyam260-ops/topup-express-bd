@@ -392,3 +392,10 @@
       0 0 50px -10px color-mix(in oklab, var(--neon-magenta) 30%, transparent);
   }
 }
+
+/* Shrink Lovable badge */
+#lovable-badge, [id*="lovable-badge"], a[href*="lovable.dev"][target="_blank"] {
+  transform: scale(0.45) !important;
+  transform-origin: bottom right !important;
+  opacity: 0.55 !important;
+}
