@@ -77,7 +77,7 @@ export const getFFPlayerName = createServerFn({ method: "GET" })
   .handler(async ({ data }): Promise<FFInfo> => {
     const region = data.region;
     const controller = new AbortController();
-    const timeout = setTimeout(() => controller.abort(), 9000);
+    const timeout = setTimeout(() => controller.abort(), 3000);
 
     const base: string[] = [
       `https://ff-info-mu.vercel.app/info?uid=${data.uid}&region=${region}`,
@@ -107,7 +107,7 @@ export const getFFPlayerName = createServerFn({ method: "GET" })
             if (--remaining === 0) reject(new Error("Could not fetch player info. Please check the UID."));
           });
           // Stagger retries by 600ms so the second attempt only fires if the first is slow/failing.
-          if (i % 2 === 1) setTimeout(run, 600);
+          if (i % 2 === 1) setTimeout(run, 300);
           else run();
         });
       });
