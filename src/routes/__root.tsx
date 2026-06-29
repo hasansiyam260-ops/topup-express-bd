@@ -82,13 +82,31 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
   head: () => ({
     meta: [
       { charSet: "utf-8" },
-      { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { name: "theme-color", content: "#ffffff" },
+      { name: "viewport", content: "width=device-width, initial-scale=1, viewport-fit=cover" },
+      { name: "theme-color", content: "#0b0b14" },
       { title: "TOP-UP EXPRESS — Premium Free Fire Diamond Topup BD" },
       { name: "description", content: "Bangladesh er #1 premium Free Fire diamond topup service. Instant 10-second delivery, best price, 24/7 support." },
+      { name: "application-name", content: "TOP-UP EXPRESS" },
+      { name: "apple-mobile-web-app-capable", content: "yes" },
+      { name: "apple-mobile-web-app-title", content: "TOP-UP EXPRESS" },
+      { name: "apple-mobile-web-app-status-bar-style", content: "black-translucent" },
+      { name: "mobile-web-app-capable", content: "yes" },
+      { property: "og:title", content: "TOP-UP EXPRESS — Premium Free Fire Diamond Topup BD" },
+      { property: "og:description", content: "Instant Free Fire diamond topup in Bangladesh. 10-second delivery, best price, 24/7 support." },
+      { property: "og:type", content: "website" },
+      { property: "og:image", content: "/icon-512.png" },
+      { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:title", content: "TOP-UP EXPRESS" },
+      { name: "twitter:description", content: "Premium Free Fire Diamond Topup BD" },
+      { name: "twitter:image", content: "/icon-512.png" },
     ],
     links: [
       { rel: "stylesheet", href: appCss },
+      { rel: "manifest", href: "/manifest.webmanifest" },
+      { rel: "icon", type: "image/png", sizes: "32x32", href: "/favicon-32.png" },
+      { rel: "icon", type: "image/png", sizes: "192x192", href: "/icon-192.png" },
+      { rel: "icon", type: "image/png", sizes: "512x512", href: "/icon-512.png" },
+      { rel: "apple-touch-icon", sizes: "180x180", href: "/apple-touch-icon.png" },
       { rel: "preload", as: "image", href: logoImg, fetchPriority: "high" },
     ],
   }),
@@ -121,6 +139,7 @@ function RootComponent() {
     <QueryClientProvider client={queryClient}>
       <Outlet />
       {!isAdminRoute && <WelcomeNotice />}
+      {!isAdminRoute && <InstallAppPrompt />}
       {!isAdminRoute && <Suspense fallback={null}><LiveChat /></Suspense>}
       <Toaster theme="light" position="top-center" richColors />
     </QueryClientProvider>
