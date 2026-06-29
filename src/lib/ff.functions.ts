@@ -77,7 +77,7 @@ export const getFFPlayerName = createServerFn({ method: "GET" })
   .handler(async ({ data }): Promise<FFInfo> => {
     const region = data.region;
     const controller = new AbortController();
-    const timeout = setTimeout(() => controller.abort(), 9000);
+    const timeout = setTimeout(() => controller.abort(), 3000);
 
     const base: string[] = [
       `https://ff-info-mu.vercel.app/info?uid=${data.uid}&region=${region}`,
