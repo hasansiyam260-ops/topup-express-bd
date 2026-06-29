@@ -3,7 +3,7 @@ import { useSuspenseQuery, useQueryClient, useMutation } from "@tanstack/react-q
 import { useServerFn } from "@tanstack/react-start";
 import { useState } from "react";
 import { adminListOrders, adminUpdateOrder } from "@/lib/admin.functions";
-import { Search, User, Hash, CreditCard, Calendar } from "lucide-react";
+import { Search, User, Hash, CreditCard, Calendar, Download } from "lucide-react";
 import { toast } from "sonner";
 
 export const Route = createFileRoute("/admin/orders")({
@@ -36,9 +36,43 @@ function AdminOrders() {
     .filter((o: any) => filter === "all" || o.status === filter)
     .filter((o: any) => !search || o.order_number?.toLowerCase().includes(search.toLowerCase()) || o.player_uid?.includes(search) || o.product_name?.toLowerCase().includes(search.toLowerCase()));
 
+  const exportCSV = () => {
+    const rows = [["Order #", "Date", "Product", "UID", "Player", "Amount", "Payment", "Status"]];
+    filtered.forEach((o: any) => rows.push([
+      o.order_number ?? "", new Date(o.created_at).toISOString(), o.product_name ?? "",
+      o.player_uid ?? "", o.player_name ?? "", String(o.amount ?? ""),
+      o.payment_method ?? "", o.status ?? "",
+    ]));
+    const csv = rows.map((r) => r.map((c) => `"${String(c).replace(/"/g, '""')}"`).join(",")).join("\n");
+    const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url; a.download = `orders-${new Date().toISOString().slice(0, 10)}.csv`; a.click();
+    URL.revokeObjectURL(url);
+    toast.success(`Exported ${filtered.length} orders`);
+  };
+
+  const totals = filtered.reduce((acc: any, o: any) => {
+    acc.count += 1;
+    if (o.status === "completed") acc.revenue += Number(o.amount || 0);
+    if (o.status === "pending") acc.pending += 1;
+    return acc;
+  }, { count: 0, revenue: 0, pending: 0 });
+
   return (
     <div className="space-y-4">
-      <h1 className="text-xl font-black text-slate-900">Orders ({data.length})</h1>
+      <div className="flex items-center justify-between gap-2">
+        <h1 className="text-xl font-black text-slate-900">Orders ({data.length})</h1>
+        <button onClick={exportCSV} className="inline-flex items-center gap-1.5 rounded-lg bg-emerald-600 px-3 py-2 text-xs font-bold text-white shadow hover:bg-emerald-700">
+          <Download className="h-3.5 w-3.5" /> Export CSV
+        </button>
+      </div>
+
+      <div className="grid grid-cols-3 gap-2">
+        <Stat label="Showing" value={totals.count} tone="slate" />
+        <Stat label="Revenue" value={`৳${totals.revenue}`} tone="emerald" />
+        <Stat label="Pending" value={totals.pending} tone="amber" />
+      </div>
 
       <div className="relative">
         <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
@@ -98,6 +132,20 @@ function Row({ icon: Icon, label, children }: { icon: any; label: string; childr
       <Icon className="h-3.5 w-3.5 shrink-0 text-slate-400" />
       <span className="font-bold text-slate-500">{label}:</span>
       <span className="min-w-0 truncate font-mono">{children}</span>
+    </div>
+  );
+}
+
+function Stat({ label, value, tone }: { label: string; value: any; tone: "slate" | "emerald" | "amber" }) {
+  const tones = {
+    slate: "bg-white text-slate-900 border-slate-200",
+    emerald: "bg-emerald-50 text-emerald-700 border-emerald-200",
+    amber: "bg-amber-50 text-amber-700 border-amber-200",
+  } as const;
+  return (
+    <div className={`rounded-xl border p-3 shadow-sm ${tones[tone]}`}>
+      <div className="text-[10px] font-bold uppercase tracking-wide opacity-70">{label}</div>
+      <div className="mt-0.5 text-lg font-black">{value}</div>
     </div>
   );
 }
