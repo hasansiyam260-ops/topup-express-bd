@@ -2,10 +2,13 @@ import { Link, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { Wallet } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
-import logo from "@/assets/logo-uid.png";
+import defaultLogo from "@/assets/logo-uid.png";
+import { useSiteSettings } from "@/lib/site-settings";
 
 export function Header() {
   const navigate = useNavigate();
+  const settings = useSiteSettings();
+  const logo = settings.site_logo_url || defaultLogo;
   const [authed, setAuthed] = useState(false);
   const [userId, setUserId] = useState<string | null>(null);
   const [balance, setBalance] = useState<number | null>(null);
@@ -53,10 +56,10 @@ export function Header() {
       }}
     >
       <div className="mx-auto max-w-7xl px-3 py-3 flex items-center justify-between gap-3">
-        <Link to="/" className="flex items-center min-w-0" aria-label="TOP-UP EXPRESS">
+        <Link to="/" className="flex items-center min-w-0" aria-label={settings.site_name}>
           <img
             src={logo}
-            alt="TOP-UP EXPRESS"
+            alt={settings.site_name}
             width={360}
             height={144}
             loading="eager"
