@@ -77,26 +77,26 @@ export const getFFPlayerName = createServerFn({ method: "GET" })
   .handler(async ({ data }): Promise<FFInfo> => {
     const region = data.region;
     const controller = new AbortController();
-    const timeout = setTimeout(() => controller.abort(), 2500);
+    const timeout = setTimeout(() => controller.abort(), 9000);
 
-    const urls: Array<[string, string]> = [
-      [`https://ff-info-mu.vercel.app/info?uid=${data.uid}&region=${region}`, region],
-      [`https://info-ffx.vercel.app/info?uid=${data.uid}&region=${region}`, region],
-      [`https://api-ff-info.vercel.app/info?uid=${data.uid}&region=${region}`, region],
+    const base: string[] = [
+      `https://ff-info-mu.vercel.app/info?uid=${data.uid}&region=${region}`,
     ];
     const custom = process.env.FF_INFO_URL;
     if (custom) {
       const u = custom.includes("?")
         ? `${custom}${custom.endsWith("&") || custom.endsWith("?") ? "" : "&"}uid=${data.uid}&region=${region}`
         : `${custom}?uid=${data.uid}&region=${region}`;
-      urls.unshift([u, region]);
+      base.unshift(u);
     }
+    // Try each endpoint up to 2 times in parallel for resilience against cold starts/transient failures.
+    const urls: Array<[string, string]> = base.flatMap((u) => [[u, region], [u, region]] as Array<[string, string]>);
 
     try {
       const result = await new Promise<FFInfo>((resolve, reject) => {
         let remaining = urls.length;
-        urls.forEach(([url, reg]) => {
-          tryFetch(url, reg, controller.signal).then((r) => {
+        urls.forEach(([url, reg], i) => {
+          const run = () => tryFetch(url, reg, controller.signal).then((r) => {
             if (r) {
               controller.abort();
               resolve(r);
@@ -106,6 +106,9 @@ export const getFFPlayerName = createServerFn({ method: "GET" })
           }).catch(() => {
             if (--remaining === 0) reject(new Error("Could not fetch player info. Please check the UID."));
           });
+          // Stagger retries by 600ms so the second attempt only fires if the first is slow/failing.
+          if (i % 2 === 1) setTimeout(run, 600);
+          else run();
         });
       });
       return result;
@@ -113,3 +116,4 @@ export const getFFPlayerName = createServerFn({ method: "GET" })
       clearTimeout(timeout);
     }
   });
+
