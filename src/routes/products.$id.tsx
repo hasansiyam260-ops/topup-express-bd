@@ -331,7 +331,7 @@ function ProductPage() {
                   <BadgeCheck className="h-4 w-4 text-emerald-600 shrink-0" />
                   <div className="min-w-0">
                     <div className="text-xs font-bold text-slate-800 truncate">Coupon <span className="font-mono">{coupon.code}</span> applied</div>
-                    <div className="text-[11px] text-emerald-700 font-bold">−৳{coupon.discount} discount</div>
+                    <div className="text-[11px] text-emerald-700 font-bold">−৳{coupon.discount.toFixed(2)} discount</div>
                   </div>
                 </div>
                 <button onClick={removeCoupon} className="rounded-lg bg-white border border-rose-200 px-2.5 py-1.5 text-[11px] font-bold text-rose-600 active:scale-95">Remove</button>
