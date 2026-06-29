@@ -138,6 +138,7 @@ function RootComponent() {
 
   return (
     <QueryClientProvider client={queryClient}>
+      <AppSplash />
       <Outlet />
       {!isAdminRoute && <WelcomeNotice />}
       {!isAdminRoute && <InstallAppPrompt />}
