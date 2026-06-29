@@ -126,7 +126,7 @@ function ProductPage() {
     try {
       const res = await validateCoupon({ data: { code: couponCode, amount: basePrice } });
       setCoupon({ id: res.id, code: res.code, discount: res.discount });
-      toast.success(`Coupon applied: −৳${res.discount}`);
+      toast.success(`Coupon applied: −৳${res.discount.toFixed(2)}`);
     } catch (e: any) { toast.error(e?.message || "Invalid coupon"); setCoupon(null); }
     finally { setCouponLoading(false); }
   };
@@ -331,7 +331,7 @@ function ProductPage() {
                   <BadgeCheck className="h-4 w-4 text-emerald-600 shrink-0" />
                   <div className="min-w-0">
                     <div className="text-xs font-bold text-slate-800 truncate">Coupon <span className="font-mono">{coupon.code}</span> applied</div>
-                    <div className="text-[11px] text-emerald-700 font-bold">−৳{coupon.discount} discount</div>
+                    <div className="text-[11px] text-emerald-700 font-bold">−৳{coupon.discount.toFixed(2)} discount</div>
                   </div>
                 </div>
                 <button onClick={removeCoupon} className="rounded-lg bg-white border border-rose-200 px-2.5 py-1.5 text-[11px] font-bold text-rose-600 active:scale-95">Remove</button>
@@ -351,13 +351,13 @@ function ProductPage() {
               <span className="text-[10px] tracking-wider uppercase text-emerald-600 font-bold bg-emerald-50 px-1.5 py-0.5 rounded-full border border-emerald-200">Secure</span>
             </div>
             <div className="mt-0.5 flex items-baseline gap-2">
-              <span className="font-display text-2xl text-primary tracking-tight">৳{price.toFixed(0)}</span>
-              {coupon && <span className="text-xs text-muted-foreground line-through">৳{basePrice.toFixed(0)}</span>}
+              <span className="font-display text-2xl text-primary tracking-tight">৳{price.toFixed(2)}</span>
+              {coupon && <span className="text-xs text-muted-foreground line-through">৳{basePrice.toFixed(2)}</span>}
               <span className="text-xs text-muted-foreground">BDT</span>
             </div>
             <div className="mt-1 flex items-center gap-1.5 text-[11px] text-muted-foreground">
               <Info className="h-3 w-3 shrink-0" />
-              <span>প্রোডাক্ট কিনতে আপনার প্রয়োজন <span className="text-foreground font-semibold">৳{price.toFixed(0)} টাকা</span></span>
+              <span>প্রোডাক্ট কিনতে আপনার প্রয়োজন <span className="text-foreground font-semibold">৳{price.toFixed(2)} টাকা</span></span>
             </div>
           </div>
 
