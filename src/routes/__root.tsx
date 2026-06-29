@@ -8,14 +8,14 @@ import {
   HeadContent,
   Scripts,
 } from "@tanstack/react-router";
-import { useEffect, type ReactNode } from "react";
+import { useEffect, lazy, Suspense, type ReactNode } from "react";
 
 import appCss from "../styles.css?url";
 import logoImg from "@/assets/logo-uid.webp";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { Toaster } from "sonner";
 import { WelcomeNotice } from "@/components/site/WelcomeNotice";
-import { LiveChat } from "@/components/site/LiveChat";
+const LiveChat = lazy(() => import("@/components/site/LiveChat").then((m) => ({ default: m.LiveChat })));
 
 function NotFoundComponent() {
   return (
@@ -120,7 +120,7 @@ function RootComponent() {
     <QueryClientProvider client={queryClient}>
       <Outlet />
       {!isAdminRoute && <WelcomeNotice />}
-      {!isAdminRoute && <LiveChat />}
+      {!isAdminRoute && <Suspense fallback={null}><LiveChat /></Suspense>}
       <Toaster theme="light" position="top-center" richColors />
     </QueryClientProvider>
   );
