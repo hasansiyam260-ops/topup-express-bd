@@ -395,7 +395,7 @@
 
 /* Shrink Lovable badge */
 #lovable-badge, [id*="lovable-badge"], a[href*="lovable.dev"][target="_blank"] {
-  transform: scale(0.30) !important;
+  transform: scale(0.18) translateY(40%) !important;
   transform-origin: bottom right !important;
-  opacity: 0.25 !important;
+  opacity: 0.18 !important;
 }
