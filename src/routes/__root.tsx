@@ -17,6 +17,7 @@ import { Toaster } from "sonner";
 import { WelcomeNotice } from "@/components/site/WelcomeNotice";
 import { InstallAppPrompt } from "@/components/site/InstallAppPrompt";
 import { AppSplash } from "@/components/site/AppSplash";
+import { PostLoginGate } from "@/components/site/PostLoginGate";
 const LiveChat = lazy(() => import("@/components/site/LiveChat").then((m) => ({ default: m.LiveChat })));
 
 function NotFoundComponent() {
