@@ -17,6 +17,7 @@ import { Toaster } from "sonner";
 import { WelcomeNotice } from "@/components/site/WelcomeNotice";
 import { InstallAppPrompt } from "@/components/site/InstallAppPrompt";
 import { AppSplash } from "@/components/site/AppSplash";
+import { PostLoginGate } from "@/components/site/PostLoginGate";
 const LiveChat = lazy(() => import("@/components/site/LiveChat").then((m) => ({ default: m.LiveChat })));
 
 function NotFoundComponent() {
@@ -140,9 +141,13 @@ function RootComponent() {
     <QueryClientProvider client={queryClient}>
       <AppSplash />
       <Outlet />
-      {!isAdminRoute && <WelcomeNotice />}
+      {!isAdminRoute && (
+        <PostLoginGate>
+          <WelcomeNotice />
+          <Suspense fallback={null}><LiveChat /></Suspense>
+        </PostLoginGate>
+      )}
       {!isAdminRoute && <InstallAppPrompt />}
-      {!isAdminRoute && <Suspense fallback={null}><LiveChat /></Suspense>}
       <Toaster theme="light" position="top-center" richColors />
     </QueryClientProvider>
   );

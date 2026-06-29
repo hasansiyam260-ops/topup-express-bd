@@ -13,7 +13,11 @@ export function AppSplash() {
     if (sessionStorage.getItem("tue_splash_shown")) return;
     sessionStorage.setItem("tue_splash_shown", "1");
     setShow(true);
-    const t = setTimeout(() => setShow(false), 3000);
+    const t = setTimeout(() => {
+      setShow(false);
+      sessionStorage.setItem("tue_splash_done", "1");
+      window.dispatchEvent(new Event("tue:splash-done"));
+    }, 3000);
     return () => clearTimeout(t);
   }, []);
 
