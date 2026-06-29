@@ -21,6 +21,7 @@ import { Route as AdminIndexRouteImport } from './routes/admin.index'
 import { Route as ProductsIdRouteImport } from './routes/products.$id'
 import { Route as ApiLivechatRouteImport } from './routes/api/livechat'
 import { Route as AdminUsersRouteImport } from './routes/admin.users'
+import { Route as AdminReferralsRouteImport } from './routes/admin.referrals'
 import { Route as AdminProductsRouteImport } from './routes/admin.products'
 import { Route as AdminPaymentsRouteImport } from './routes/admin.payments'
 import { Route as AdminOrdersRouteImport } from './routes/admin.orders'
@@ -91,6 +92,11 @@ const ApiLivechatRoute = ApiLivechatRouteImport.update({
 const AdminUsersRoute = AdminUsersRouteImport.update({
   id: '/users',
   path: '/users',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminReferralsRoute = AdminReferralsRouteImport.update({
+  id: '/referrals',
+  path: '/referrals',
   getParentRoute: () => AdminRoute,
 } as any)
 const AdminProductsRoute = AdminProductsRouteImport.update({
@@ -174,6 +180,7 @@ export interface FileRoutesByFullPath {
   '/admin/orders': typeof AdminOrdersRoute
   '/admin/payments': typeof AdminPaymentsRoute
   '/admin/products': typeof AdminProductsRoute
+  '/admin/referrals': typeof AdminReferralsRoute
   '/admin/users': typeof AdminUsersRoute
   '/api/livechat': typeof ApiLivechatRoute
   '/products/$id': typeof ProductsIdRoute
@@ -198,6 +205,7 @@ export interface FileRoutesByTo {
   '/admin/orders': typeof AdminOrdersRoute
   '/admin/payments': typeof AdminPaymentsRoute
   '/admin/products': typeof AdminProductsRoute
+  '/admin/referrals': typeof AdminReferralsRoute
   '/admin/users': typeof AdminUsersRoute
   '/api/livechat': typeof ApiLivechatRoute
   '/products/$id': typeof ProductsIdRoute
@@ -225,6 +233,7 @@ export interface FileRoutesById {
   '/admin/orders': typeof AdminOrdersRoute
   '/admin/payments': typeof AdminPaymentsRoute
   '/admin/products': typeof AdminProductsRoute
+  '/admin/referrals': typeof AdminReferralsRoute
   '/admin/users': typeof AdminUsersRoute
   '/api/livechat': typeof ApiLivechatRoute
   '/products/$id': typeof ProductsIdRoute
@@ -252,6 +261,7 @@ export interface FileRouteTypes {
     | '/admin/orders'
     | '/admin/payments'
     | '/admin/products'
+    | '/admin/referrals'
     | '/admin/users'
     | '/api/livechat'
     | '/products/$id'
@@ -276,6 +286,7 @@ export interface FileRouteTypes {
     | '/admin/orders'
     | '/admin/payments'
     | '/admin/products'
+    | '/admin/referrals'
     | '/admin/users'
     | '/api/livechat'
     | '/products/$id'
@@ -302,6 +313,7 @@ export interface FileRouteTypes {
     | '/admin/orders'
     | '/admin/payments'
     | '/admin/products'
+    | '/admin/referrals'
     | '/admin/users'
     | '/api/livechat'
     | '/products/$id'
@@ -407,6 +419,13 @@ declare module '@tanstack/react-router' {
       path: '/users'
       fullPath: '/admin/users'
       preLoaderRoute: typeof AdminUsersRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/referrals': {
+      id: '/admin/referrals'
+      path: '/referrals'
+      fullPath: '/admin/referrals'
+      preLoaderRoute: typeof AdminReferralsRouteImport
       parentRoute: typeof AdminRoute
     }
     '/admin/products': {
@@ -522,6 +541,7 @@ interface AdminRouteChildren {
   AdminOrdersRoute: typeof AdminOrdersRoute
   AdminPaymentsRoute: typeof AdminPaymentsRoute
   AdminProductsRoute: typeof AdminProductsRoute
+  AdminReferralsRoute: typeof AdminReferralsRoute
   AdminUsersRoute: typeof AdminUsersRoute
   AdminIndexRoute: typeof AdminIndexRoute
 }
@@ -534,6 +554,7 @@ const AdminRouteChildren: AdminRouteChildren = {
   AdminOrdersRoute: AdminOrdersRoute,
   AdminPaymentsRoute: AdminPaymentsRoute,
   AdminProductsRoute: AdminProductsRoute,
+  AdminReferralsRoute: AdminReferralsRoute,
   AdminUsersRoute: AdminUsersRoute,
   AdminIndexRoute: AdminIndexRoute,
 }
