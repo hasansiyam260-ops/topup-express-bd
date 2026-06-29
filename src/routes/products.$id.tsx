@@ -81,6 +81,9 @@ function ProductPage() {
   const [checkoutOpen, setCheckoutOpen] = useState(false);
   const [insufficientOpen, setInsufficientOpen] = useState(false);
   const [walletSuccess, setWalletSuccess] = useState<{ amount: number; invoice: string } | null>(null);
+  const [couponCode, setCouponCode] = useState("");
+  const [coupon, setCoupon] = useState<{ id: string; code: string; discount: number } | null>(null);
+  const [couponLoading, setCouponLoading] = useState(false);
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data }) => setAuthed(!!data.session));
