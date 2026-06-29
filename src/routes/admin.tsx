@@ -1,7 +1,7 @@
 import { createFileRoute, Outlet, Link, redirect, useRouterState } from "@tanstack/react-router";
 import { supabase } from "@/integrations/supabase/client";
 import { amIAdmin } from "@/lib/admin.functions";
-import { LayoutDashboard, Package, Tags, ShoppingBag, Users, FileText, CreditCard, Home, Rocket, Ticket, Gift } from "lucide-react";
+import { LayoutDashboard, Package, Tags, ShoppingBag, Users, FileText, CreditCard, Home, Rocket, Ticket, Gift, Settings } from "lucide-react";
 
 export const Route = createFileRoute("/admin")({
   ssr: false,
