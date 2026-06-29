@@ -107,7 +107,7 @@ export const getFFPlayerName = createServerFn({ method: "GET" })
             if (--remaining === 0) reject(new Error("Could not fetch player info. Please check the UID."));
           });
           // Stagger retries by 600ms so the second attempt only fires if the first is slow/failing.
-          if (i % 2 === 1) setTimeout(run, 600);
+          if (i % 2 === 1) setTimeout(run, 300);
           else run();
         });
       });
