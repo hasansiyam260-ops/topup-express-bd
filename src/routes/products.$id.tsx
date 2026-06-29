@@ -155,9 +155,6 @@ function ProductPage() {
     return true;
   };
 
-  const _unused_old_placeOrder_replaced = () => {};
-    return true;
-  };
 
   const submitOrder = async () => {
     if (!authed) { navigate({ to: "/auth", search: { mode: "login" } }); return; }
