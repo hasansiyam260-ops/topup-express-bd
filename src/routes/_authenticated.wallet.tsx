@@ -110,6 +110,17 @@ function WalletPage() {
             </div>
           </label>
 
+          {settings.wallet_presets?.length > 0 && (
+            <div className="mt-2 flex flex-wrap gap-1.5">
+              {settings.wallet_presets.map((p) => (
+                <button key={p} type="button" onClick={() => setAmount(String(p))}
+                  className="px-2.5 py-1 rounded-full text-[11px] font-bold border border-rose-300/60 bg-rose-50 text-rose-700 hover:bg-rose-100 transition">
+                  ৳{p.toLocaleString()}
+                </button>
+              ))}
+            </div>
+          )}
+
           <p className="mt-2 text-[10px] text-muted-foreground flex items-center gap-1">
             <Info className="h-2.5 w-2.5" /> Min ৳{settings.wallet_min} · Max ৳{settings.wallet_max.toLocaleString()}
           </p>
