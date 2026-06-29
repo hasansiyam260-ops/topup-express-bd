@@ -1,7 +1,7 @@
 import { createFileRoute, Outlet, Link, redirect, useRouterState } from "@tanstack/react-router";
 import { supabase } from "@/integrations/supabase/client";
 import { amIAdmin } from "@/lib/admin.functions";
-import { LayoutDashboard, Package, Tags, ShoppingBag, Users, FileText, CreditCard, Home, Rocket, Ticket } from "lucide-react";
+import { LayoutDashboard, Package, Tags, ShoppingBag, Users, FileText, CreditCard, Home, Rocket, Ticket, Gift } from "lucide-react";
 
 export const Route = createFileRoute("/admin")({
   ssr: false,
@@ -22,6 +22,7 @@ const navItems = [
   { to: "/admin/users", label: "Users", icon: Users },
   { to: "/admin/content", label: "Site Content", icon: FileText },
   { to: "/admin/coupons", label: "Coupons", icon: Ticket },
+  { to: "/admin/referrals", label: "Refer & Earn", icon: Gift },
   { to: "/admin/payments", label: "Payments", icon: CreditCard },
   { to: "/admin/delivery", label: "Auto-Delivery", icon: Rocket },
 ];

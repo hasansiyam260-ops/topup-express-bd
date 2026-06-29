@@ -39,7 +39,7 @@ function ReferralsPage() {
 
   const handleShare = async () => {
     if (!data?.code) return;
-    const text = `🎁 TOP-UP EXPRESS এ যোগ দিন আমার রেফারেল কোডে এবং পান ৳20 বোনাস!\nকোড: ${data.code}\nলিংক: ${shareLink}`;
+    const text = `🎁 TOP-UP EXPRESS এ যোগ দিন আমার রেফারেল কোডে এবং পান ৳${data?.config?.firstPurchaseBonus ?? 20} বোনাস!\nকোড: ${data.code}\nলিংক: ${shareLink}`;
     if (navigator.share) {
       try { await navigator.share({ title: "TOP-UP EXPRESS", text, url: shareLink }); } catch {}
     } else {
@@ -62,7 +62,7 @@ function ReferralsPage() {
             <div className="min-w-0">
               <div className="text-[8px] tracking-[0.28em] uppercase text-white/80 leading-none">REFER & EARN</div>
               <h1 className="font-display text-[15px] leading-tight mt-1">আপনার বন্ধু আনুন, ক্যাশব্যাক জিতুন</h1>
-              <p className="text-[10px] text-white/85 mt-1 leading-snug">বন্ধুর <b>প্রথম পারচেস</b>-এ পান ৳20 বোনাস + প্রতিবার <b>2% lifetime cashback</b> সরাসরি Main Balance এ</p>
+              <p className="text-[10px] text-white/85 mt-1 leading-snug">বন্ধুর <b>প্রথম পারচেস</b>-এ পান ৳{data?.config?.firstPurchaseBonus ?? 20} বোনাস + প্রতিবার <b>{data?.config?.cashbackRate ?? 2}% lifetime cashback</b> সরাসরি Main Balance এ</p>
             </div>
           </div>
         </div>
@@ -112,8 +112,8 @@ function ReferralsPage() {
           <ol className="space-y-1.5 text-[12px] leading-snug">
             <li className="flex gap-1.5"><span className="grid place-items-center h-4 w-4 rounded-full bg-rose-500 text-white text-[9px] font-bold shrink-0 mt-0.5">1</span>আপনার রেফারেল লিংক বন্ধুদের সাথে শেয়ার করুন</li>
             <li className="flex gap-1.5"><span className="grid place-items-center h-4 w-4 rounded-full bg-rose-500 text-white text-[9px] font-bold shrink-0 mt-0.5">2</span>তারা আপনার লিংক থেকে সাইন আপ করলে অটোমেটিক কানেক্ট হবে</li>
-            <li className="flex gap-1.5"><span className="grid place-items-center h-4 w-4 rounded-full bg-rose-500 text-white text-[9px] font-bold shrink-0 mt-0.5">3</span><span>বন্ধু প্রথমবার কিনলেই পাবেন <b>৳20 বোনাস</b></span></li>
-            <li className="flex gap-1.5"><span className="grid place-items-center h-4 w-4 rounded-full bg-rose-500 text-white text-[9px] font-bold shrink-0 mt-0.5">4</span><span>এরপর প্রতিবার <b>2% lifetime cashback</b> পাবেন</span></li>
+            <li className="flex gap-1.5"><span className="grid place-items-center h-4 w-4 rounded-full bg-rose-500 text-white text-[9px] font-bold shrink-0 mt-0.5">3</span><span>বন্ধু প্রথমবার কিনলেই পাবেন <b>৳{data?.config?.firstPurchaseBonus ?? 20} বোনাস</b></span></li>
+            <li className="flex gap-1.5"><span className="grid place-items-center h-4 w-4 rounded-full bg-rose-500 text-white text-[9px] font-bold shrink-0 mt-0.5">4</span><span>এরপর প্রতিবার <b>{data?.config?.cashbackRate ?? 2}% lifetime cashback</b> পাবেন</span></li>
             <li className="flex gap-1.5"><span className="grid place-items-center h-4 w-4 rounded-full bg-rose-500 text-white text-[9px] font-bold shrink-0 mt-0.5">5</span><span>সব রিওয়ার্ড সরাসরি <b>Main Balance</b> এ instant জমা হবে</span></li>
           </ol>
         </div>
