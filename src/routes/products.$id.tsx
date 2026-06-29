@@ -7,6 +7,7 @@ import { getSiteValue } from "@/lib/site.functions";
 import { AppShell } from "@/components/site/AppShell";
 import { SecureCheckout, SuccessScreen } from "@/components/site/SecureCheckout";
 import { creditReferralForPurchase } from "@/lib/referrals.functions";
+import { validateCoupon, redeemCoupon } from "@/lib/coupons.functions";
 import { packImage } from "@/lib/assets";
 import heroImg from "@/assets/hero-promo.webp";
 import { supabase } from "@/integrations/supabase/client";
