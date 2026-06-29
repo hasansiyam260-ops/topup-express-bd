@@ -72,6 +72,8 @@ function HomePage() {
 
   return (
     <AppShell>
+      <AnnouncementBar />
+      
       
       {/* HERO PROMO BANNER — clean glassy premium */}
       {settings.hero_enabled && (
