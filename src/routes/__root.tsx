@@ -141,9 +141,13 @@ function RootComponent() {
     <QueryClientProvider client={queryClient}>
       <AppSplash />
       <Outlet />
-      {!isAdminRoute && <WelcomeNotice />}
+      {!isAdminRoute && (
+        <PostLoginGate>
+          <WelcomeNotice />
+          <Suspense fallback={null}><LiveChat /></Suspense>
+        </PostLoginGate>
+      )}
       {!isAdminRoute && <InstallAppPrompt />}
-      {!isAdminRoute && <Suspense fallback={null}><LiveChat /></Suspense>}
       <Toaster theme="light" position="top-center" richColors />
     </QueryClientProvider>
   );
