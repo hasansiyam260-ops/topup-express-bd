@@ -22,9 +22,8 @@ export function LiveChat() {
   const scrollRef = useRef<HTMLDivElement>(null);
 
   if (!s.live_chat_enabled) return null;
-  const [input, setInput] = useState("");
-  const [loading, setLoading] = useState(false);
-  const scrollRef = useRef<HTMLDivElement>(null);
+
+
 
   useEffect(() => {
     if (scrollRef.current) scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
