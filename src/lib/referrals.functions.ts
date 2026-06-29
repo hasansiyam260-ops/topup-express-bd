@@ -1,8 +1,22 @@
 import { createServerFn } from "@tanstack/react-start";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 
-const CASHBACK_RATE = 0.02; // 2% lifetime cashback to referrer on every purchase
-const FIRST_PURCHASE_BONUS = 20; // 20 BDT one-time bonus to referrer on referee's first purchase
+const DEFAULT_CASHBACK_RATE = 2; // percent
+const DEFAULT_FIRST_PURCHASE_BONUS = 20; // BDT
+
+async function loadConfig(supabase: any) {
+  const { data } = await supabase
+    .from("site_content")
+    .select("value")
+    .eq("key", "referral_config")
+    .maybeSingle();
+  const v = (data?.value ?? {}) as any;
+  return {
+    cashbackRate: Number(v?.cashback_rate ?? DEFAULT_CASHBACK_RATE),
+    firstPurchaseBonus: Number(v?.first_purchase_bonus ?? DEFAULT_FIRST_PURCHASE_BONUS),
+    enabled: v?.enabled !== false,
+  };
+}
 
 export const getMyReferralInfo = createServerFn({ method: "GET" })
   .middleware([requireSupabaseAuth])
@@ -27,6 +41,8 @@ export const getMyReferralInfo = createServerFn({ method: "GET" })
       .order("created_at", { ascending: false })
       .limit(20);
 
+    const config = await loadConfig(supabase);
+
     return {
       code: profile?.referral_code ?? null,
       referredBy: profile?.referred_by ?? null,
@@ -34,6 +50,7 @@ export const getMyReferralInfo = createServerFn({ method: "GET" })
       totalReferred: refereeProfiles?.length ?? 0,
       referees: refereeProfiles ?? [],
       credits: credits ?? [],
+      config,
     };
   });
 
@@ -43,6 +60,9 @@ export const creditReferralForPurchase = createServerFn({ method: "POST" })
   .handler(async ({ data, context }) => {
     const { supabase, userId } = context;
     if (!data.amount || data.amount <= 0) return { credited: 0, bonus: 0 };
+
+    const cfg = await loadConfig(supabase);
+    if (!cfg.enabled) return { credited: 0, bonus: 0 };
 
     const { data: me } = await supabase
       .from("profiles")
@@ -54,7 +74,6 @@ export const creditReferralForPurchase = createServerFn({ method: "POST" })
 
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
 
-    // Check if this is the referee's first purchase credit
     const { data: prior } = await supabaseAdmin
       .from("referral_credits")
       .select("id")
@@ -63,8 +82,8 @@ export const creditReferralForPurchase = createServerFn({ method: "POST" })
       .limit(1);
 
     const isFirstPurchase = !prior || prior.length === 0;
-    const cashback = Math.round(data.amount * CASHBACK_RATE);
-    const bonus = isFirstPurchase ? FIRST_PURCHASE_BONUS : 0;
+    const cashback = Math.round(data.amount * (cfg.cashbackRate / 100));
+    const bonus = isFirstPurchase ? cfg.firstPurchaseBonus : 0;
     const total = cashback + bonus;
     if (total <= 0) return { credited: 0, bonus: 0 };
 
@@ -86,4 +105,3 @@ export const creditReferralForPurchase = createServerFn({ method: "POST" })
 
     return { credited: cashback, bonus };
   });
-
