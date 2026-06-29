@@ -26,6 +26,7 @@ import { Route as AdminReferralsRouteImport } from './routes/admin.referrals'
 import { Route as AdminProductsRouteImport } from './routes/admin.products'
 import { Route as AdminPaymentsRouteImport } from './routes/admin.payments'
 import { Route as AdminOrdersRouteImport } from './routes/admin.orders'
+import { Route as AdminMenusRouteImport } from './routes/admin.menus'
 import { Route as AdminDeliveryRouteImport } from './routes/admin.delivery'
 import { Route as AdminCouponsRouteImport } from './routes/admin.coupons'
 import { Route as AdminContentRouteImport } from './routes/admin.content'
@@ -35,6 +36,7 @@ import { Route as AuthenticatedReferralsRouteImport } from './routes/_authentica
 import { Route as AuthenticatedProfileRouteImport } from './routes/_authenticated.profile'
 import { Route as AuthenticatedOrdersRouteImport } from './routes/_authenticated.orders'
 import { Route as AdminSettingsIndexRouteImport } from './routes/admin.settings.index'
+import { Route as AdminMenusIndexRouteImport } from './routes/admin.menus.index'
 import { Route as AdminSettingsWalletRouteImport } from './routes/admin.settings.wallet'
 import { Route as AdminSettingsSocialRouteImport } from './routes/admin.settings.social'
 import { Route as AdminSettingsSeoRouteImport } from './routes/admin.settings.seo'
@@ -43,6 +45,11 @@ import { Route as AdminSettingsHeroRouteImport } from './routes/admin.settings.h
 import { Route as AdminSettingsChatRouteImport } from './routes/admin.settings.chat'
 import { Route as AdminSettingsBrandingRouteImport } from './routes/admin.settings.branding'
 import { Route as AdminSettingsAnnouncementRouteImport } from './routes/admin.settings.announcement'
+import { Route as AdminMenusWalletRouteImport } from './routes/admin.menus.wallet'
+import { Route as AdminMenusReferRouteImport } from './routes/admin.menus.refer'
+import { Route as AdminMenusProfileRouteImport } from './routes/admin.menus.profile'
+import { Route as AdminMenusOrdersRouteImport } from './routes/admin.menus.orders'
+import { Route as AdminMenusHomeRouteImport } from './routes/admin.menus.home'
 import { Route as ApiPublicHooksAutoDeliverRouteImport } from './routes/api/public/hooks/auto-deliver'
 
 const TermsRoute = TermsRouteImport.update({
@@ -129,6 +136,11 @@ const AdminOrdersRoute = AdminOrdersRouteImport.update({
   path: '/orders',
   getParentRoute: () => AdminRoute,
 } as any)
+const AdminMenusRoute = AdminMenusRouteImport.update({
+  id: '/menus',
+  path: '/menus',
+  getParentRoute: () => AdminRoute,
+} as any)
 const AdminDeliveryRoute = AdminDeliveryRouteImport.update({
   id: '/delivery',
   path: '/delivery',
@@ -174,6 +186,11 @@ const AdminSettingsIndexRoute = AdminSettingsIndexRouteImport.update({
   path: '/',
   getParentRoute: () => AdminSettingsRoute,
 } as any)
+const AdminMenusIndexRoute = AdminMenusIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AdminMenusRoute,
+} as any)
 const AdminSettingsWalletRoute = AdminSettingsWalletRouteImport.update({
   id: '/wallet',
   path: '/wallet',
@@ -216,6 +233,31 @@ const AdminSettingsAnnouncementRoute =
     path: '/announcement',
     getParentRoute: () => AdminSettingsRoute,
   } as any)
+const AdminMenusWalletRoute = AdminMenusWalletRouteImport.update({
+  id: '/wallet',
+  path: '/wallet',
+  getParentRoute: () => AdminMenusRoute,
+} as any)
+const AdminMenusReferRoute = AdminMenusReferRouteImport.update({
+  id: '/refer',
+  path: '/refer',
+  getParentRoute: () => AdminMenusRoute,
+} as any)
+const AdminMenusProfileRoute = AdminMenusProfileRouteImport.update({
+  id: '/profile',
+  path: '/profile',
+  getParentRoute: () => AdminMenusRoute,
+} as any)
+const AdminMenusOrdersRoute = AdminMenusOrdersRouteImport.update({
+  id: '/orders',
+  path: '/orders',
+  getParentRoute: () => AdminMenusRoute,
+} as any)
+const AdminMenusHomeRoute = AdminMenusHomeRouteImport.update({
+  id: '/home',
+  path: '/home',
+  getParentRoute: () => AdminMenusRoute,
+} as any)
 const ApiPublicHooksAutoDeliverRoute =
   ApiPublicHooksAutoDeliverRouteImport.update({
     id: '/api/public/hooks/auto-deliver',
@@ -239,6 +281,7 @@ export interface FileRoutesByFullPath {
   '/admin/content': typeof AdminContentRoute
   '/admin/coupons': typeof AdminCouponsRoute
   '/admin/delivery': typeof AdminDeliveryRoute
+  '/admin/menus': typeof AdminMenusRouteWithChildren
   '/admin/orders': typeof AdminOrdersRoute
   '/admin/payments': typeof AdminPaymentsRoute
   '/admin/products': typeof AdminProductsRoute
@@ -248,6 +291,11 @@ export interface FileRoutesByFullPath {
   '/api/livechat': typeof ApiLivechatRoute
   '/products/$id': typeof ProductsIdRoute
   '/admin/': typeof AdminIndexRoute
+  '/admin/menus/home': typeof AdminMenusHomeRoute
+  '/admin/menus/orders': typeof AdminMenusOrdersRoute
+  '/admin/menus/profile': typeof AdminMenusProfileRoute
+  '/admin/menus/refer': typeof AdminMenusReferRoute
+  '/admin/menus/wallet': typeof AdminMenusWalletRoute
   '/admin/settings/announcement': typeof AdminSettingsAnnouncementRoute
   '/admin/settings/branding': typeof AdminSettingsBrandingRoute
   '/admin/settings/chat': typeof AdminSettingsChatRoute
@@ -256,6 +304,7 @@ export interface FileRoutesByFullPath {
   '/admin/settings/seo': typeof AdminSettingsSeoRoute
   '/admin/settings/social': typeof AdminSettingsSocialRoute
   '/admin/settings/wallet': typeof AdminSettingsWalletRoute
+  '/admin/menus/': typeof AdminMenusIndexRoute
   '/admin/settings/': typeof AdminSettingsIndexRoute
   '/api/public/hooks/auto-deliver': typeof ApiPublicHooksAutoDeliverRoute
 }
@@ -282,6 +331,11 @@ export interface FileRoutesByTo {
   '/api/livechat': typeof ApiLivechatRoute
   '/products/$id': typeof ProductsIdRoute
   '/admin': typeof AdminIndexRoute
+  '/admin/menus/home': typeof AdminMenusHomeRoute
+  '/admin/menus/orders': typeof AdminMenusOrdersRoute
+  '/admin/menus/profile': typeof AdminMenusProfileRoute
+  '/admin/menus/refer': typeof AdminMenusReferRoute
+  '/admin/menus/wallet': typeof AdminMenusWalletRoute
   '/admin/settings/announcement': typeof AdminSettingsAnnouncementRoute
   '/admin/settings/branding': typeof AdminSettingsBrandingRoute
   '/admin/settings/chat': typeof AdminSettingsChatRoute
@@ -290,6 +344,7 @@ export interface FileRoutesByTo {
   '/admin/settings/seo': typeof AdminSettingsSeoRoute
   '/admin/settings/social': typeof AdminSettingsSocialRoute
   '/admin/settings/wallet': typeof AdminSettingsWalletRoute
+  '/admin/menus': typeof AdminMenusIndexRoute
   '/admin/settings': typeof AdminSettingsIndexRoute
   '/api/public/hooks/auto-deliver': typeof ApiPublicHooksAutoDeliverRoute
 }
@@ -311,6 +366,7 @@ export interface FileRoutesById {
   '/admin/content': typeof AdminContentRoute
   '/admin/coupons': typeof AdminCouponsRoute
   '/admin/delivery': typeof AdminDeliveryRoute
+  '/admin/menus': typeof AdminMenusRouteWithChildren
   '/admin/orders': typeof AdminOrdersRoute
   '/admin/payments': typeof AdminPaymentsRoute
   '/admin/products': typeof AdminProductsRoute
@@ -320,6 +376,11 @@ export interface FileRoutesById {
   '/api/livechat': typeof ApiLivechatRoute
   '/products/$id': typeof ProductsIdRoute
   '/admin/': typeof AdminIndexRoute
+  '/admin/menus/home': typeof AdminMenusHomeRoute
+  '/admin/menus/orders': typeof AdminMenusOrdersRoute
+  '/admin/menus/profile': typeof AdminMenusProfileRoute
+  '/admin/menus/refer': typeof AdminMenusReferRoute
+  '/admin/menus/wallet': typeof AdminMenusWalletRoute
   '/admin/settings/announcement': typeof AdminSettingsAnnouncementRoute
   '/admin/settings/branding': typeof AdminSettingsBrandingRoute
   '/admin/settings/chat': typeof AdminSettingsChatRoute
@@ -328,6 +389,7 @@ export interface FileRoutesById {
   '/admin/settings/seo': typeof AdminSettingsSeoRoute
   '/admin/settings/social': typeof AdminSettingsSocialRoute
   '/admin/settings/wallet': typeof AdminSettingsWalletRoute
+  '/admin/menus/': typeof AdminMenusIndexRoute
   '/admin/settings/': typeof AdminSettingsIndexRoute
   '/api/public/hooks/auto-deliver': typeof ApiPublicHooksAutoDeliverRoute
 }
@@ -349,6 +411,7 @@ export interface FileRouteTypes {
     | '/admin/content'
     | '/admin/coupons'
     | '/admin/delivery'
+    | '/admin/menus'
     | '/admin/orders'
     | '/admin/payments'
     | '/admin/products'
@@ -358,6 +421,11 @@ export interface FileRouteTypes {
     | '/api/livechat'
     | '/products/$id'
     | '/admin/'
+    | '/admin/menus/home'
+    | '/admin/menus/orders'
+    | '/admin/menus/profile'
+    | '/admin/menus/refer'
+    | '/admin/menus/wallet'
     | '/admin/settings/announcement'
     | '/admin/settings/branding'
     | '/admin/settings/chat'
@@ -366,6 +434,7 @@ export interface FileRouteTypes {
     | '/admin/settings/seo'
     | '/admin/settings/social'
     | '/admin/settings/wallet'
+    | '/admin/menus/'
     | '/admin/settings/'
     | '/api/public/hooks/auto-deliver'
   fileRoutesByTo: FileRoutesByTo
@@ -392,6 +461,11 @@ export interface FileRouteTypes {
     | '/api/livechat'
     | '/products/$id'
     | '/admin'
+    | '/admin/menus/home'
+    | '/admin/menus/orders'
+    | '/admin/menus/profile'
+    | '/admin/menus/refer'
+    | '/admin/menus/wallet'
     | '/admin/settings/announcement'
     | '/admin/settings/branding'
     | '/admin/settings/chat'
@@ -400,6 +474,7 @@ export interface FileRouteTypes {
     | '/admin/settings/seo'
     | '/admin/settings/social'
     | '/admin/settings/wallet'
+    | '/admin/menus'
     | '/admin/settings'
     | '/api/public/hooks/auto-deliver'
   id:
@@ -420,6 +495,7 @@ export interface FileRouteTypes {
     | '/admin/content'
     | '/admin/coupons'
     | '/admin/delivery'
+    | '/admin/menus'
     | '/admin/orders'
     | '/admin/payments'
     | '/admin/products'
@@ -429,6 +505,11 @@ export interface FileRouteTypes {
     | '/api/livechat'
     | '/products/$id'
     | '/admin/'
+    | '/admin/menus/home'
+    | '/admin/menus/orders'
+    | '/admin/menus/profile'
+    | '/admin/menus/refer'
+    | '/admin/menus/wallet'
     | '/admin/settings/announcement'
     | '/admin/settings/branding'
     | '/admin/settings/chat'
@@ -437,6 +518,7 @@ export interface FileRouteTypes {
     | '/admin/settings/seo'
     | '/admin/settings/social'
     | '/admin/settings/wallet'
+    | '/admin/menus/'
     | '/admin/settings/'
     | '/api/public/hooks/auto-deliver'
   fileRoutesById: FileRoutesById
@@ -576,6 +658,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminOrdersRouteImport
       parentRoute: typeof AdminRoute
     }
+    '/admin/menus': {
+      id: '/admin/menus'
+      path: '/menus'
+      fullPath: '/admin/menus'
+      preLoaderRoute: typeof AdminMenusRouteImport
+      parentRoute: typeof AdminRoute
+    }
     '/admin/delivery': {
       id: '/admin/delivery'
       path: '/delivery'
@@ -639,6 +728,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminSettingsIndexRouteImport
       parentRoute: typeof AdminSettingsRoute
     }
+    '/admin/menus/': {
+      id: '/admin/menus/'
+      path: '/'
+      fullPath: '/admin/menus/'
+      preLoaderRoute: typeof AdminMenusIndexRouteImport
+      parentRoute: typeof AdminMenusRoute
+    }
     '/admin/settings/wallet': {
       id: '/admin/settings/wallet'
       path: '/wallet'
@@ -695,6 +791,41 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminSettingsAnnouncementRouteImport
       parentRoute: typeof AdminSettingsRoute
     }
+    '/admin/menus/wallet': {
+      id: '/admin/menus/wallet'
+      path: '/wallet'
+      fullPath: '/admin/menus/wallet'
+      preLoaderRoute: typeof AdminMenusWalletRouteImport
+      parentRoute: typeof AdminMenusRoute
+    }
+    '/admin/menus/refer': {
+      id: '/admin/menus/refer'
+      path: '/refer'
+      fullPath: '/admin/menus/refer'
+      preLoaderRoute: typeof AdminMenusReferRouteImport
+      parentRoute: typeof AdminMenusRoute
+    }
+    '/admin/menus/profile': {
+      id: '/admin/menus/profile'
+      path: '/profile'
+      fullPath: '/admin/menus/profile'
+      preLoaderRoute: typeof AdminMenusProfileRouteImport
+      parentRoute: typeof AdminMenusRoute
+    }
+    '/admin/menus/orders': {
+      id: '/admin/menus/orders'
+      path: '/orders'
+      fullPath: '/admin/menus/orders'
+      preLoaderRoute: typeof AdminMenusOrdersRouteImport
+      parentRoute: typeof AdminMenusRoute
+    }
+    '/admin/menus/home': {
+      id: '/admin/menus/home'
+      path: '/home'
+      fullPath: '/admin/menus/home'
+      preLoaderRoute: typeof AdminMenusHomeRouteImport
+      parentRoute: typeof AdminMenusRoute
+    }
     '/api/public/hooks/auto-deliver': {
       id: '/api/public/hooks/auto-deliver'
       path: '/api/public/hooks/auto-deliver'
@@ -721,6 +852,28 @@ const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
 
 const AuthenticatedRouteWithChildren = AuthenticatedRoute._addFileChildren(
   AuthenticatedRouteChildren,
+)
+
+interface AdminMenusRouteChildren {
+  AdminMenusHomeRoute: typeof AdminMenusHomeRoute
+  AdminMenusOrdersRoute: typeof AdminMenusOrdersRoute
+  AdminMenusProfileRoute: typeof AdminMenusProfileRoute
+  AdminMenusReferRoute: typeof AdminMenusReferRoute
+  AdminMenusWalletRoute: typeof AdminMenusWalletRoute
+  AdminMenusIndexRoute: typeof AdminMenusIndexRoute
+}
+
+const AdminMenusRouteChildren: AdminMenusRouteChildren = {
+  AdminMenusHomeRoute: AdminMenusHomeRoute,
+  AdminMenusOrdersRoute: AdminMenusOrdersRoute,
+  AdminMenusProfileRoute: AdminMenusProfileRoute,
+  AdminMenusReferRoute: AdminMenusReferRoute,
+  AdminMenusWalletRoute: AdminMenusWalletRoute,
+  AdminMenusIndexRoute: AdminMenusIndexRoute,
+}
+
+const AdminMenusRouteWithChildren = AdminMenusRoute._addFileChildren(
+  AdminMenusRouteChildren,
 )
 
 interface AdminSettingsRouteChildren {
@@ -756,6 +909,7 @@ interface AdminRouteChildren {
   AdminContentRoute: typeof AdminContentRoute
   AdminCouponsRoute: typeof AdminCouponsRoute
   AdminDeliveryRoute: typeof AdminDeliveryRoute
+  AdminMenusRoute: typeof AdminMenusRouteWithChildren
   AdminOrdersRoute: typeof AdminOrdersRoute
   AdminPaymentsRoute: typeof AdminPaymentsRoute
   AdminProductsRoute: typeof AdminProductsRoute
@@ -770,6 +924,7 @@ const AdminRouteChildren: AdminRouteChildren = {
   AdminContentRoute: AdminContentRoute,
   AdminCouponsRoute: AdminCouponsRoute,
   AdminDeliveryRoute: AdminDeliveryRoute,
+  AdminMenusRoute: AdminMenusRouteWithChildren,
   AdminOrdersRoute: AdminOrdersRoute,
   AdminPaymentsRoute: AdminPaymentsRoute,
   AdminProductsRoute: AdminProductsRoute,
