@@ -72,7 +72,7 @@ function HomePage() {
 
   return (
     <AppShell>
-      <AnnouncementBar />
+      
       {/* HERO PROMO BANNER — clean glassy premium */}
       {settings.hero_enabled && (
       <section className="mx-auto max-w-3xl px-3 pt-2">
@@ -92,16 +92,6 @@ function HomePage() {
             decoding="async"
             className="w-full h-full object-cover object-center block md:transition-transform md:duration-500 md:group-hover:scale-[1.02]"
           />
-          {(settings.hero_title || settings.hero_subtitle) && (
-            <div className="absolute inset-0 flex flex-col justify-end p-3 sm:p-4 bg-gradient-to-t from-black/55 via-black/15 to-transparent text-white">
-              {settings.hero_title && (
-                <div className="font-display text-base sm:text-xl leading-tight drop-shadow">{settings.hero_title}</div>
-              )}
-              {settings.hero_subtitle && (
-                <div className="text-[11px] sm:text-xs opacity-95 mt-0.5">{settings.hero_subtitle}</div>
-              )}
-            </div>
-          )}
           <span aria-hidden className="absolute inset-x-0 top-0 h-1/2 pointer-events-none" style={{ background: "linear-gradient(180deg, rgba(255,255,255,0.22), rgba(255,255,255,0) 70%)" }} />
           <span aria-hidden className="absolute inset-0 rounded-2xl pointer-events-none" style={{ boxShadow: "inset 0 1px 0 color-mix(in oklab, white 35%, transparent), inset 0 -1px 0 color-mix(in oklab, black 22%, transparent)" }} />
           <span aria-hidden className="absolute inset-0 pointer-events-none overflow-hidden">
