@@ -117,7 +117,20 @@ function ProductPage() {
     }
   };
 
-  const price = Number(selected.price);
+  const price = Math.max(0, Number(selected.price) - (coupon?.discount ?? 0));
+  const basePrice = Number(selected.price);
+
+  const applyCoupon = async () => {
+    if (!couponCode.trim()) return;
+    setCouponLoading(true);
+    try {
+      const res = await validateCoupon({ data: { code: couponCode, amount: basePrice } });
+      setCoupon({ id: res.id, code: res.code, discount: res.discount });
+      toast.success(`Coupon applied: −৳${res.discount}`);
+    } catch (e: any) { toast.error(e?.message || "Invalid coupon"); setCoupon(null); }
+    finally { setCouponLoading(false); }
+  };
+  const removeCoupon = () => { setCoupon(null); setCouponCode(""); };
 
   const placeOrder = async (method: "wallet" | "instant"): Promise<boolean> => {
     const { data: session } = await supabase.auth.getSession();
