@@ -1,4 +1,4 @@
-import type { ReactNode } from "react";
+import { useEffect, type ReactNode } from "react";
 import { Link, useRouterState } from "@tanstack/react-router";
 import { Header } from "./Header";
 import { BottomNav } from "./BottomNav";
@@ -9,6 +9,21 @@ export function AppShell({ children }: { children: ReactNode }) {
   const s = useSiteSettings();
   const path = useRouterState({ select: (st) => st.location.pathname });
   const isAdminPath = path.startsWith("/admin") || path.startsWith("/auth");
+
+  useEffect(() => {
+    if (s.site_name) document.title = s.seo_title || s.site_name;
+    if (s.site_favicon_url) {
+      let link = document.querySelector<HTMLLinkElement>("link[rel='icon']");
+      if (!link) { link = document.createElement("link"); link.rel = "icon"; document.head.appendChild(link); }
+      link.href = s.site_favicon_url;
+    }
+    if (s.seo_description) {
+      let m = document.querySelector<HTMLMetaElement>("meta[name='description']");
+      if (!m) { m = document.createElement("meta"); m.name = "description"; document.head.appendChild(m); }
+      m.content = s.seo_description;
+    }
+  }, [s.site_name, s.site_favicon_url, s.seo_title, s.seo_description]);
+
 
   if (s.maintenance_enabled && !isAdminPath) {
     return (
