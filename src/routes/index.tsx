@@ -8,6 +8,7 @@ import heroImg from "@/assets/hero-promo.webp";
 import logoUid from "@/assets/logo-uid.png";
 import { MessageCircle, MessagesSquare, Facebook, Youtube, Mail, Play, Send } from "lucide-react";
 import { AnnouncementBar } from "@/components/site/AnnouncementBar";
+import { useSiteSettings } from "@/lib/site-settings";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -37,6 +38,7 @@ export const Route = createFileRoute("/")({
 
 function HomePage() {
   const { data: products = [], isFetching } = useQuery(productsQueryOptions);
+  const settings = useSiteSettings();
   const { data: cats = [] } = useQuery({
     queryKey: ["categories"],
     queryFn: () => listCategories(),
@@ -124,7 +126,7 @@ function HomePage() {
           glow="rgba(16,185,129,.48)"
           title="WHATSAPP"
           sub="LIVE CHAT"
-          href="https://wa.me/8801000000000"
+          href={settings.contact_whatsapp || "#"}
         />
         <ChipCard
           icon={<MessagesSquare className="h-[18px] w-[18px] text-white" />}
@@ -132,7 +134,7 @@ function HomePage() {
           glow="rgba(124,58,237,.48)"
           title="MESSENGER"
           sub="SUPPORT"
-          href="https://m.me/topupexpress"
+          href={settings.contact_messenger || "#"}
         />
         <ChipCard
           icon={<Send className="h-[17px] w-[17px] -translate-x-[1px] text-white" />}
@@ -140,7 +142,7 @@ function HomePage() {
           glow="rgba(14,165,233,.50)"
           title="TELEGRAM"
           sub="CHANNEL"
-          href="https://t.me/topupexpress"
+          href={settings.contact_telegram || "#"}
         />
       </section>
 
@@ -169,7 +171,7 @@ function HomePage() {
 
         <div className="mt-4 grid grid-cols-3 gap-2.5">
           <SocialBrand
-            href="https://t.me/topupexpress"
+            href={settings.contact_telegram || "#"}
             title="Telegram"
             sub="CHANNEL"
             ringFrom="from-sky-400/60"
@@ -179,7 +181,7 @@ function HomePage() {
             icon={<Send className="h-4 w-4 text-white -translate-x-[1px]" />}
           />
           <SocialBrand
-            href="https://facebook.com/topupexpress"
+            href={settings.contact_facebook || "#"}
             title="Facebook"
             sub="PAGE"
             ringFrom="from-blue-400/60"
@@ -189,7 +191,7 @@ function HomePage() {
             icon={<Facebook className="h-4 w-4 text-white fill-white" />}
           />
           <SocialBrand
-            href="https://youtube.com/@topupexpress"
+            href={settings.contact_youtube || "#"}
             title="YouTube"
             sub="CHANNEL"
             ringFrom="from-rose-400/60"
