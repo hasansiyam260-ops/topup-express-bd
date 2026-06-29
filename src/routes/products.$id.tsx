@@ -126,7 +126,7 @@ function ProductPage() {
     try {
       const res = await validateCoupon({ data: { code: couponCode, amount: basePrice } });
       setCoupon({ id: res.id, code: res.code, discount: res.discount });
-      toast.success(`Coupon applied: −৳${res.discount}`);
+      toast.success(`Coupon applied: −৳${res.discount.toFixed(2)}`);
     } catch (e: any) { toast.error(e?.message || "Invalid coupon"); setCoupon(null); }
     finally { setCouponLoading(false); }
   };
