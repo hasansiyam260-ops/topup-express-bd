@@ -15,6 +15,7 @@ import logoImg from "@/assets/logo-uid.webp";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { Toaster } from "sonner";
 import { WelcomeNotice } from "@/components/site/WelcomeNotice";
+import { InstallAppPrompt } from "@/components/site/InstallAppPrompt";
 const LiveChat = lazy(() => import("@/components/site/LiveChat").then((m) => ({ default: m.LiveChat })));
 
 function NotFoundComponent() {

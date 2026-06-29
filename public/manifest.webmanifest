@@ -1,0 +1,26 @@
+{
+  "name": "TOP-UP EXPRESS",
+  "short_name": "TOP-UP EXPRESS",
+  "description": "Bangladesh's #1 premium Free Fire diamond topup. Instant delivery, best price, 24/7 support.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#0b0b14",
+  "theme_color": "#0b0b14",
+  "categories": ["games", "shopping", "entertainment"],
+  "icons": [
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}
