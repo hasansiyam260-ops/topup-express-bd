@@ -24,11 +24,13 @@ export const validateCoupon = createServerFn({ method: "POST" })
       if ((count ?? 0) >= c.per_user_limit) throw new Error("You've already used this coupon");
     }
     let discount = c.discount_type === "percent"
-      ? Math.round((amount * Number(c.discount_value)) / 100)
-      : Math.round(Number(c.discount_value));
+      ? (amount * Number(c.discount_value)) / 100
+      : Number(c.discount_value);
     if (c.max_discount != null) discount = Math.min(discount, Number(c.max_discount));
     discount = Math.max(0, Math.min(discount, amount));
-    return { id: c.id, code: c.code, discount, finalAmount: amount - discount };
+    // Keep 2-decimal precision so small percentages (e.g. 2%) apply exactly on any amount
+    discount = Math.round(discount * 100) / 100;
+    return { id: c.id, code: c.code, discount, finalAmount: Math.round((amount - discount) * 100) / 100 };
   });
 
 export const redeemCoupon = createServerFn({ method: "POST" })
