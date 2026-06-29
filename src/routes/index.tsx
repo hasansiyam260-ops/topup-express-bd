@@ -8,6 +8,7 @@ import heroImg from "@/assets/hero-promo.webp";
 import logoUid from "@/assets/logo-uid.png";
 import { MessageCircle, MessagesSquare, Facebook, Youtube, Mail, Play, Send } from "lucide-react";
 import { AnnouncementBar } from "@/components/site/AnnouncementBar";
+import { useSiteSettings } from "@/lib/site-settings";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -37,6 +38,7 @@ export const Route = createFileRoute("/")({
 
 function HomePage() {
   const { data: products = [], isFetching } = useQuery(productsQueryOptions);
+  const settings = useSiteSettings();
   const { data: cats = [] } = useQuery({
     queryKey: ["categories"],
     queryFn: () => listCategories(),
@@ -72,6 +74,7 @@ function HomePage() {
     <AppShell>
       <AnnouncementBar />
       {/* HERO PROMO BANNER — clean glassy premium */}
+      {settings.hero_enabled && (
       <section className="mx-auto max-w-3xl px-3 pt-2">
         <div
           className="relative h-[134px] sm:h-[160px] md:h-[178px] rounded-2xl overflow-hidden group bg-card"
@@ -81,38 +84,32 @@ function HomePage() {
           }}
         >
           <img
-            src={heroImg}
-            alt="Free Fire Diamond Topup"
+            src={settings.hero_image_url || heroImg}
+            alt={settings.hero_title || "Free Fire Diamond Topup"}
             width={1536}
             height={768}
             fetchPriority="high"
             decoding="async"
             className="w-full h-full object-cover object-center block md:transition-transform md:duration-500 md:group-hover:scale-[1.02]"
           />
-          {/* Glossy top sheen — glassy premium */}
-          <span
-            aria-hidden
-            className="absolute inset-x-0 top-0 h-1/2 pointer-events-none"
-            style={{
-              background:
-                "linear-gradient(180deg, rgba(255,255,255,0.22), rgba(255,255,255,0) 70%)",
-            }}
-          />
-          {/* Inner glass highlight ring */}
-          <span
-            aria-hidden
-            className="absolute inset-0 rounded-2xl pointer-events-none"
-            style={{
-              boxShadow:
-                "inset 0 1px 0 color-mix(in oklab, white 35%, transparent), inset 0 -1px 0 color-mix(in oklab, black 22%, transparent)",
-            }}
-          />
-          {/* Sweep shine on hover */}
+          {(settings.hero_title || settings.hero_subtitle) && (
+            <div className="absolute inset-0 flex flex-col justify-end p-3 sm:p-4 bg-gradient-to-t from-black/55 via-black/15 to-transparent text-white">
+              {settings.hero_title && (
+                <div className="font-display text-base sm:text-xl leading-tight drop-shadow">{settings.hero_title}</div>
+              )}
+              {settings.hero_subtitle && (
+                <div className="text-[11px] sm:text-xs opacity-95 mt-0.5">{settings.hero_subtitle}</div>
+              )}
+            </div>
+          )}
+          <span aria-hidden className="absolute inset-x-0 top-0 h-1/2 pointer-events-none" style={{ background: "linear-gradient(180deg, rgba(255,255,255,0.22), rgba(255,255,255,0) 70%)" }} />
+          <span aria-hidden className="absolute inset-0 rounded-2xl pointer-events-none" style={{ boxShadow: "inset 0 1px 0 color-mix(in oklab, white 35%, transparent), inset 0 -1px 0 color-mix(in oklab, black 22%, transparent)" }} />
           <span aria-hidden className="absolute inset-0 pointer-events-none overflow-hidden">
             <span className="absolute -inset-y-4 -left-1/3 w-1/3 rotate-12 bg-gradient-to-r from-transparent via-white/25 to-transparent translate-x-[-120%] group-hover:translate-x-[420%] transition-transform duration-[1400ms] ease-out" />
           </span>
         </div>
       </section>
+      )}
 
 
 
@@ -124,7 +121,7 @@ function HomePage() {
           glow="rgba(16,185,129,.48)"
           title="WHATSAPP"
           sub="LIVE CHAT"
-          href="https://wa.me/8801000000000"
+          href={settings.contact_whatsapp || "#"}
         />
         <ChipCard
           icon={<MessagesSquare className="h-[18px] w-[18px] text-white" />}
@@ -132,7 +129,7 @@ function HomePage() {
           glow="rgba(124,58,237,.48)"
           title="MESSENGER"
           sub="SUPPORT"
-          href="https://m.me/topupexpress"
+          href={settings.contact_messenger || "#"}
         />
         <ChipCard
           icon={<Send className="h-[17px] w-[17px] -translate-x-[1px] text-white" />}
@@ -140,7 +137,7 @@ function HomePage() {
           glow="rgba(14,165,233,.50)"
           title="TELEGRAM"
           sub="CHANNEL"
-          href="https://t.me/topupexpress"
+          href={settings.contact_telegram || "#"}
         />
       </section>
 
@@ -169,7 +166,7 @@ function HomePage() {
 
         <div className="mt-4 grid grid-cols-3 gap-2.5">
           <SocialBrand
-            href="https://t.me/topupexpress"
+            href={settings.contact_telegram || "#"}
             title="Telegram"
             sub="CHANNEL"
             ringFrom="from-sky-400/60"
@@ -179,7 +176,7 @@ function HomePage() {
             icon={<Send className="h-4 w-4 text-white -translate-x-[1px]" />}
           />
           <SocialBrand
-            href="https://facebook.com/topupexpress"
+            href={settings.contact_facebook || "#"}
             title="Facebook"
             sub="PAGE"
             ringFrom="from-blue-400/60"
@@ -189,7 +186,7 @@ function HomePage() {
             icon={<Facebook className="h-4 w-4 text-white fill-white" />}
           />
           <SocialBrand
-            href="https://youtube.com/@topupexpress"
+            href={settings.contact_youtube || "#"}
             title="YouTube"
             sub="CHANNEL"
             ringFrom="from-rose-400/60"

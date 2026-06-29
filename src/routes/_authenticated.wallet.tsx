@@ -5,6 +5,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { AppShell } from "@/components/site/AppShell";
 import { Wallet, Info, ShieldCheck, Zap, History, CheckCircle2, Hash, CreditCard, Clock } from "lucide-react";
 import { SecureCheckout } from "@/components/site/SecureCheckout";
+import { useSiteSettings } from "@/lib/site-settings";
 // Referral cashback now triggers on product purchase, not on wallet topup.
 
 type AddMoneyEntry = { invoiceId: string; brand: string; amount: number; ts: number };
@@ -46,8 +47,9 @@ function WalletPage() {
   useEffect(() => { setHistory(loadHistory()); }, []);
 
 
+  const settings = useSiteSettings();
   const numeric = Number(amount || 0);
-  const valid = numeric >= 10;
+  const valid = numeric >= settings.wallet_min && numeric <= settings.wallet_max;
 
   return (
     <AppShell>
@@ -80,7 +82,7 @@ function WalletPage() {
           <ul className="space-y-1.5 text-[11px] leading-snug">
             <li className="flex gap-2"><span className="text-rose-500 mt-0.5">●</span><span><span className="font-bold text-rose-700">Instant Add</span> — bKash · Nagad · Rocket দিয়ে সাথে সাথে wallet এ টাকা যোগ হবে।</span></li>
             <li className="flex gap-2"><span className="text-emerald-500 mt-0.5">●</span><span><span className="font-bold text-emerald-700">100% Secure</span> — সকল transaction encrypted ও নিরাপদভাবে সংরক্ষিত।</span></li>
-            <li className="flex gap-2"><span className="text-rose-500 mt-0.5">●</span><span><span className="font-bold text-rose-700">Min ৳10</span> — নিজের পছন্দমতো amount দিয়ে wallet recharge করুন।</span></li>
+            <li className="flex gap-2"><span className="text-rose-500 mt-0.5">●</span><span><span className="font-bold text-rose-700">Min ৳{settings.wallet_min} · Max ৳{settings.wallet_max.toLocaleString()}</span> — নিজের পছন্দমতো amount দিয়ে wallet recharge করুন।</span></li>
           </ul>
         </div>
 
@@ -108,8 +110,19 @@ function WalletPage() {
             </div>
           </label>
 
+          {settings.wallet_presets?.length > 0 && (
+            <div className="mt-2 flex flex-wrap gap-1.5">
+              {settings.wallet_presets.map((p) => (
+                <button key={p} type="button" onClick={() => setAmount(String(p))}
+                  className="px-2.5 py-1 rounded-full text-[11px] font-bold border border-rose-300/60 bg-rose-50 text-rose-700 hover:bg-rose-100 transition">
+                  ৳{p.toLocaleString()}
+                </button>
+              ))}
+            </div>
+          )}
+
           <p className="mt-2 text-[10px] text-muted-foreground flex items-center gap-1">
-            <Info className="h-2.5 w-2.5" /> Min ৳10 · নিজের পছন্দমতো amount লিখুন
+            <Info className="h-2.5 w-2.5" /> Min ৳{settings.wallet_min} · Max ৳{settings.wallet_max.toLocaleString()}
           </p>
         </section>
 

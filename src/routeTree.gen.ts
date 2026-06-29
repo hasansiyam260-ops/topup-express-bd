@@ -21,6 +21,7 @@ import { Route as AdminIndexRouteImport } from './routes/admin.index'
 import { Route as ProductsIdRouteImport } from './routes/products.$id'
 import { Route as ApiLivechatRouteImport } from './routes/api/livechat'
 import { Route as AdminUsersRouteImport } from './routes/admin.users'
+import { Route as AdminSettingsRouteImport } from './routes/admin.settings'
 import { Route as AdminReferralsRouteImport } from './routes/admin.referrals'
 import { Route as AdminProductsRouteImport } from './routes/admin.products'
 import { Route as AdminPaymentsRouteImport } from './routes/admin.payments'
@@ -33,6 +34,15 @@ import { Route as AuthenticatedWalletRouteImport } from './routes/_authenticated
 import { Route as AuthenticatedReferralsRouteImport } from './routes/_authenticated.referrals'
 import { Route as AuthenticatedProfileRouteImport } from './routes/_authenticated.profile'
 import { Route as AuthenticatedOrdersRouteImport } from './routes/_authenticated.orders'
+import { Route as AdminSettingsIndexRouteImport } from './routes/admin.settings.index'
+import { Route as AdminSettingsWalletRouteImport } from './routes/admin.settings.wallet'
+import { Route as AdminSettingsSocialRouteImport } from './routes/admin.settings.social'
+import { Route as AdminSettingsSeoRouteImport } from './routes/admin.settings.seo'
+import { Route as AdminSettingsMaintenanceRouteImport } from './routes/admin.settings.maintenance'
+import { Route as AdminSettingsHeroRouteImport } from './routes/admin.settings.hero'
+import { Route as AdminSettingsChatRouteImport } from './routes/admin.settings.chat'
+import { Route as AdminSettingsBrandingRouteImport } from './routes/admin.settings.branding'
+import { Route as AdminSettingsAnnouncementRouteImport } from './routes/admin.settings.announcement'
 import { Route as ApiPublicHooksAutoDeliverRouteImport } from './routes/api/public/hooks/auto-deliver'
 
 const TermsRoute = TermsRouteImport.update({
@@ -92,6 +102,11 @@ const ApiLivechatRoute = ApiLivechatRouteImport.update({
 const AdminUsersRoute = AdminUsersRouteImport.update({
   id: '/users',
   path: '/users',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminSettingsRoute = AdminSettingsRouteImport.update({
+  id: '/settings',
+  path: '/settings',
   getParentRoute: () => AdminRoute,
 } as any)
 const AdminReferralsRoute = AdminReferralsRouteImport.update({
@@ -154,6 +169,53 @@ const AuthenticatedOrdersRoute = AuthenticatedOrdersRouteImport.update({
   path: '/orders',
   getParentRoute: () => AuthenticatedRoute,
 } as any)
+const AdminSettingsIndexRoute = AdminSettingsIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AdminSettingsRoute,
+} as any)
+const AdminSettingsWalletRoute = AdminSettingsWalletRouteImport.update({
+  id: '/wallet',
+  path: '/wallet',
+  getParentRoute: () => AdminSettingsRoute,
+} as any)
+const AdminSettingsSocialRoute = AdminSettingsSocialRouteImport.update({
+  id: '/social',
+  path: '/social',
+  getParentRoute: () => AdminSettingsRoute,
+} as any)
+const AdminSettingsSeoRoute = AdminSettingsSeoRouteImport.update({
+  id: '/seo',
+  path: '/seo',
+  getParentRoute: () => AdminSettingsRoute,
+} as any)
+const AdminSettingsMaintenanceRoute =
+  AdminSettingsMaintenanceRouteImport.update({
+    id: '/maintenance',
+    path: '/maintenance',
+    getParentRoute: () => AdminSettingsRoute,
+  } as any)
+const AdminSettingsHeroRoute = AdminSettingsHeroRouteImport.update({
+  id: '/hero',
+  path: '/hero',
+  getParentRoute: () => AdminSettingsRoute,
+} as any)
+const AdminSettingsChatRoute = AdminSettingsChatRouteImport.update({
+  id: '/chat',
+  path: '/chat',
+  getParentRoute: () => AdminSettingsRoute,
+} as any)
+const AdminSettingsBrandingRoute = AdminSettingsBrandingRouteImport.update({
+  id: '/branding',
+  path: '/branding',
+  getParentRoute: () => AdminSettingsRoute,
+} as any)
+const AdminSettingsAnnouncementRoute =
+  AdminSettingsAnnouncementRouteImport.update({
+    id: '/announcement',
+    path: '/announcement',
+    getParentRoute: () => AdminSettingsRoute,
+  } as any)
 const ApiPublicHooksAutoDeliverRoute =
   ApiPublicHooksAutoDeliverRouteImport.update({
     id: '/api/public/hooks/auto-deliver',
@@ -181,10 +243,20 @@ export interface FileRoutesByFullPath {
   '/admin/payments': typeof AdminPaymentsRoute
   '/admin/products': typeof AdminProductsRoute
   '/admin/referrals': typeof AdminReferralsRoute
+  '/admin/settings': typeof AdminSettingsRouteWithChildren
   '/admin/users': typeof AdminUsersRoute
   '/api/livechat': typeof ApiLivechatRoute
   '/products/$id': typeof ProductsIdRoute
   '/admin/': typeof AdminIndexRoute
+  '/admin/settings/announcement': typeof AdminSettingsAnnouncementRoute
+  '/admin/settings/branding': typeof AdminSettingsBrandingRoute
+  '/admin/settings/chat': typeof AdminSettingsChatRoute
+  '/admin/settings/hero': typeof AdminSettingsHeroRoute
+  '/admin/settings/maintenance': typeof AdminSettingsMaintenanceRoute
+  '/admin/settings/seo': typeof AdminSettingsSeoRoute
+  '/admin/settings/social': typeof AdminSettingsSocialRoute
+  '/admin/settings/wallet': typeof AdminSettingsWalletRoute
+  '/admin/settings/': typeof AdminSettingsIndexRoute
   '/api/public/hooks/auto-deliver': typeof ApiPublicHooksAutoDeliverRoute
 }
 export interface FileRoutesByTo {
@@ -210,6 +282,15 @@ export interface FileRoutesByTo {
   '/api/livechat': typeof ApiLivechatRoute
   '/products/$id': typeof ProductsIdRoute
   '/admin': typeof AdminIndexRoute
+  '/admin/settings/announcement': typeof AdminSettingsAnnouncementRoute
+  '/admin/settings/branding': typeof AdminSettingsBrandingRoute
+  '/admin/settings/chat': typeof AdminSettingsChatRoute
+  '/admin/settings/hero': typeof AdminSettingsHeroRoute
+  '/admin/settings/maintenance': typeof AdminSettingsMaintenanceRoute
+  '/admin/settings/seo': typeof AdminSettingsSeoRoute
+  '/admin/settings/social': typeof AdminSettingsSocialRoute
+  '/admin/settings/wallet': typeof AdminSettingsWalletRoute
+  '/admin/settings': typeof AdminSettingsIndexRoute
   '/api/public/hooks/auto-deliver': typeof ApiPublicHooksAutoDeliverRoute
 }
 export interface FileRoutesById {
@@ -234,10 +315,20 @@ export interface FileRoutesById {
   '/admin/payments': typeof AdminPaymentsRoute
   '/admin/products': typeof AdminProductsRoute
   '/admin/referrals': typeof AdminReferralsRoute
+  '/admin/settings': typeof AdminSettingsRouteWithChildren
   '/admin/users': typeof AdminUsersRoute
   '/api/livechat': typeof ApiLivechatRoute
   '/products/$id': typeof ProductsIdRoute
   '/admin/': typeof AdminIndexRoute
+  '/admin/settings/announcement': typeof AdminSettingsAnnouncementRoute
+  '/admin/settings/branding': typeof AdminSettingsBrandingRoute
+  '/admin/settings/chat': typeof AdminSettingsChatRoute
+  '/admin/settings/hero': typeof AdminSettingsHeroRoute
+  '/admin/settings/maintenance': typeof AdminSettingsMaintenanceRoute
+  '/admin/settings/seo': typeof AdminSettingsSeoRoute
+  '/admin/settings/social': typeof AdminSettingsSocialRoute
+  '/admin/settings/wallet': typeof AdminSettingsWalletRoute
+  '/admin/settings/': typeof AdminSettingsIndexRoute
   '/api/public/hooks/auto-deliver': typeof ApiPublicHooksAutoDeliverRoute
 }
 export interface FileRouteTypes {
@@ -262,10 +353,20 @@ export interface FileRouteTypes {
     | '/admin/payments'
     | '/admin/products'
     | '/admin/referrals'
+    | '/admin/settings'
     | '/admin/users'
     | '/api/livechat'
     | '/products/$id'
     | '/admin/'
+    | '/admin/settings/announcement'
+    | '/admin/settings/branding'
+    | '/admin/settings/chat'
+    | '/admin/settings/hero'
+    | '/admin/settings/maintenance'
+    | '/admin/settings/seo'
+    | '/admin/settings/social'
+    | '/admin/settings/wallet'
+    | '/admin/settings/'
     | '/api/public/hooks/auto-deliver'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -291,6 +392,15 @@ export interface FileRouteTypes {
     | '/api/livechat'
     | '/products/$id'
     | '/admin'
+    | '/admin/settings/announcement'
+    | '/admin/settings/branding'
+    | '/admin/settings/chat'
+    | '/admin/settings/hero'
+    | '/admin/settings/maintenance'
+    | '/admin/settings/seo'
+    | '/admin/settings/social'
+    | '/admin/settings/wallet'
+    | '/admin/settings'
     | '/api/public/hooks/auto-deliver'
   id:
     | '__root__'
@@ -314,10 +424,20 @@ export interface FileRouteTypes {
     | '/admin/payments'
     | '/admin/products'
     | '/admin/referrals'
+    | '/admin/settings'
     | '/admin/users'
     | '/api/livechat'
     | '/products/$id'
     | '/admin/'
+    | '/admin/settings/announcement'
+    | '/admin/settings/branding'
+    | '/admin/settings/chat'
+    | '/admin/settings/hero'
+    | '/admin/settings/maintenance'
+    | '/admin/settings/seo'
+    | '/admin/settings/social'
+    | '/admin/settings/wallet'
+    | '/admin/settings/'
     | '/api/public/hooks/auto-deliver'
   fileRoutesById: FileRoutesById
 }
@@ -421,6 +541,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminUsersRouteImport
       parentRoute: typeof AdminRoute
     }
+    '/admin/settings': {
+      id: '/admin/settings'
+      path: '/settings'
+      fullPath: '/admin/settings'
+      preLoaderRoute: typeof AdminSettingsRouteImport
+      parentRoute: typeof AdminRoute
+    }
     '/admin/referrals': {
       id: '/admin/referrals'
       path: '/referrals'
@@ -505,6 +632,69 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedOrdersRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
+    '/admin/settings/': {
+      id: '/admin/settings/'
+      path: '/'
+      fullPath: '/admin/settings/'
+      preLoaderRoute: typeof AdminSettingsIndexRouteImport
+      parentRoute: typeof AdminSettingsRoute
+    }
+    '/admin/settings/wallet': {
+      id: '/admin/settings/wallet'
+      path: '/wallet'
+      fullPath: '/admin/settings/wallet'
+      preLoaderRoute: typeof AdminSettingsWalletRouteImport
+      parentRoute: typeof AdminSettingsRoute
+    }
+    '/admin/settings/social': {
+      id: '/admin/settings/social'
+      path: '/social'
+      fullPath: '/admin/settings/social'
+      preLoaderRoute: typeof AdminSettingsSocialRouteImport
+      parentRoute: typeof AdminSettingsRoute
+    }
+    '/admin/settings/seo': {
+      id: '/admin/settings/seo'
+      path: '/seo'
+      fullPath: '/admin/settings/seo'
+      preLoaderRoute: typeof AdminSettingsSeoRouteImport
+      parentRoute: typeof AdminSettingsRoute
+    }
+    '/admin/settings/maintenance': {
+      id: '/admin/settings/maintenance'
+      path: '/maintenance'
+      fullPath: '/admin/settings/maintenance'
+      preLoaderRoute: typeof AdminSettingsMaintenanceRouteImport
+      parentRoute: typeof AdminSettingsRoute
+    }
+    '/admin/settings/hero': {
+      id: '/admin/settings/hero'
+      path: '/hero'
+      fullPath: '/admin/settings/hero'
+      preLoaderRoute: typeof AdminSettingsHeroRouteImport
+      parentRoute: typeof AdminSettingsRoute
+    }
+    '/admin/settings/chat': {
+      id: '/admin/settings/chat'
+      path: '/chat'
+      fullPath: '/admin/settings/chat'
+      preLoaderRoute: typeof AdminSettingsChatRouteImport
+      parentRoute: typeof AdminSettingsRoute
+    }
+    '/admin/settings/branding': {
+      id: '/admin/settings/branding'
+      path: '/branding'
+      fullPath: '/admin/settings/branding'
+      preLoaderRoute: typeof AdminSettingsBrandingRouteImport
+      parentRoute: typeof AdminSettingsRoute
+    }
+    '/admin/settings/announcement': {
+      id: '/admin/settings/announcement'
+      path: '/announcement'
+      fullPath: '/admin/settings/announcement'
+      preLoaderRoute: typeof AdminSettingsAnnouncementRouteImport
+      parentRoute: typeof AdminSettingsRoute
+    }
     '/api/public/hooks/auto-deliver': {
       id: '/api/public/hooks/auto-deliver'
       path: '/api/public/hooks/auto-deliver'
@@ -533,6 +723,34 @@ const AuthenticatedRouteWithChildren = AuthenticatedRoute._addFileChildren(
   AuthenticatedRouteChildren,
 )
 
+interface AdminSettingsRouteChildren {
+  AdminSettingsAnnouncementRoute: typeof AdminSettingsAnnouncementRoute
+  AdminSettingsBrandingRoute: typeof AdminSettingsBrandingRoute
+  AdminSettingsChatRoute: typeof AdminSettingsChatRoute
+  AdminSettingsHeroRoute: typeof AdminSettingsHeroRoute
+  AdminSettingsMaintenanceRoute: typeof AdminSettingsMaintenanceRoute
+  AdminSettingsSeoRoute: typeof AdminSettingsSeoRoute
+  AdminSettingsSocialRoute: typeof AdminSettingsSocialRoute
+  AdminSettingsWalletRoute: typeof AdminSettingsWalletRoute
+  AdminSettingsIndexRoute: typeof AdminSettingsIndexRoute
+}
+
+const AdminSettingsRouteChildren: AdminSettingsRouteChildren = {
+  AdminSettingsAnnouncementRoute: AdminSettingsAnnouncementRoute,
+  AdminSettingsBrandingRoute: AdminSettingsBrandingRoute,
+  AdminSettingsChatRoute: AdminSettingsChatRoute,
+  AdminSettingsHeroRoute: AdminSettingsHeroRoute,
+  AdminSettingsMaintenanceRoute: AdminSettingsMaintenanceRoute,
+  AdminSettingsSeoRoute: AdminSettingsSeoRoute,
+  AdminSettingsSocialRoute: AdminSettingsSocialRoute,
+  AdminSettingsWalletRoute: AdminSettingsWalletRoute,
+  AdminSettingsIndexRoute: AdminSettingsIndexRoute,
+}
+
+const AdminSettingsRouteWithChildren = AdminSettingsRoute._addFileChildren(
+  AdminSettingsRouteChildren,
+)
+
 interface AdminRouteChildren {
   AdminCategoriesRoute: typeof AdminCategoriesRoute
   AdminContentRoute: typeof AdminContentRoute
@@ -542,6 +760,7 @@ interface AdminRouteChildren {
   AdminPaymentsRoute: typeof AdminPaymentsRoute
   AdminProductsRoute: typeof AdminProductsRoute
   AdminReferralsRoute: typeof AdminReferralsRoute
+  AdminSettingsRoute: typeof AdminSettingsRouteWithChildren
   AdminUsersRoute: typeof AdminUsersRoute
   AdminIndexRoute: typeof AdminIndexRoute
 }
@@ -555,6 +774,7 @@ const AdminRouteChildren: AdminRouteChildren = {
   AdminPaymentsRoute: AdminPaymentsRoute,
   AdminProductsRoute: AdminProductsRoute,
   AdminReferralsRoute: AdminReferralsRoute,
+  AdminSettingsRoute: AdminSettingsRouteWithChildren,
   AdminUsersRoute: AdminUsersRoute,
   AdminIndexRoute: AdminIndexRoute,
 }

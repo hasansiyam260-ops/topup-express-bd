@@ -43,6 +43,26 @@ export const Route = createFileRoute("/api/livechat")({
 
           const trimmed = messages.slice(-12);
 
+          // Load custom system prompt + model from site_content
+          let systemPrompt = SYSTEM_PROMPT;
+          let model = "google/gemini-3-flash-preview";
+          try {
+            const url = process.env.SUPABASE_URL;
+            const pub = process.env.SUPABASE_PUBLISHABLE_KEY;
+            if (url && pub) {
+              const r = await fetch(`${url}/rest/v1/site_content?key=in.(live_chat_system_prompt,live_chat_model)&select=key,value`, {
+                headers: { apikey: pub, Authorization: `Bearer ${pub}` },
+              });
+              if (r.ok) {
+                const rows = (await r.json()) as Array<{ key: string; value: any }>;
+                for (const row of rows) {
+                  if (row.key === "live_chat_system_prompt" && typeof row.value === "string" && row.value.trim().length > 20) systemPrompt = row.value;
+                  if (row.key === "live_chat_model" && typeof row.value === "string" && row.value.includes("/")) model = row.value;
+                }
+              }
+            }
+          } catch {}
+
           const res = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
             method: "POST",
             headers: {
@@ -50,9 +70,9 @@ export const Route = createFileRoute("/api/livechat")({
               "Lovable-API-Key": key,
             },
             body: JSON.stringify({
-              model: "google/gemini-3-flash-preview",
+              model,
               messages: [
-                { role: "system", content: SYSTEM_PROMPT },
+                { role: "system", content: systemPrompt },
                 ...trimmed,
               ],
             }),

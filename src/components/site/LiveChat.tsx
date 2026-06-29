@@ -1,13 +1,8 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { X, Send, Sparkles } from "lucide-react";
+import { useSiteSettings } from "@/lib/site-settings";
 
 type Msg = { role: "user" | "assistant"; content: string };
-
-const WELCOME: Msg = {
-  role: "assistant",
-  content:
-    "হ্যালো! 👋 আমি TOP-UP EXPRESS এর AI সাপোর্ট। ডায়মন্ড টপআপ, পেমেন্ট, অর্ডার, ওয়ালেট — যেকোনো প্রশ্ন করুন, instant উত্তর পাবেন।",
-};
 
 const QUICK = [
   "কিভাবে টপআপ করব?",
@@ -17,11 +12,18 @@ const QUICK = [
 ];
 
 export function LiveChat() {
+  const s = useSiteSettings();
+  const WELCOME = useMemo<Msg>(() => ({ role: "assistant", content: s.live_chat_welcome }), [s.live_chat_welcome]);
   const [open, setOpen] = useState(false);
   const [messages, setMessages] = useState<Msg[]>([WELCOME]);
+  useEffect(() => { setMessages((m) => (m.length <= 1 ? [WELCOME] : m)); }, [WELCOME]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
+
+  if (!s.live_chat_enabled) return null;
+
+
 
   useEffect(() => {
     if (scrollRef.current) scrollRef.current.scrollTop = scrollRef.current.scrollHeight;

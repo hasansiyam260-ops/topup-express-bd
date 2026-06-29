@@ -1,96 +1,101 @@
-## Admin Panel — Full Site Control
+# Full Admin Control — Plan
 
-Build a complete admin dashboard at `/admin` (role-gated) to control every editable part of TOP-UP EXPRESS.
+Goal: tomar admin panel theke website er **proti ta jinis** sundor friendly UI diye control kora jabe — kothao code chuyte hobe na.
 
-### Access Control
-- Use existing `user_roles` table + `has_role()` function
-- Route guard: `/admin/*` requires `admin` role, else redirect
-- Add a "Promote to Admin" one-time bootstrap (first user via SQL seed)
+## Notun Admin Sections
 
-### Admin Sections
+### 1. Branding & Identity
+- Site Name, Tagline, Logo URL, Favicon URL
+- Header wordmark color/glow intensity
+- Footer text & copyright
 
-**1. Dashboard (`/admin`)**
-- Stats: total orders, revenue, pending orders, total users, active products
-- Recent orders list with quick status update
+### 2. Hero Banner (Home page er upor)
+- Title (Bangla/English)
+- Subtitle / badge text
+- Background image URL
+- CTA button text + link
+- On/Off toggle
 
-**2. Products Manager (`/admin/products`)**
-- List all products grouped by category (6 categories: Diamonds, Membership, Level Up Pass, Weekly Lite, Likes, UniPin)
-- Add / Edit / Delete product (name_en, name_bn, price, original_price, image_url, badge, sort_order, is_active, server, pack_type)
-- Inline category filter tabs
-- Bulk activate/deactivate
+### 3. Announcement Bar
+- Notice text (e.g. "Eid offer 10% off")
+- Color theme (red/green/amber)
+- On/Off + auto-hide after date
 
-**3. Categories Manager (`/admin/categories`)**
-- New `categories` table: id, key (pack_type), name, image_url, banner_url, description, sort_order, is_active
-- Add / Edit / Delete category — 6 default seeded, but fully editable
-- Frontend home grid & product page banners read from this table
+### 4. Social Links
+- Telegram, Facebook, YouTube, WhatsApp, TikTok URLs
+- Each one On/Off toggle (jeta off, seta site e dekhabe na)
 
-**4. Orders Manager (`/admin/orders`)**
-- Filter by status (pending / completed / cancelled)
-- Search by order_number, player_uid, user
-- Update status, add notes, view payment details
+### 5. AI Live Chat
+- System prompt edit (AI ki vabe kotha bolbe)
+- Welcome message
+- On/Off toggle
+- Model picker (Gemini Flash / Pro)
 
-**5. Users Manager (`/admin/users`)**
-- List all users (from `profiles` joined with `auth.users` via admin server fn)
-- View balance, edit balance (add/deduct), promote/demote admin role
-- View user's orders
+### 6. Wallet & Payment Rules
+- Minimum add money amount
+- Maximum add money amount
+- Quick-amount preset chips (e.g. 100, 500, 1000)
+- Manual amount on/off
 
-**6. Site Content Manager (`/admin/content`)**
-- New `site_content` table: key (text), value (jsonb), updated_at
-- Editable keys: `hero_title`, `hero_subtitle`, `announcement_text`, `welcome_notice_title`, `welcome_notice_body`, `footer_text`, `contact_whatsapp`, `contact_messenger`, `contact_telegram`, `faq_items` (jsonb array), `privacy_policy` (md), `terms` (md), `live_chat_system_prompt`
-- Frontend reads via a public server fn cached in React Query
+### 7. Player Info API
+- FF info API URL (jodi notun source lagbe)
+- Timeout seconds slider
+- Cache duration
 
-**7. Payment Settings (`/admin/payments`)**
-- New `payment_methods` table: id, name (bKash/Nagad/Rocket), number, type (personal/agent/merchant), instructions, is_active, sort_order
-- Editable so admin can change receiving numbers without code changes
-- `SecureCheckout` reads from this table
+### 8. Maintenance Mode
+- Whole site maintenance toggle + custom message
+- Per-category maintenance (e.g. shudhu Diamond bondho)
 
-### Database Migrations
-- `categories` table + seed 6 defaults
-- `site_content` table + seed defaults
-- `payment_methods` table + seed bKash/Nagad/Rocket
-- Admin RLS: full read/write via `has_role(auth.uid(), 'admin')`
-- Public read for `categories` (active), `site_content`, `payment_methods` (active)
+### 9. SEO Defaults
+- Default page title format
+- Meta description
+- OG image URL
 
-### Tech
-- TanStack server functions for all admin mutations, gated by `requireSupabaseAuth` + `has_role` check
-- React Query for caching
-- shadcn `Table`, `Dialog`, `Form`, `Tabs` for UI
-- Image upload via Supabase Storage bucket `site-assets` (admin-only write, public read)
-- Sidebar layout for admin section, mobile-responsive
+### 10. Notifications / Toasts
+- Success message templates (order placed, money added)
+- Customizable text
 
-### File Structure
+## Implementation Approach
+
+```text
+Admin Sidebar
+├── Dashboard
+├── Products
+├── Categories
+├── Orders
+├── Users
+├── Coupons
+├── Refer & Earn          ← already done
+├── Payments
+├── Auto-Delivery
+└── ── Settings ──        (new group)
+    ├── Branding
+    ├── Hero Banner
+    ├── Announcement
+    ├── Social Links
+    ├── AI Live Chat
+    ├── Wallet Rules
+    ├── Player Info API
+    ├── Maintenance
+    └── SEO
 ```
-src/routes/_admin/route.tsx         (gate + sidebar layout)
-src/routes/_admin/index.tsx         (dashboard)
-src/routes/_admin/products.tsx
-src/routes/_admin/categories.tsx
-src/routes/_admin/orders.tsx
-src/routes/_admin/users.tsx
-src/routes/_admin/content.tsx
-src/routes/_admin/payments.tsx
-src/lib/admin.functions.ts
-src/lib/content.functions.ts        (public reads)
-src/lib/categories.functions.ts
-```
 
-### Frontend Wiring
-- `src/routes/index.tsx` 6-category grid → reads from `categories` table
-- `src/routes/products.$id.tsx` banner/meta → reads from `categories`
-- `AnnouncementBar`, `WelcomeNotice`, `Footer`, `contact.tsx`, `faq.tsx`, `privacy.tsx`, `terms.tsx` → read from `site_content`
-- `SecureCheckout` → reads from `payment_methods`
-- `LiveChat` system prompt → reads from `site_content.live_chat_system_prompt`
+Every setting saves into the existing `site_content` table as a JSON row, so no schema migration needed for most of it. Each admin page = ek-ta friendly form (inputs, toggles, color pickers, image URL + preview) with instant Save + live invalidation, jate save korar sathe sathe site e dekha jay.
 
-### Bootstrap Admin
-After migration, run one SQL `INSERT INTO user_roles` for your user_id. I'll ask for your email to identify which account to promote.
+User-facing components (Header, Hero, AppShell, LiveChat, Wallet, product pages) shobgulo ei JSON config theke read korbe — hardcoded value gulo replace hoye jabe.
 
----
+## Build Order (parallel batches)
 
-This is a large multi-turn build. I'll execute it in phases:
-1. **Migrations** (categories, site_content, payment_methods, storage bucket)
-2. **Admin layout + auth gate + dashboard**
-3. **Products + Categories managers**
-4. **Orders + Users managers**
-5. **Content + Payments managers**
-6. **Wire frontend to read from DB**
+1. **Settings shell + sidebar group** — collapsible "Settings" section in admin nav
+2. **Branding + Social Links + Footer** — chhoto, fast win
+3. **Hero Banner + Announcement Bar** — visible impact
+4. **AI Live Chat + Wallet Rules** — interactive features
+5. **Maintenance + Player API + SEO** — operational controls
 
-Approve to start with Phase 1 (migrations).
+Sob ekbar e korbo, tumi approve korlei start.
+
+## Notes
+
+- Image upload er jonno URL field rakhbo (CDN/Imgur link paste). Direct file upload chaile alada storage bucket lage — bolo, add kore debo.
+- Maintenance mode on hole admin chara keu dhukte parbe na.
+- Sob change instant live — refresh lagbe na.
