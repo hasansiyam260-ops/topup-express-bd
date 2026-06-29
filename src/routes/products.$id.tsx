@@ -151,6 +151,11 @@ function ProductPage() {
     });
     if (error) { toast.error(error.message); return false; }
     try { await creditReferralForPurchase({ data: { amount: price } }); } catch {}
+    if (coupon) { try { await redeemCoupon({ data: { couponId: coupon.id, amountOff: coupon.discount } }); } catch {} }
+    return true;
+  };
+
+  const _unused_old_placeOrder_replaced = () => {};
     return true;
   };
 
