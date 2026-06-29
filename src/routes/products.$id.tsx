@@ -323,19 +323,41 @@ function ProductPage() {
             />
           </div>
 
+          {/* Coupon code */}
+          <div className="mt-3 rounded-xl border border-dashed border-rose-300/70 bg-rose-50/40 p-2.5">
+            {coupon ? (
+              <div className="flex items-center justify-between gap-2">
+                <div className="flex items-center gap-2 min-w-0">
+                  <BadgeCheck className="h-4 w-4 text-emerald-600 shrink-0" />
+                  <div className="min-w-0">
+                    <div className="text-xs font-bold text-slate-800 truncate">Coupon <span className="font-mono">{coupon.code}</span> applied</div>
+                    <div className="text-[11px] text-emerald-700 font-bold">−৳{coupon.discount} discount</div>
+                  </div>
+                </div>
+                <button onClick={removeCoupon} className="rounded-lg bg-white border border-rose-200 px-2.5 py-1.5 text-[11px] font-bold text-rose-600 active:scale-95">Remove</button>
+              </div>
+            ) : (
+              <div className="flex items-center gap-2">
+                <input value={couponCode} onChange={(e) => setCouponCode(e.target.value.toUpperCase())} placeholder="Have a coupon? Enter code" className="flex-1 rounded-lg border border-rose-200 bg-white px-3 py-2 text-xs font-mono uppercase placeholder:font-sans placeholder:normal-case placeholder:text-slate-400 focus:border-rose-500 focus:outline-none" />
+                <button onClick={applyCoupon} disabled={couponLoading || !couponCode.trim()} className="rounded-lg bg-slate-900 px-3 py-2 text-[11px] font-bold text-white disabled:opacity-50 active:scale-95">{couponLoading ? "..." : "APPLY"}</button>
+              </div>
+            )}
+          </div>
+
           {/* Premium price summary */}
           <div className="mt-3 rounded-xl border border-border bg-gradient-to-br from-card to-muted/40 p-3 shadow-sm">
             <div className="flex items-center justify-between">
               <span className="text-xs text-muted-foreground">Total Payable</span>
               <span className="text-[10px] tracking-wider uppercase text-emerald-600 font-bold bg-emerald-50 px-1.5 py-0.5 rounded-full border border-emerald-200">Secure</span>
             </div>
-            <div className="mt-0.5 flex items-baseline gap-1">
-              <span className="font-display text-2xl text-primary tracking-tight">৳{Number(selected.price).toFixed(0)}</span>
+            <div className="mt-0.5 flex items-baseline gap-2">
+              <span className="font-display text-2xl text-primary tracking-tight">৳{price.toFixed(0)}</span>
+              {coupon && <span className="text-xs text-muted-foreground line-through">৳{basePrice.toFixed(0)}</span>}
               <span className="text-xs text-muted-foreground">BDT</span>
             </div>
             <div className="mt-1 flex items-center gap-1.5 text-[11px] text-muted-foreground">
               <Info className="h-3 w-3 shrink-0" />
-              <span>প্রোডাক্ট কিনতে আপনার প্রয়োজন <span className="text-foreground font-semibold">৳{Number(selected.price).toFixed(0)} টাকা</span></span>
+              <span>প্রোডাক্ট কিনতে আপনার প্রয়োজন <span className="text-foreground font-semibold">৳{price.toFixed(0)} টাকা</span></span>
             </div>
           </div>
 
@@ -350,7 +372,7 @@ function ProductPage() {
             disabled={submitting}
             className="mt-3 w-full btn-red py-2.5 rounded-xl text-sm font-bold tracking-wide disabled:opacity-60 shadow-[0_10px_30px_-10px_color-mix(in_oklab,var(--brand-red)_60%,transparent)]"
           >
-            {authed ? (submitting ? "PLACING ORDER..." : `CONFIRM · ৳${Number(selected.price).toFixed(0)}`) : "LOGIN TO CONTINUE"}
+            {authed ? (submitting ? "PLACING ORDER..." : `CONFIRM · ৳${price.toFixed(0)}`) : "LOGIN TO CONTINUE"}
           </button>
         </Step>
 
